@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Vehicle</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+    <div class="bg-white shadow-xl rounded-2xl w-full max-w-lg p-8">
+
+        <h1 class="text-3xl font-bold text-center text-blue-700 mb-2">
+            Vehicle Rental System
+        </h1>
+
+        <p class="text-center text-gray-500 mb-8">
+            Register New Vehicle
+        </p>
+
+        <form action="/host/add-vehicle" method="POST" class="space-y-5">
+
+            <div>
+                <label class="block font-semibold mb-2">
+                    Vehicle Number
+                </label>
+
+                <input type="text" name="vehicleNumber" placeholder="GJ05AB1234" required
+                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">
+                    Vehicle Name
+                </label>
+
+                <input type="text" name="vehicleName" placeholder="Activa 6G" required
+                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">
+                    Owner Name
+                </label>
+
+                <input type="text" name="ownerName" placeholder="Nimesh Khandhar" required
+                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">
+                    Mobile Number
+                </label>
+
+                <input type="tel" name="mobileNumber" placeholder="9876543210" required
+                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">
+                    Rent Per Day (₹)
+                </label>
+
+                <input type="number" name="rentPerDay" placeholder="500" required
+                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 transition">
+
+                Register Vehicle
+
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

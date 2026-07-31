@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Base */
+@layer base {
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f3f4f6;
+  }
+}
+
+/* Components */
+@layer components {
+
+  .navbar {
+    @apply bg-blue-700 text-white shadow-lg;
+  }
+
+  .container-box {
+    @apply max-w-7xl mx-auto px-6 py-6;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-6 transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply shadow-xl;
+  }
+
+  .btn-primary {
+    @apply bg-blue-700 text-white px-5 py-3 rounded-lg font-semibold transition;
+  }
+
+  .btn-primary:hover {
+    @apply bg-blue-800;
+  }
+
+  .btn-success {
+    @apply bg-green-600 text-white px-5 py-3 rounded-lg font-semibold transition;
+  }
+
+  .btn-success:hover {
+    @apply bg-green-700;
+  }
+
+  .input-box {
+    @apply w-full border border-gray-300 rounded-lg p-3 outline-none;
+  }
+
+  .input-box:focus {
+    @apply border-blue-500 ring-2 ring-blue-300;
+  }
+
+  .table-header {
+    @apply bg-blue-700 text-white;
+  }
+
+  .status-available {
+    @apply bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold;
+  }
+
+  .status-rented {
+    @apply bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-semibold;
+  }
+}
