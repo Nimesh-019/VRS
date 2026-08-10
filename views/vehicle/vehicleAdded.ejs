@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vehicle Added</title>
+
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="bg-gray-50 min-h-screen text-gray-800 flex flex-col justify-center items-center p-4">
+
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-100">
+
+        <!-- Success Icon -->
+        <header class="mb-6">
+
+            <div
+                class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full
+                       flex items-center justify-center mx-auto mb-4
+                       text-2xl font-bold">
+
+                ✓
+
+            </div>
+
+            <h1 class="text-2xl font-bold text-gray-900">
+                Vehicle Added Successfully
+            </h1>
+
+            <p class="text-sm text-gray-500 mt-1">
+                Your new vehicle has been added.
+            </p>
+
+        </header>
+
+
+        <!-- Vehicle Details -->
+        <main>
+
+            <div class="bg-gray-50 rounded-xl p-5 text-left mb-6">
+
+                <h2 class="text-lg font-bold text-gray-800 mb-4">
+                    Vehicle Details
+                </h2>
+
+                <div class="space-y-3">
+
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">
+                            Vehicle Number
+                        </span>
+
+                        <span class="font-semibold">
+                            <%= vehicle.vehicleNumber %>
+                        </span>
+                    </div>
+
+
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">
+                            Vehicle Name
+                        </span>
+
+                        <span class="font-semibold">
+                            <%= vehicle.vehicleName %>
+                        </span>
+                    </div>
+
+
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">
+                            Owner
+                        </span>
+
+                        <span class="font-semibold">
+                            <%= vehicle.ownerName %>
+                        </span>
+                    </div>
+
+
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">
+                            Mobile
+                        </span>
+
+                        <span class="font-semibold">
+                            <%= vehicle.mobileNumber %>
+                        </span>
+                    </div>
+
+
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">
+                            Rent / Day
+                        </span>
+
+                        <span class="font-semibold text-emerald-600">
+                            ₹<%= vehicle.rentPerDay %>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Go Home Button -->
+            <a href="/"
+                class="inline-block w-full bg-rose-500 hover:bg-rose-600
+                       text-white font-semibold py-3 px-6 rounded-xl
+                       shadow-md hover:shadow-lg transition-all duration-200">
+
+                Go to Home
+
+            </a>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

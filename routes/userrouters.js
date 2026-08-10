@@ -1,13 +1,23 @@
 const express = require('express');
-const userRouter = express.Router();
-const path = require('path');
-const rootDir = require('../utils/pathutils');
-const { houses } = require('./hostRouter');
 
-userRouter.get('/', (req, res, next) => {
-    console.log(houses);
-    console.log(req.url, req.method);
-    res.sendFile(path.join(rootDir, 'views/home.html'));
+const userRouter = express.Router();
+
+const vehicles = require('../modules/vehicle/vehicleModel');
+
+
+// ==========================================
+// HOME PAGE
+// ==========================================
+
+userRouter.get('/', (req, res) => {
+
+    res.render('home', {
+        vehicles: vehicles
+    });
+
 });
 
-exports.userRouter = userRouter;
+
+module.exports = {
+    userRouter
+};

@@ -5,7 +5,7 @@ const rootDir = require('../utils/pathutils');
 
 // GET method to render form
 hostRouter.get('/add-vehicle', (req, res, next) => {
-    res.sendFile(path.join(rootDir, 'views/addVehicle.html'));
+    res.sendFile(path.join(rootDir, 'vehicle/addVehicle.ejs'));
 });
 
 const vehicles = [];
@@ -30,7 +30,7 @@ hostRouter.post('/add-vehicle', (req, res) => {
 
     console.log(vehicle);
 
-    res.sendFile(path.join(rootDir, 'views/vehicleAdded.html'));
+    res.sendFile(path.join(rootDir, 'vehicle/vehicleAdded.ejs'));
 
 });
 
