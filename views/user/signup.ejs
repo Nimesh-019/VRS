@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VRS - Create Account</title>
+
+    <link rel="stylesheet" href="/css/auth.css">
+
+</head>
+
+<body>
+
+    <div class="auth-container">
+
+        <!-- LEFT SIDE -->
+        <div class="auth-banner">
+
+            <div class="brand">
+                <span>V</span>RS
+            </div>
+
+            <div class="banner-content">
+
+                <p class="small-text">
+                    JOIN OUR COMMUNITY
+                </p>
+
+                <h1>
+                    Drive more.<br>
+                    Explore <span>more.</span>
+                </h1>
+
+                <p>
+                    Create your account and discover a smarter
+                    way to rent and manage vehicles.
+                </p>
+
+            </div>
+
+            <div class="banner-footer">
+
+                <span>🚗 Rent Vehicles</span>
+                <span>🔑 Own & Earn</span>
+                <span>📍 Explore</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="auth-form-container">
+
+            <div class="auth-form signup-form">
+
+                <h2>Create Account</h2>
+
+                <p class="subtitle">
+                    Join VRS and get started today
+                </p>
+
+
+                <form action="/signup" method="POST">
+
+
+                    <div class="two-inputs">
+
+                        <div class="input-group">
+
+                            <label for="name">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="John Doe"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="phone">
+                                Phone
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="9876543210"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="two-inputs">
+
+                        <div class="input-group">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="confirmPassword">
+                                Confirm Password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Confirm password"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="role">
+                            Account Type
+                        </label>
+
+                        <select id="role" name="role" required>
+
+                            <option value="">
+                                Select account type
+                            </option>
+
+                            <option value="user">
+                                User - Rent Vehicles
+                            </option>
+
+                            <option value="owner">
+                                Owner - List My Vehicles
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button type="submit" class="auth-button">
+
+                        Create Account
+
+                        <span>→</span>
+
+                    </button>
+
+                </form>
+
+
+                <p class="switch-page">
+
+                    Already have an account?
+
+                    <a href="/login">
+                        Login
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

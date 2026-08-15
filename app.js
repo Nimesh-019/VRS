@@ -1,92 +1,39 @@
-const express = require('express');
-const path = require('path');
+require('dotenv').config();
+const express=require('express');
+const rootDir=require('./utils/pathutils');
+const path=require('path');
 
-const { userRouter } = require('./routes/userrouters');
-
-const vehicleRouter = require('./modules/vehicle/vehicleRouter');
-
-const rootDir = require('./utils/pathutils');
+const session = require('express-session');
 
 
+
+const userRouter=require('./routes/userRouter');
+const vehicleRouter=require('./routes/vehicleRoutes');
+const connectDB=require('./config/db');
+
+connectDB();
 const app = express();
+app.use(express.static(path.join(rootDir, 'public')));
+app.set('view engine','ejs');
+app.set('views',path.join(rootDir,'views'));
 
 
-// ==========================================
-// EJS CONFIGURATION
-// ==========================================
+// Body parser
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.set('view engine', 'ejs');
-
-app.set(
-    'views',
-    path.join(rootDir, 'views')
-);
-
-
-// ==========================================
-// MIDDLEWARE
-// ==========================================
-
-// Read form data
-app.use(express.urlencoded({
-    extended: true
+// Session middleware - MUST be before route handlers
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false
 }));
 
-
-// Logger middleware
-app.use((req, res, next) => {
-
-    console.log(req.url, req.method);
-
-    next();
-
-});
-
-
-// Static files
-app.use(
-    express.static(
-        path.join(rootDir, 'public')
-    )
-);
-
-
-// ==========================================
-// ROUTES
-// ==========================================
-
-// Home
-app.use(userRouter);
-
-
-// Vehicle Module
-app.use(
-    '/vehicles',
-    vehicleRouter
-);
-
-
-// ==========================================
-// 404
-// ==========================================
-
-app.use((req, res) => {
-
-    res.status(404).render('404');
-
-});
-
-
-// ==========================================
-// SERVER
-// ==========================================
+// Routes
+app.use('/', userRouter);
+app.use('/', vehicleRouter);
 
 const port = 3000;
-
 app.listen(port, () => {
-
-    console.log(
-        `Server is running on http://localhost:${port}`
-    );
-
+    console.log(`Server is running on http://localhost:${port}`);
 });
