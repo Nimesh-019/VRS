@@ -1,11 +1,14 @@
 const User = require('../models/User');
-const session = require('express-session');
-const mongoose = require('mongoose');
+// const session = require('express-session');
+// const mongoose = require('mongoose');
+// const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 exports.showLogin = (req, res) => {
-    if (req.session && req.session.user) {
-        if (req.session.user.role === 'owner') {
+    if (req.user) {
+        if (req.user.role === 'owner') {
             return res.redirect('/owner/dashboard');
-        } else if (req.session.user.role === 'user') {
+        } else if (req.user.role === 'user') {
             return res.redirect('/user/dashboard');
         }
     }
@@ -21,28 +24,36 @@ exports.login = async (req, res) => {
             return res.render('user/login', { error: 'User not found', email, role });
         }
 
-        if (user.password !== password) {
+        const isPasswordCorrect = await bcrypt.compare(
+            password,
+            user.password
+        );
+
+        if (!isPasswordCorrect) {
             return res.render('user/login', { error: 'Wrong password', email, role });
         }
-
         if (user.role !== role) {
-            return res.render('user/login', { error: 'Wrong role selected for this account', email, role });
+            return res.render('user/login', { error: 'Role mismatch', email, role });
         }
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.SECRET_KEY || 'MYKEY123KEY', { expiresIn: '1h' });
+        res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
 
         req.session.user = {
             id: user._id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
             role: user.role
         };
-
         if (user.role === 'owner') {
             return res.redirect('/owner/dashboard');
-        } else if (user.role === 'user') {
-            return res.redirect('/user/dashboard');
         }
 
-        res.redirect('/login');
+        if (user.role === 'user') {
+            return res.redirect('/user/dashboard');
+        }
+        return res.render('user/login', { error: 'Invalid role', email, role });
+
     } catch (error) {
         console.error("Login error:", error);
         res.render('user/login', { error: 'Server error. Please try again.', email: req.body.email || '', role: req.body.role || '' });
@@ -69,12 +80,12 @@ exports.signup = async (req, res) => {
         // console.log(req.body);
 
         const { name, email, phone, password, role } = req.body;
-
+        const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({
             name,
             email,
             phone,
-            password,
+            password: hashedPassword,
             role
         });
 

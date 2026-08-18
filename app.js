@@ -2,7 +2,7 @@ require('dotenv').config();
 const express=require('express');
 const rootDir=require('./utils/pathutils');
 const path=require('path');
-
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 
@@ -21,10 +21,11 @@ app.set('views',path.join(rootDir,'views'));
 // Body parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Session middleware - MUST be before route handlers
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    secret: process.env.SESSION_SECRET || 'MYKEY123KEY',
     resave: false,
     saveUninitialized: false
 }));

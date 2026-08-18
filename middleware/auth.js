@@ -1,19 +1,27 @@
+const jwt = require('jsonwebtoken');
 const isLoggedIn = (req, res, next) => {
-    if (req.session && req.session.user) {
-        return next();
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(401).send("Access denied. No token provided.");
     }
-    return res.redirect('/login');
+    try{
+        const decoded = jwt.verify(token, process.env.SECRET_KEY || 'MYKEY123KEY');
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).send("Invalid token.");
+    }
 };
 
 const isOwner = (req, res, next) => {
-    if (req.session && req.session.user && req.session.user.role === 'owner') {
+    if (req.user && req.user.role === 'owner') {
         return next();
     }
     return res.status(403).send("Access denied. Owner access required.");
 };
 
 const isUser = (req, res, next) => {
-    if (req.session && req.session.user && req.session.user.role === 'user') {
+    if (req.user && req.user.role === 'user') {
         return next();
     }
     return res.status(403).send("Access denied. User access required.");
