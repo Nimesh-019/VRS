@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +27,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
@@ -217,18 +218,48 @@
             margin-bottom: 8px;
         }
 
+        .bookings-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .bookings-btn:hover {
+            background-color: #1d4ed8;
+        }
+
         .empty-state p {
             color: #94a3b8;
         }
     </style>
 </head>
+
 <body>
 
     <header>
         <h1><span>V</span>RS - Vehicle Rentals</h1>
+
         <div class="user-nav">
-            <span>Welcome, <strong><%= user.name %></strong> (Customer)</span>
-            <a href="/logout" class="logout-btn">Logout</a>
+
+            <span>
+                Welcome, <strong>
+                    <%= user.name %>
+                </strong> (Customer)
+            </span>
+
+            <a href="/bookings" class="bookings-btn">
+                My Bookings
+            </a>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
         </div>
     </header>
 
@@ -238,53 +269,67 @@
             <p>Browse vehicles listed by owners and contact them directly to rent.</p>
         </div>
 
-        <% if (vehicles && vehicles.length > 0) { %>
+        <% if (vehicles && vehicles.length> 0) { %>
             <div class="grid">
-                <% vehicles.forEach(vehicle => { %>
+                <% vehicles.forEach(vehicle=> { %>
                     <div class="card">
                         <div>
                             <div class="card-header">
-                                <div class="card-title"><%= vehicle.brand %> <%= vehicle.model %></div>
-                                <span class="badge-type"><%= vehicle.type || 'Vehicle' %></span>
+                                <div class="card-title">
+                                    <%= vehicle.brand %>
+                                        <%= vehicle.model %>
+                                </div>
+                                <span class="badge-type">
+                                    <%= vehicle.type || 'Vehicle' %>
+                                </span>
                             </div>
                             <div class="card-body">
-                                <div class="vehicle-num">Reg No: <%= vehicle.vehicleNumber %></div>
-                                <div class="price-tag">₹<%= vehicle.pricePerDay %> <span>/ day</span></div>
-                                
-                                <% if (vehicle.description) { %>
-                                    <p class="description"><%= vehicle.description %></p>
-                                <% } %>
-
-                                <div class="owner-box">
-                                    <strong>Owner Details:</strong>
-                                    <% if (vehicle.ownerId) { %>
-                                        <p>👤 <%= vehicle.ownerId.name %></p>
-                                        <p>📧 <%= vehicle.ownerId.email %></p>
-                                        <p>📞 <%= vehicle.ownerId.phone %></p>
-                                    <% } else { %>
-                                        <p>Owner info unavailable</p>
-                                    <% } %>
+                                <div class="vehicle-num">Reg No: <%= vehicle.vehicleNumber %>
                                 </div>
+                                <div class="price-tag">₹<%= vehicle.pricePerDay %> <span>/ day</span></div>
+
+                                <% if (vehicle.description) { %>
+                                    <p class="description">
+                                        <%= vehicle.description %>
+                                    </p>
+                                    <% } %>
+
+                                        <div class="owner-box">
+                                            <strong>Owner Details:</strong>
+                                            <% if (vehicle.ownerId) { %>
+                                                <p>👤 <%= vehicle.ownerId.name %>
+                                                </p>
+                                                <p>📧 <%= vehicle.ownerId.email %>
+                                                </p>
+                                                <p>📞 <%= vehicle.ownerId.phone %>
+                                                </p>
+                                                <% } else { %>
+                                                    <p>Owner info unavailable</p>
+                                                    <% } %>
+                                        </div>
                             </div>
                         </div>
 
                         <div class="card-footer">
                             <% if (vehicle.availability) { %>
                                 <span class="status-available">✓ Available for Rent</span>
-                            <% } else { %>
-                                <span class="status-unavailable">✗ Currently Rented</span>
-                            <% } %>
+                                <span class="status-available"><a href="/book/<%= vehicle._id %>"
+                                        class="btn btn-primary">Book Now</a></span>
+                                <% } else { %>
+                                    <span class="status-unavailable">✗ Currently Rented</span>
+                                    <% } %>
                         </div>
                     </div>
-                <% }) %>
+                    <% }) %>
             </div>
-        <% } else { %>
-            <div class="empty-state">
-                <h3>No Vehicles Available</h3>
-                <p>There are currently no vehicles listed by owners. Please check back later!</p>
-            </div>
-        <% } %>
+            <% } else { %>
+                <div class="empty-state">
+                    <h3>No Vehicles Available</h3>
+                    <p>There are currently no vehicles listed by owners. Please check back later!</p>
+                </div>
+                <% } %>
     </div>
 
 </body>
+
 </html>

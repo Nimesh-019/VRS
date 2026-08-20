@@ -189,7 +189,7 @@ const getUserDashboard = async (req, res) => {
             .populate('ownerId', 'name email phone');
 
         res.render('user/dashboard', {
-            user: req.session.user,
+            user: req.user,
             vehicles
         });
 

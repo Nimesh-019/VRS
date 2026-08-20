@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Vehicle</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .vehicle-info {
+            background: #f1f3f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .vehicle-info p {
+            margin: 8px 0;
+            color: #444;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Book Vehicle</h1>
+
+        <div class="vehicle-info">
+
+            <h2>
+                <%= vehicle.name || vehicle.vehicleName || 'Vehicle' %>
+            </h2>
+
+            <% if (vehicle.brand) { %>
+                <p><strong>Brand:</strong> <%= vehicle.brand %></p>
+            <% } %>
+
+            <% if (vehicle.model) { %>
+                <p><strong>Model:</strong> <%= vehicle.model %></p>
+            <% } %>
+
+            <% if (vehicle.pricePerDay) { %>
+                <p>
+                    <strong>Price per Day:</strong>
+                    ₹<%= vehicle.pricePerDay %>
+                </p>
+            <% } %>
+
+            <p>
+                <strong>Status:</strong>
+
+                <% if (vehicle.availability) { %>
+                    <span style="color: green;">Available</span>
+                <% } else { %>
+                    <span style="color: red;">Currently Rented</span>
+                <% } %>
+            </p>
+
+        </div>
+
+        <form action="/book/<%= vehicle._id %>" method="POST">
+
+            <div>
+                <label for="startDate">Start Date</label>
+
+                <input
+                    type="date"
+                    id="startDate"
+                    name="startDate"
+                    required
+                >
+            </div>
+
+            <div>
+                <label for="endDate">End Date</label>
+
+                <input
+                    type="date"
+                    id="endDate"
+                    name="endDate"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Confirm Booking
+            </button>
+
+            <a href="/user/dashboard" class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

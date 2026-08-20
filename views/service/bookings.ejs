@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Bookings - Vehicle Rental System</title>
+
+    <link rel="stylesheet" href="/css/auth.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            padding-bottom: 50px;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        header h1 span {
+            color: #3b82f6;
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-nav span {
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .bookings-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .bookings-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .logout-btn {
+            background-color: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background-color: #dc2626;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* ================= PAGE HEADER ================= */
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            color: #1e293b;
+        }
+
+        .section-header p {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .home-btn {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .home-btn:hover {
+            background: #0056b3;
+        }
+
+        /* ================= BOOKING CARD ================= */
+
+        .booking-card {
+            background: #ffffff;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .booking-card h2 {
+            margin-bottom: 15px;
+            color: #0f172a;
+            font-size: 21px;
+        }
+
+        .booking-card p {
+            margin: 10px 0;
+            color: #475569;
+        }
+
+        .booking-card strong {
+            color: #334155;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* ================= EMPTY STATE ================= */
+
+        .empty {
+            background: white;
+            padding: 60px 30px;
+            text-align: center;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty h2 {
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .user-nav {
+                width: 100%;
+                justify-content: space-between;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ================= SAME USER HEADER ================= -->
+
+    <header>
+
+        <h1>
+            <span>V</span>RS - Vehicle Rentals
+        </h1>
+
+        <div class="user-nav">
+
+            <span>
+                Welcome,
+                <strong><%= user.name %></strong>
+                (Customer)
+            </span>
+
+            <a href="/bookings" class="bookings-btn">
+                My Bookings
+            </a>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div>
+                <h2>My Bookings</h2>
+
+                <p>
+                    View and manage your vehicle rental bookings.
+                </p>
+            </div>
+
+            <a href="/user/dashboard" class="home-btn">
+                Go Home
+            </a>
+
+        </div>
+
+
+        <% if (bookings && bookings.length > 0) { %>
+
+            <% bookings.forEach(booking => { %>
+
+                <div class="booking-card">
+
+                    <h2>
+
+                        <% if (booking.vehicleId) { %>
+
+                            <%= booking.vehicleId.brand || '' %>
+                            <%= booking.vehicleId.model || '' %>
+
+                        <% } else { %>
+
+                            Vehicle
+
+                        <% } %>
+
+                    </h2>
+
+
+                    <p>
+                        <strong>Registration No:</strong>
+
+                        <% if (booking.vehicleId) { %>
+
+                            <%= booking.vehicleId.vehicleNumber || 'N/A' %>
+
+                        <% } else { %>
+
+                            N/A
+
+                        <% } %>
+                    </p>
+
+
+                    <p>
+                        <strong>Start Date:</strong>
+
+                        <%= new Date(booking.startDate).toLocaleDateString() %>
+                    </p>
+
+
+                    <p>
+                        <strong>End Date:</strong>
+
+                        <%= new Date(booking.endDate).toLocaleDateString() %>
+                    </p>
+
+
+                    <% if (booking.totalAmount !== undefined) { %>
+
+                        <p>
+                            <strong>Total Amount:</strong>
+
+                            ₹<%= booking.totalAmount %>
+                        </p>
+
+                    <% } %>
+
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        <span class="status <%= booking.status || 'pending' %>">
+
+                            <%= booking.status || 'Pending' %>
+
+                        </span>
+                    </p>
+
+                </div>
+
+            <% }) %>
+
+
+        <% } else { %>
+
+            <div class="empty">
+
+                <h2>No Bookings Found</h2>
+
+                <p>
+                    You haven't booked any vehicles yet.
+                </p>
+
+                <a href="/user/dashboard" class="btn">
+                    Go Home
+                </a>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+</body>
+
+</html>
