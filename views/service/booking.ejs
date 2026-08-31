@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,82 +98,77 @@
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="card">
+        <div class="card">
 
-        <h1>Book Vehicle</h1>
+            <h1>Book Vehicle</h1>
 
-        <div class="vehicle-info">
+            <div class="vehicle-info">
 
-            <h2>
-                <%= vehicle.name || vehicle.vehicleName || 'Vehicle' %>
-            </h2>
+                <h2>
+                    <%= vehicle.name || vehicle.vehicleName || 'Vehicle' %>
+                </h2>
 
-            <% if (vehicle.brand) { %>
-                <p><strong>Brand:</strong> <%= vehicle.brand %></p>
-            <% } %>
+                <% if (vehicle.brand) { %>
+                    <p><strong>Brand:</strong>
+                        <%= vehicle.brand %>
+                    </p>
+                    <% } %>
 
-            <% if (vehicle.model) { %>
-                <p><strong>Model:</strong> <%= vehicle.model %></p>
-            <% } %>
+                        <% if (vehicle.model) { %>
+                            <p><strong>Model:</strong>
+                                <%= vehicle.model %>
+                            </p>
+                            <% } %>
 
-            <% if (vehicle.pricePerDay) { %>
-                <p>
-                    <strong>Price per Day:</strong>
-                    ₹<%= vehicle.pricePerDay %>
-                </p>
-            <% } %>
+                                <% if (vehicle.pricePerDay) { %>
+                                    <p>
+                                        <strong>Price per Day:</strong>
+                                        ₹<%= vehicle.pricePerDay %>
+                                    </p>
+                                    <% } %>
 
-            <p>
-                <strong>Status:</strong>
+                                        <p>
+                                            <strong>Status:</strong>
 
-                <% if (vehicle.availability) { %>
-                    <span style="color: green;">Available</span>
-                <% } else { %>
-                    <span style="color: red;">Currently Rented</span>
-                <% } %>
-            </p>
+                                            <% if (vehicle.availability) { %>
+                                                <span style="color: green;">Available</span>
+                                                <% } else { %>
+                                                    <span style="color: red;">Currently Rented</span>
+                                                    <% } %>
+                                        </p>
+
+            </div>
+
+            <form action="/book/<%= vehicle._id %>" method="POST">
+
+                <div>
+                    <label for="startDate">Start Date</label>
+                    <input type="date" name="startDate" id="startDate"
+                        min="<%= new Date().toISOString().split('T')[0] %>" required>
+                </div>
+
+                <div>
+                    <label for="endDate">End Date</label>
+                    <input type="date" name="endDate" id="endDate" min="<%= new Date().toISOString().split('T')[0] %>"
+                        required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Confirm Booking
+                </button>
+
+                <a href="/user/dashboard" class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
 
         </div>
 
-        <form action="/book/<%= vehicle._id %>" method="POST">
-
-            <div>
-                <label for="startDate">Start Date</label>
-
-                <input
-                    type="date"
-                    id="startDate"
-                    name="startDate"
-                    required
-                >
-            </div>
-
-            <div>
-                <label for="endDate">End Date</label>
-
-                <input
-                    type="date"
-                    id="endDate"
-                    name="endDate"
-                    required
-                >
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-                Confirm Booking
-            </button>
-
-            <a href="/user/dashboard" class="btn btn-secondary">
-                Cancel
-            </a>
-
-        </form>
-
     </div>
 
-</div>
-
 </body>
+
 </html>

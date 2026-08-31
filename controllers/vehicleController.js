@@ -4,7 +4,7 @@ const Vehicle = require('../models/vehicle');
 
 const getOwnerDashboard = async (req, res) => {
     try {
-        const ownerId = req.session.user.id;
+        const ownerId = req.user.id
 
         const vehicles = await Vehicle.find({ ownerId });
 
@@ -120,13 +120,14 @@ const editvehicle = async (req, res) => {
             model,
             type,
             pricePerDay,
-            description
+            description,
+            availability
         } = req.body;
 
         const editedVehicle = await Vehicle.findOneAndUpdate(
             {
                 _id: id,
-                ownerId: req.session.user.id
+                ownerId: req.user.id
             },
             {
                 vehicleNumber,
@@ -134,7 +135,8 @@ const editvehicle = async (req, res) => {
                 model,
                 type,
                 pricePerDay,
-                description
+                description,
+                availability
             },
             {
                 new: true,

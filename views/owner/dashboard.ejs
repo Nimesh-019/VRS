@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
@@ -105,7 +106,7 @@
             border-radius: 12px;
             border: 1px solid #e2e8f0;
             margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .profile-card h3 {
@@ -254,14 +255,32 @@
         .status-unavailable {
             color: #dc2626;
         }
+
+        .btn-history {
+            background-color: #475569;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .btn-history:hover {
+            background-color: #334155;
+        }
     </style>
 </head>
+
 <body>
 
     <header>
         <h1><span>V</span>RS - Vehicle Rentals</h1>
         <div class="user-nav">
-            <span>Welcome, <strong><%= typeof user !== 'undefined' && user && user.name ? user.name : 'Owner' %></strong> (Owner)</span>
+            <span>Welcome, <strong>
+                    <%= typeof user !=='undefined' && user && user.name ? user.name : 'Owner' %>
+                </strong> (Owner)</span>
             <a href="/logout" class="logout-btn">Logout</a>
         </div>
     </header>
@@ -270,53 +289,78 @@
 
         <div class="profile-card">
             <h3>Owner Profile</h3>
-            <p><strong>Name:</strong> <%= typeof user !== 'undefined' && user && user.name ? user.name : 'N/A' %></p>
-            <p><strong>Email:</strong> <%= typeof user !== 'undefined' && user && user.email ? user.email : 'N/A' %></p>
+            <p><strong>Name:</strong>
+                <%= typeof user !=='undefined' && user && user.name ? user.name : 'N/A' %>
+            </p>
+            <p><strong>Email:</strong>
+                <%= typeof user !=='undefined' && user && user.email ? user.email : 'N/A' %>
+            </p>
         </div>
 
         <div class="top-bar">
             <h2>Vehicles Listed for Rent</h2>
-            <a href="/owner/vehicles/add" class="btn-add">+ Add New Vehicle</a>
+
+            <div>
+                <a href="/owner/rentals/history" class="btn-history">
+                    Rental History
+                </a>
+
+                <a href="/owner/vehicles/add" class="btn-add">
+                    + Add New Vehicle
+                </a>
+            </div>
         </div>
 
-        <% if (vehicles && vehicles.length > 0) { %>
+        <% if (vehicles && vehicles.length> 0) { %>
             <div class="grid">
-                <% vehicles.forEach(vehicle => { %>
+                <% vehicles.forEach(vehicle=> { %>
                     <div class="card">
                         <div>
                             <div class="card-header">
-                                <div class="card-title"><%= vehicle.brand %> <%= vehicle.model %></div>
-                                <span class="badge-type"><%= vehicle.type || 'Vehicle' %></span>
+                                <div class="card-title">
+                                    <%= vehicle.brand %>
+                                        <%= vehicle.model %>
+                                </div>
+                                <span class="badge-type">
+                                    <%= vehicle.type || 'Vehicle' %>
+                                </span>
                             </div>
                             <div class="card-body">
-                                <div class="vehicle-num">Vehicle Reg No: <%= vehicle.vehicleNumber %></div>
+                                <div class="vehicle-num">Vehicle Reg No: <%= vehicle.vehicleNumber %>
+                                </div>
                                 <div class="price-tag">₹<%= vehicle.pricePerDay %> <span>/ day</span></div>
                                 <% if (vehicle.description) { %>
-                                    <p class="description"><%= vehicle.description %></p>
-                                <% } %>
-                                <p class="status-tag <%= vehicle.availability ? 'status-available' : 'status-unavailable' %>">
-                                    Status: <%= vehicle.availability ? 'Available for Rent' : 'Not Available' %>
-                                </p>
+                                    <p class="description">
+                                        <%= vehicle.description %>
+                                    </p>
+                                    <% } %>
+                                        <p
+                                            class="status-tag <%= vehicle.availability ? 'status-available' : 'status-unavailable' %>">
+                                            Status: <%= vehicle.availability ? 'Available for Rent' : 'Not Available' %>
+                                        </p>
                             </div>
                         </div>
 
                         <div class="card-actions">
                             <a href="/owner/vehicles/edit/<%= vehicle._id %>" class="btn-edit">Edit</a>
-                            <form action="/owner/vehicles/delete/<%= vehicle._id %>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
+                            <form action="/owner/vehicles/delete/<%= vehicle._id %>" method="POST"
+                                style="display:inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this vehicle?');">
                                 <button type="submit" class="btn-delete">Delete</button>
                             </form>
                         </div>
                     </div>
-                <% }) %>
+                    <% }) %>
             </div>
-        <% } else { %>
-            <div class="empty-state">
-                <p>You haven't listed any vehicles for rent yet.</p>
-                <a href="/owner/vehicles/add" class="btn-add">+ Add Your First Vehicle</a>
-            </div>
-        <% } %>
+            <% } else { %>
+                <div class="empty-state">
+                    <p>You haven't listed any vehicles for rent yet.</p>
+                    <a href="/owner/vehicles/add" class="btn-add">+ Add Your First Vehicle</a>
+                </div>
+                <% } %>
 
     </div>
 
 </body>
+
 </html>

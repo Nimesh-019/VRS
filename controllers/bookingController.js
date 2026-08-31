@@ -9,7 +9,7 @@ exports.showBookingForm = async (req, res) => {
             return res.status(404).send('Vehicle not found');
         }
         if (!vehicle.availability) {
-            return res.status(400).send('Vehicle is currently not available for booking');
+            return res.render('/book/:vehicleId')
         }
         res.render('service/booking', { user: req.user, vehicle });
     } catch (error) {
@@ -28,7 +28,7 @@ exports.bookVehicle = async (req, res) => {
         }
         const start = new Date(startDate);
         const end = new Date(endDate);
-        if(start >= end) {
+        if(start > end) {
             return res.status(400).send('End date must be after start date');
         }
         // Create a new booking
@@ -79,6 +79,37 @@ exports.showBookings= async (req, res) => {
             res.render('service/bookings', { user: req.user, bookings });
     } catch (error) {
         console.error('Error fetching bookings:', error);
+        res.status(500).send('Server Error');
+    }
+};
+exports.showOwnerBookingHistory = async (req, res) => {
+    try {
+        // Logged-in owner's ID
+        const ownerId = req.user.id;
+
+        // Find all vehicles belonging to this owner
+        const vehicles = await Vehicle.find({
+            ownerId: ownerId
+        });
+
+        // Get only vehicle IDs
+        const vehicleIds = vehicles.map(vehicle => vehicle._id);
+
+        // Find bookings made for those vehicles
+        const bookings = await Booking.find({
+            vehicleId: { $in: vehicleIds }
+        })
+            .populate('vehicleId', 'vehicleNumber brand model type pricePerDay')
+            .populate('userId', 'name email')
+            .sort({ createdAt: -1 });
+
+        res.render('owner/bookingHistory', {
+            user: req.user,
+            bookings
+        });
+
+    } catch (error) {
+        console.error('Error fetching owner booking history:', error);
         res.status(500).send('Server Error');
     }
 };
