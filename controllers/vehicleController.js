@@ -1,15 +1,27 @@
 const Vehicle = require('../models/vehicle');
 
+const resolveImageUrl = (req, fallbackUrl = '') => {
+    if (req.file) {
+        if (req.file.path) return req.file.path; // Cloudinary URL
+        if (req.file.buffer) {
+            return `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+        }
+    }
+    if (req.body && req.body.image && typeof req.body.image === 'string' && req.body.image.trim()) {
+        return req.body.image.trim();
+    }
+    return fallbackUrl;
+};
+
 // ==================== OWNER DASHBOARD ====================
 
 const getOwnerDashboard = async (req, res) => {
     try {
-        const ownerId = req.user.id
-
+        const ownerId = req.user._id || req.user.id;
         const vehicles = await Vehicle.find({ ownerId });
 
         res.render('owner/dashboard', {
-            user: req.session.user,
+            user: req.user,
             vehicles
         });
 
@@ -24,7 +36,8 @@ const getOwnerDashboard = async (req, res) => {
 
 const getAddVehicle = (req, res) => {
     res.render('owner/addVehicle', {
-        user: req.session.user
+        user: req.user,
+        error: null
     });
 };
 
@@ -42,14 +55,24 @@ const addVehicle = async (req, res) => {
             description
         } = req.body;
 
+        const imageUrl = resolveImageUrl(req);
+
+        if (!imageUrl) {
+            return res.render('owner/addVehicle', {
+                user: req.user,
+                error: 'Vehicle image is required'
+            });
+        }
+
         const newVehicle = new Vehicle({
-            ownerId: req.session.user.id,
+            ownerId: req.user._id || req.user.id,
             vehicleNumber,
             brand,
             model,
             type,
             pricePerDay,
             description,
+            image: imageUrl,
             availability: true
         });
 
@@ -59,7 +82,10 @@ const addVehicle = async (req, res) => {
 
     } catch (error) {
         console.error('Error adding vehicle:', error);
-        res.status(500).send('Error adding vehicle');
+        res.render('owner/addVehicle', {
+            user: req.user,
+            error: error.message || 'Error adding vehicle'
+        });
     }
 };
 
@@ -68,12 +94,12 @@ const addVehicle = async (req, res) => {
 
 const getVehicles = async (req, res) => {
     try {
-        const ownerId = req.session.user.id;
+        const ownerId = req.user._id || req.user.id;
 
         const vehicles = await Vehicle.find({ ownerId });
 
         res.render('owner/vehicles', {
-            user: req.session.user,
+            user: req.user,
             vehicles
         });
 
@@ -90,19 +116,23 @@ const getEditVehicle = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const foundVehicle = await Vehicle.findById(id);
+        const vehicle = await Vehicle.findOne({
+            _id: id,
+            ownerId: req.user._id || req.user.id
+        });
 
-        if (!foundVehicle) {
+        if (!vehicle) {
             return res.status(404).send('Vehicle not found');
         }
 
         res.render('owner/editVehicle', {
-            user: req.session.user,
-            vehicle: foundVehicle
+            user: req.user,
+            vehicle,
+            error: null
         });
 
     } catch (error) {
-        console.error('Error getting edit vehicle page:', error);
+        console.error(error);
         res.status(500).send('Server Error');
     }
 };
@@ -114,6 +144,15 @@ const editvehicle = async (req, res) => {
     try {
         const { id } = req.params;
 
+        const existingVehicle = await Vehicle.findOne({
+            _id: id,
+            ownerId: req.user._id || req.user.id
+        });
+
+        if (!existingVehicle) {
+            return res.status(404).send('Vehicle not found');
+        }
+
         const {
             vehicleNumber,
             brand,
@@ -124,38 +163,33 @@ const editvehicle = async (req, res) => {
             availability
         } = req.body;
 
-        const editedVehicle = await Vehicle.findOneAndUpdate(
-            {
-                _id: id,
-                ownerId: req.user.id
-            },
-            {
-                vehicleNumber,
-                brand,
-                model,
-                type,
-                pricePerDay,
-                description,
-                availability
-            },
-            {
-                new: true,
-                runValidators: true
-            }
-        );
+        const imageUrl = resolveImageUrl(req, existingVehicle.image);
 
-        if (!editedVehicle) {
-            return res.status(404).send('Vehicle not found');
+        existingVehicle.vehicleNumber = vehicleNumber || existingVehicle.vehicleNumber;
+        existingVehicle.brand = brand || existingVehicle.brand;
+        existingVehicle.model = model || existingVehicle.model;
+        existingVehicle.type = type || existingVehicle.type;
+        existingVehicle.pricePerDay = pricePerDay !== undefined ? pricePerDay : existingVehicle.pricePerDay;
+        existingVehicle.description = description !== undefined ? description : existingVehicle.description;
+        if (availability !== undefined) {
+            existingVehicle.availability = availability === 'true' || availability === true;
         }
+        existingVehicle.image = imageUrl;
+
+        await existingVehicle.save();
 
         res.redirect('/owner/dashboard');
 
     } catch (error) {
-        console.error('Error updating vehicle:', error);
-        res.status(500).send('Server Error');
+        console.error('Error editing vehicle:', error);
+        const vehicle = await Vehicle.findById(req.params.id);
+        res.render('owner/editVehicle', {
+            user: req.user,
+            vehicle: vehicle || {},
+            error: error.message || 'Vehicle details are invalid'
+        });
     }
 };
-
 
 // ==================== DELETE VEHICLE ====================
 
@@ -165,7 +199,7 @@ const deletevehicle = async (req, res) => {
 
         const deletedVehicle = await Vehicle.findOneAndDelete({
             _id: id,
-            ownerId: req.session.user.id
+            ownerId: req.user._id || req.user.id
         });
 
         if (!deletedVehicle) {
@@ -185,8 +219,6 @@ const deletevehicle = async (req, res) => {
 
 const getUserDashboard = async (req, res) => {
     try {
-        // Fetch all vehicles listed for rent
-        // and populate owner information
         const vehicles = await Vehicle.find()
             .populate('ownerId', 'name email phone');
 

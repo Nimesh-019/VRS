@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
@@ -43,7 +44,7 @@
             background: #ffffff;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
         }
 
@@ -78,7 +79,9 @@
             transition: border-color 0.2s;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             border-color: #2563eb;
         }
 
@@ -120,63 +123,112 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
         <h1><span>V</span>RS - Vehicle Rentals</h1>
         <div>
-            <a href="/owner/dashboard" style="color: #cbd5e1; text-decoration: none; font-size: 14px;">← Back to Dashboard</a>
+            <a href="/owner/dashboard" style="color: #cbd5e1; text-decoration: none; font-size: 14px;">← Back to
+                Dashboard</a>
         </div>
     </header>
 
     <div class="container">
         <h2>Edit Vehicle Details</h2>
+        <% if (error) { %>
+            <p style="color: red; margin-bottom: 15px;">
+                <%= error %>
+            </p>
+            <% } %>
+                <form action="/owner/vehicles/edit/<%= vehicle._id %>" method="POST" enctype="multipart/form-data">
 
-        <form action="/owner/vehicles/edit/<%= vehicle._id %>" method="POST">
+                    <div class="form-group">
+                        <label for="vehicleNumber">Vehicle Number / Registration</label>
+                        <input type="text" id="vehicleNumber" name="vehicleNumber" value="<%= vehicle.vehicleNumber %>"
+                            required>
+                    </div>
 
-            <div class="form-group">
-                <label for="vehicleNumber">Vehicle Number / Registration</label>
-                <input type="text" id="vehicleNumber" name="vehicleNumber" value="<%= vehicle.vehicleNumber %>" required>
-            </div>
+                    <div class="form-group">
+                        <label for="brand">Brand / Make</label>
+                        <input type="text" id="brand" name="brand" value="<%= vehicle.brand %>" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="brand">Brand / Make</label>
-                <input type="text" id="brand" name="brand" value="<%= vehicle.brand %>" required>
-            </div>
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input type="text" id="model" name="model" value="<%= vehicle.model %>" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="model">Model</label>
-                <input type="text" id="model" name="model" value="<%= vehicle.model %>" required>
-            </div>
+                    <div class="form-group">
+                        <label for="type">Vehicle Type</label>
+                        <select id="type" name="type" required>
+                            <option value="Car" <%=vehicle.type==='Car' ? 'selected' : '' %>>
+                                Car
+                            </option>
 
-            <div class="form-group">
-                <label for="type">Vehicle Type</label>
-                <select id="type" name="type" required>
-                    <option value="Car" <%= vehicle.type === 'Car' ? 'selected' : '' %>>Car</option>
-                    <option value="Bike" <%= vehicle.type === 'Bike' ? 'selected' : '' %>>Bike</option>
-                    <option value="Scooter" <%= vehicle.type === 'Scooter' ? 'selected' : '' %>>Scooter</option>
-                    <option value="SUV" <%= vehicle.type === 'SUV' ? 'selected' : '' %>>SUV</option>
-                    <option value="Other" <%= vehicle.type === 'Other' ? 'selected' : '' %>>Other</option>
-                </select>
-            </div>
+                            <option value="Bike" <%=vehicle.type==='Bike' ? 'selected' : '' %>>
+                                Bike
+                            </option>
 
-            <div class="form-group">
-                <label for="pricePerDay">Price Per Day (₹)</label>
-                <input type="number" id="pricePerDay" name="pricePerDay" value="<%= vehicle.pricePerDay %>" min="0" required>
-            </div>
+                            <option value="Scooter" <%=vehicle.type==='Scooter' ? 'selected' : '' %>>
+                                Scooter
+                            </option>
 
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description"><%= vehicle.description %></textarea>
-            </div>
+                            <option value="SUV" <%=vehicle.type==='SUV' ? 'selected' : '' %>>
+                                SUV
+                            </option>
 
-            <div class="actions">
-                <a href="/owner/dashboard" class="btn-cancel">Cancel</a>
-                <button type="submit" class="btn-submit">Update Vehicle</button>
-            </div>
+                            <option value="Other" <%=vehicle.type==='Other' ? 'selected' : '' %>>
+                                Other
+                            </option>
+                        </select>
+                    </div>
 
-        </form>
+                    <div class="form-group">
+                        <label for="pricePerDay">Price Per Day (₹)</label>
+                        <input type="number" id="pricePerDay" name="pricePerDay" value="<%= vehicle.pricePerDay %>"
+                            min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description"><%= vehicle.description %></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availability">Availability</label>
+                        <select id="availability" name="availability">
+                            <option value="true" <%= vehicle.availability ? 'selected' : '' %>>Available for Rent</option>
+                            <option value="false" <%= !vehicle.availability ? 'selected' : '' %>>Not Available</option>
+                        </select>
+                    </div>
+
+                    <!-- Vehicle Image -->
+                    <div class="form-group">
+                        <label for="image">Change Vehicle Image (Uploads to Cloudinary)</label>
+
+                        <% if (vehicle.image) { %>
+                            <div style="margin-bottom: 10px;">
+                                <img src="<%= vehicle.image %>" alt="Vehicle Image" width="200" style="border-radius: 8px;">
+                            </div>
+                        <% } %>
+
+                        <input type="file" id="image" name="image" accept="image/*">
+                    </div>
+
+                    <div class="actions">
+                        <a href="/owner/dashboard" class="btn-cancel">
+                            Cancel
+                        </a>
+
+                        <button type="submit" class="btn-submit">
+                            Update Vehicle
+                        </button>
+                    </div>
+
+                </form>
     </div>
 
 </body>
+
 </html>

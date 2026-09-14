@@ -1,12 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Customer Dashboard - Vehicle Rental System</title>
-    <link rel="stylesheet" href="/css/auth.css">
+
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -20,18 +25,27 @@
             padding-bottom: 50px;
         }
 
+        /* ================= HEADER ================= */
+
         header {
             background: linear-gradient(135deg, #1e293b, #0f172a);
+
             color: #fff;
+
             padding: 20px 40px;
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
             font-size: 24px;
+
             font-weight: 700;
         }
 
@@ -41,23 +55,33 @@
 
         .user-nav {
             display: flex;
+
             align-items: center;
+
             gap: 20px;
         }
 
         .user-nav span {
             font-size: 14px;
+
             color: #cbd5e1;
         }
 
         .logout-btn {
             background-color: #ef4444;
+
             color: white;
+
             padding: 8px 16px;
+
             border-radius: 6px;
+
             text-decoration: none;
+
             font-weight: 600;
+
             font-size: 14px;
+
             transition: background 0.2s;
         }
 
@@ -65,11 +89,37 @@
             background-color: #dc2626;
         }
 
+        .bookings-btn {
+            background-color: #2563eb;
+
+            color: white;
+
+            padding: 8px 16px;
+
+            border-radius: 6px;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            font-size: 14px;
+        }
+
+        .bookings-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* ================= CONTAINER ================= */
+
         .container {
             max-width: 1200px;
+
             margin: 40px auto;
+
             padding: 0 20px;
         }
+
+        /* ================= SECTION ================= */
 
         .section-header {
             margin-bottom: 30px;
@@ -77,258 +127,622 @@
 
         .section-header h2 {
             font-size: 28px;
+
             color: #1e293b;
         }
 
         .section-header p {
             color: #64748b;
+
             margin-top: 5px;
         }
 
+        /* ================= GRID ================= */
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(320px, 1fr));
+
             gap: 25px;
         }
 
+        /* ================= CARD ================= */
+
         .card {
             background: #ffffff;
-            border-radius: 12px;
+
+            border-radius: 14px;
+
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.05);
+
             border: 1px solid #e2e8f0;
-            transition: transform 0.2s, box-shadow 0.2s;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
             display: flex;
+
             flex-direction: column;
-            justify-content: space-between;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.10);
         }
 
-        .card-header {
-            padding: 20px;
-            background: #f8fafc;
-            border-bottom: 1px solid #f1f5f9;
+        /* ================= VEHICLE IMAGE ================= */
+
+        .vehicle-image {
+            width: 100%;
+
+            height: 220px;
+
+            background-color: #e2e8f0;
+
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition: transform 0.3s;
+        }
+
+        .card:hover .vehicle-image img {
+            transform: scale(1.04);
+        }
+
+        .no-image {
+            width: 100%;
+
+            height: 100%;
+
             display: flex;
-            justify-content: space-between;
+
+            justify-content: center;
+
             align-items: center;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        /* ================= CARD HEADER ================= */
+
+        .card-header {
+            padding: 18px 20px 10px;
+
+            background: #ffffff;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
         }
 
         .card-title {
             font-size: 20px;
+
             font-weight: 700;
+
             color: #0f172a;
         }
 
         .badge-type {
             background: #e0f2fe;
+
             color: #0369a1;
+
             font-size: 12px;
+
             font-weight: 600;
-            padding: 4px 10px;
+
+            padding: 5px 10px;
+
             border-radius: 20px;
+
+            white-space: nowrap;
         }
 
+        /* ================= CARD BODY ================= */
+
         .card-body {
-            padding: 20px;
+            padding: 5px 20px 20px;
+
             flex-grow: 1;
         }
 
         .vehicle-num {
             font-size: 13px;
+
             color: #64748b;
+
             margin-bottom: 12px;
+
             font-weight: 500;
         }
 
         .price-tag {
             font-size: 22px;
+
             font-weight: 800;
+
             color: #2563eb;
+
             margin-bottom: 15px;
         }
 
         .price-tag span {
             font-size: 14px;
+
             font-weight: 400;
+
             color: #64748b;
         }
 
         .description {
             font-size: 14px;
+
             color: #475569;
+
             margin-bottom: 20px;
+
             line-height: 1.5;
         }
 
+        /* ================= OWNER ================= */
+
         .owner-box {
             background: #f8fafc;
+
             padding: 12px 15px;
+
             border-radius: 8px;
+
             border: 1px dashed #cbd5e1;
+
             font-size: 13px;
         }
 
         .owner-box strong {
             display: block;
+
             color: #334155;
+
             margin-bottom: 4px;
         }
 
         .owner-box p {
             color: #64748b;
-            margin-top: 2px;
+
+            margin-top: 4px;
         }
+
+        /* ================= FOOTER ================= */
 
         .card-footer {
             padding: 15px 20px;
+
             background: #ffffff;
+
             border-top: 1px solid #f1f5f9;
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
+            gap: 15px;
         }
 
         .status-available {
             color: #16a34a;
+
             font-weight: 600;
+
             font-size: 14px;
         }
 
         .status-unavailable {
             color: #dc2626;
+
             font-weight: 600;
+
             font-size: 14px;
         }
 
+        /* ================= BOOK BUTTON ================= */
+
+        .book-btn {
+            background-color: #2563eb;
+
+            color: white;
+
+            padding: 9px 16px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+        .book-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* ================= EMPTY ================= */
+
         .empty-state {
             text-align: center;
+
             padding: 60px 20px;
+
             background: #fff;
+
             border-radius: 12px;
+
             border: 1px solid #e2e8f0;
         }
 
         .empty-state h3 {
             font-size: 20px;
+
             color: #475569;
+
             margin-bottom: 8px;
-        }
-
-        .bookings-btn {
-            background-color: #2563eb;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        .bookings-btn:hover {
-            background-color: #1d4ed8;
         }
 
         .empty-state p {
             color: #94a3b8;
         }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                align-items: flex-start;
+            }
+
+            .user-nav {
+                width: 100%;
+
+                justify-content: space-between;
+
+                gap: 10px;
+
+                flex-wrap: wrap;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-footer {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .book-btn {
+                width: 100%;
+
+                text-align: center;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
+
+    <!-- ================= HEADER ================= -->
+
     <header>
-        <h1><span>V</span>RS - Vehicle Rentals</h1>
+
+        <h1>
+            <span>V</span>RS - Vehicle Rentals
+        </h1>
+
 
         <div class="user-nav">
 
             <span>
-                Welcome, <strong>
+
+                Welcome,
+
+                <strong>
                     <%= user.name %>
-                </strong> (Customer)
+                </strong>
+
+                (Customer)
+
             </span>
 
-            <a href="/bookings" class="bookings-btn">
+
+            <a
+                href="/bookings"
+                class="bookings-btn"
+            >
                 My Bookings
             </a>
 
-            <a href="/logout" class="logout-btn">
+
+            <a
+                href="/logout"
+                class="logout-btn"
+            >
                 Logout
             </a>
 
         </div>
+
     </header>
 
+
+    <!-- ================= MAIN ================= -->
+
     <div class="container">
+
+
         <div class="section-header">
-            <h2>Vehicles Available for Rent</h2>
-            <p>Browse vehicles listed by owners and contact them directly to rent.</p>
+
+            <h2>
+                Vehicles Available for Rent
+            </h2>
+
+            <p>
+                Browse vehicles listed by owners and book the one you need.
+            </p>
+
         </div>
 
-        <% if (vehicles && vehicles.length> 0) { %>
+
+        <!-- ================= VEHICLES ================= -->
+
+        <% if (vehicles && vehicles.length > 0) { %>
+
+
             <div class="grid">
-                <% vehicles.forEach(vehicle=> { %>
+
+
+                <% vehicles.forEach(vehicle => { %>
+
+
                     <div class="card">
-                        <div>
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <%= vehicle.brand %>
-                                        <%= vehicle.model %>
-                                </div>
-                                <span class="badge-type">
-                                    <%= vehicle.type || 'Vehicle' %>
-                                </span>
-                            </div>
-                            <div class="card-body">
-                                <div class="vehicle-num">Reg No: <%= vehicle.vehicleNumber %>
-                                </div>
-                                <div class="price-tag">₹<%= vehicle.pricePerDay %> <span>/ day</span></div>
 
-                                <% if (vehicle.description) { %>
-                                    <p class="description">
-                                        <%= vehicle.description %>
-                                    </p>
-                                    <% } %>
 
-                                        <div class="owner-box">
-                                            <strong>Owner Details:</strong>
-                                            <% if (vehicle.ownerId) { %>
-                                                <p>👤 <%= vehicle.ownerId.name %>
-                                                </p>
-                                                <p>📧 <%= vehicle.ownerId.email %>
-                                                </p>
-                                                <p>📞 <%= vehicle.ownerId.phone %>
-                                                </p>
-                                                <% } else { %>
-                                                    <p>Owner info unavailable</p>
-                                                    <% } %>
-                                        </div>
-                            </div>
+                        <!-- ================= IMAGE ================= -->
+
+                        <div class="vehicle-image">
+
+
+                            <% if (vehicle.image) { %>
+
+                                <img
+                                    src="<%= vehicle.image %>"
+                                    alt="<%= vehicle.brand %> <%= vehicle.model %>"
+                                >
+
+                            <% } else { %>
+
+                                <div class="no-image">
+                                    No Image Available
+                                </div>
+
+                            <% } %>
+
+
                         </div>
+
+
+                        <!-- ================= HEADER ================= -->
+
+                        <div class="card-header">
+
+
+                            <div class="card-title">
+
+                                <%= vehicle.brand %>
+                                <%= vehicle.model %>
+
+                            </div>
+
+
+                            <span class="badge-type">
+
+                                <%= vehicle.type || 'Vehicle' %>
+
+                            </span>
+
+
+                        </div>
+
+
+                        <!-- ================= BODY ================= -->
+
+                        <div class="card-body">
+
+
+                            <div class="vehicle-num">
+
+                                Reg No:
+
+                                <%= vehicle.vehicleNumber %>
+
+                            </div>
+
+
+                            <div class="price-tag">
+
+                                ₹<%= vehicle.pricePerDay %>
+
+                                <span>
+                                    / day
+                                </span>
+
+                            </div>
+
+
+                            <% if (vehicle.description) { %>
+
+                                <p class="description">
+
+                                    <%= vehicle.description %>
+
+                                </p>
+
+                            <% } %>
+
+
+                            <!-- ================= OWNER ================= -->
+
+                            <div class="owner-box">
+
+
+                                <strong>
+                                    Owner Details
+                                </strong>
+
+
+                                <% if (vehicle.ownerId) { %>
+
+
+                                    <p>
+                                        👤 <%= vehicle.ownerId.name %>
+                                    </p>
+
+
+                                    <p>
+                                        📧 <%= vehicle.ownerId.email %>
+                                    </p>
+
+
+                                    <p>
+                                        📞 <%= vehicle.ownerId.phone %>
+                                    </p>
+
+
+                                <% } else { %>
+
+                                    <p>
+                                        Owner info unavailable
+                                    </p>
+
+                                <% } %>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- ================= FOOTER ================= -->
 
                         <div class="card-footer">
+
+
                             <% if (vehicle.availability) { %>
-                                <span class="status-available">✓ Available for Rent</span>
-                                <span class="status-available"><a href="/book/<%= vehicle._id %>"
-                                        class="btn btn-primary">Book Now</a></span>
-                                <% } else { %>
-                                    <span class="status-unavailable">✗ Currently Rented</span>
-                                    <% } %>
+
+
+                                <span class="status-available">
+                                    ✓ Available for Rent
+                                </span>
+
+
+                                <a
+                                    href="/book/<%= vehicle._id %>"
+                                    class="book-btn"
+                                >
+                                    Book Now
+                                </a>
+
+
+                            <% } else { %>
+
+
+                                <span class="status-unavailable">
+                                    ✗ Currently Rented
+                                </span>
+
+
+                            <% } %>
+
+
                         </div>
+
+
                     </div>
-                    <% }) %>
+
+
+                <% }) %>
+
+
             </div>
-            <% } else { %>
-                <div class="empty-state">
-                    <h3>No Vehicles Available</h3>
-                    <p>There are currently no vehicles listed by owners. Please check back later!</p>
-                </div>
-                <% } %>
+
+
+        <% } else { %>
+
+
+            <!-- ================= EMPTY STATE ================= -->
+
+            <div class="empty-state">
+
+
+                <h3>
+                    No Vehicles Available
+                </h3>
+
+
+                <p>
+                    There are currently no vehicles listed by owners.
+                    Please check back later!
+                </p>
+
+
+            </div>
+
+
+        <% } %>
+
+
     </div>
+
 
 </body>
 

@@ -1,17 +1,29 @@
 const Vehicle = require('../models/vehicle');
 const Booking = require('../models/Booking');
+
 exports.showBookingForm = async (req, res) => {
     try {
         const vehicleId = req.params.vehicleId;
-        // Fetch the vehicle details
         const vehicle = await Vehicle.findById(vehicleId);
+
         if (!vehicle) {
             return res.status(404).send('Vehicle not found');
         }
+
         if (!vehicle.availability) {
-            return res.render('/book/:vehicleId')
+            return res.render('service/booking', {
+                user: req.user,
+                vehicle,
+                error: 'Vehicle is currently not available for booking'
+            });
         }
-        res.render('service/booking', { user: req.user, vehicle });
+
+        res.render('service/booking', {
+            user: req.user,
+            vehicle,
+            error: null
+        });
+
     } catch (error) {
         console.error('Error showing booking form:', error);
         res.status(500).send('Server Error');
@@ -23,37 +35,64 @@ exports.bookVehicle = async (req, res) => {
         const vehicleId = req.params.vehicleId;
         const { startDate, endDate } = req.body;
 
-        if (!startDate || !endDate) {
-            return res.status(400).send('Start date and end date are required');
-        }
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        if(start > end) {
-            return res.status(400).send('End date must be after start date');
-        }
-        // Create a new booking
         const vehicle = await Vehicle.findById(vehicleId);
+
         if (!vehicle) {
             return res.status(404).send('Vehicle not found');
         }
-        if (!vehicle.availability) {
-            return res.status(400).send('Vehicle is currently not available for booking');
+
+        if (!startDate || !endDate) {
+            return res.render('service/booking', {
+                user: req.user,
+                vehicle,
+                error: 'Start date and end date are required'
+            });
         }
-        
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        if (start > end) {
+            return res.render('service/booking', {
+                user: req.user,
+                vehicle,
+                error: 'End date must be on or after start date'
+            });
+        }
+
+        if (!vehicle.availability) {
+            return res.render('service/booking', {
+                user: req.user,
+                vehicle,
+                error: 'Vehicle is currently not available for booking'
+            });
+        }
+
         const existingBookings = await Booking.find({
             vehicleId: vehicleId,
-            $or: [
-                { startDate: { $lte: end }, endDate: { $gte: start } }
-            ]
+            status: { $in: ['pending', 'confirmed'] },
+            startDate: { $lte: end },
+            endDate: { $gte: start }
         });
+
         if (existingBookings.length > 0) {
-            return res.status(400).send('Vehicle is already booked for the selected period');
+            return res.render('service/booking', {
+                user: req.user,
+                vehicle,
+                error: 'Vehicle is already booked for the selected period'
+            });
         }
-        console.log('REQ.USER:', req.user);
-        const totalDays = Math.ceil((end - start+1) / (1000 * 60 * 60 * 24));
+
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        const totalDays = Math.max(1, diffDays);
+
         const totalAmount = totalDays * vehicle.pricePerDay;
+
+        const userId = req.user._id || req.user.id;
+
         const newBooking = new Booking({
-            userId: req.user.id,
+            userId: userId,
             vehicleId: vehicle._id,
             startDate: start,
             endDate: end,
@@ -62,45 +101,44 @@ exports.bookVehicle = async (req, res) => {
             paymentStatus: 'pending'
         });
 
-        const savedBooking = await newBooking.save();
-        console.log('Booking saved:', savedBooking);
+        await newBooking.save();
+
         res.redirect('/bookings');
+
     } catch (error) {
         console.error('Error booking vehicle:', error);
         res.status(500).send('Server Error');
     }
 };
 
-exports.showBookings= async (req, res) => {
+exports.showBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find({ userId: req.user.id })
-            .populate('vehicleId', 'vehicleNumber brand model pricePerDay')
+        const userId = req.user._id || req.user.id;
+        const bookings = await Booking.find({ userId: userId })
+            .populate('vehicleId', 'vehicleNumber brand model type pricePerDay image')
             .sort({ createdAt: -1 });
-            res.render('service/bookings', { user: req.user, bookings });
+
+        res.render('service/bookings', { user: req.user, bookings });
+
     } catch (error) {
         console.error('Error fetching bookings:', error);
         res.status(500).send('Server Error');
     }
 };
+
 exports.showOwnerBookingHistory = async (req, res) => {
     try {
-        // Logged-in owner's ID
-        const ownerId = req.user.id;
+        const ownerId = req.user._id || req.user.id;
 
-        // Find all vehicles belonging to this owner
-        const vehicles = await Vehicle.find({
-            ownerId: ownerId
-        });
+        const vehicles = await Vehicle.find({ ownerId: ownerId });
 
-        // Get only vehicle IDs
         const vehicleIds = vehicles.map(vehicle => vehicle._id);
 
-        // Find bookings made for those vehicles
         const bookings = await Booking.find({
             vehicleId: { $in: vehicleIds }
         })
-            .populate('vehicleId', 'vehicleNumber brand model type pricePerDay')
-            .populate('userId', 'name email')
+            .populate('vehicleId', 'vehicleNumber brand model type pricePerDay image')
+            .populate('userId', 'name email phone')
             .sort({ createdAt: -1 });
 
         res.render('owner/bookingHistory', {

@@ -1,15 +1,19 @@
-const User = require('../models/User');
-// const session = require('express-session');
-// const mongoose = require('mongoose');
-// const User = require('../models/User');
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 exports.showLogin = (req, res) => {
-    if (req.user) {
-        if (req.user.role === 'owner') {
-            return res.redirect('/owner/dashboard');
-        } else if (req.user.role === 'user') {
-            return res.redirect('/user/dashboard');
+    const token = req.cookies ? req.cookies.token : null;
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.SECRET_KEY || 'MYKEY123KEY');
+            if (decoded.role === 'owner') {
+                return res.redirect('/owner/dashboard');
+            } else if (decoded.role === 'user') {
+                return res.redirect('/user/dashboard');
+            }
+        } catch (err) {
+            res.clearCookie('token');
         }
     }
     res.render('user/login', { error: null, email: '', role: '' });
@@ -33,10 +37,10 @@ exports.login = async (req, res) => {
             return res.render('user/login', { error: 'Wrong password', email, role });
         }
         if (user.role !== role) {
-            return res.render('user/login', { error: 'Role mismatch', email, role });
+            return res.render('user/login', { error: `Account exists as '${user.role}', but tried logging in as '${role}'`, email, role });
         }
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.SECRET_KEY || 'MYKEY123KEY', { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.SECRET_KEY || 'MYKEY123KEY', { expiresIn: '1d' });
+        res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }); // 24 hours
 
         req.session.user = {
             id: user._id,
@@ -45,6 +49,7 @@ exports.login = async (req, res) => {
             phone: user.phone,
             role: user.role
         };
+
         if (user.role === 'owner') {
             return res.redirect('/owner/dashboard');
         }
@@ -61,25 +66,36 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Logout error:", err);
-        }
+    res.clearCookie('token');
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Logout error:", err);
+            }
+            res.redirect('/login');
+        });
+    } else {
         res.redirect('/login');
-    });
+    }
 };
+
 exports.showSignup = (req, res) => {
-    res.render('user/signup');
-}
+    res.render('user/signup', { error: null });
+};
 
 exports.signup = async (req, res) => {
-
     try {
-
-        // console.log("Received data:");
-        // console.log(req.body);
-
         const { name, email, phone, password, role } = req.body;
+
+        const existingUser = await User.findOne({
+            $or: [{ email }, { phone }]
+        });
+
+        if (existingUser) {
+            const field = existingUser.email === email ? 'Email' : 'Phone number';
+            return res.render('user/signup', { error: `${field} is already registered.` });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({
             name,
@@ -91,17 +107,14 @@ exports.signup = async (req, res) => {
 
         await user.save();
 
-        // console.log("User inserted successfully:");
-        // console.log(savedUser);
-
-        res.render('user/login');
+        res.render('user/login', {
+            error: null,
+            email: email,
+            role: role
+        });
 
     } catch (error) {
-
-        // console.log("ERROR CREATING USER:");
-        console.log(error);
-
-        res.status(500).send("Error creating user");
-
+        console.error("Signup error:", error);
+        res.render('user/signup', { error: error.message || "Error creating account" });
     }
 };

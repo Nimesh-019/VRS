@@ -1,13 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Booking History - Vehicle Rental System</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -21,13 +25,19 @@
             padding-bottom: 50px;
         }
 
+        /* ================= HEADER ================= */
+
         header {
             background: linear-gradient(135deg, #0f172a, #1e293b);
+
             color: white;
+
             padding: 20px 40px;
 
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
 
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -43,85 +53,218 @@
 
         .user-nav {
             display: flex;
+
             align-items: center;
+
             gap: 20px;
         }
 
         .user-nav span {
             font-size: 14px;
+
             color: #cbd5e1;
         }
 
         .logout-btn {
             background-color: #ef4444;
+
             color: white;
+
             padding: 8px 16px;
+
             border-radius: 6px;
+
             text-decoration: none;
+
             font-weight: 600;
+
             font-size: 14px;
         }
 
+        .logout-btn:hover {
+            background-color: #dc2626;
+        }
+
+        /* ================= CONTAINER ================= */
+
         .container {
             max-width: 1200px;
+
             margin: 40px auto;
+
             padding: 0 20px;
         }
 
+        /* ================= TOP BAR ================= */
+
         .top-bar {
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin-bottom: 30px;
         }
 
         .top-bar h2 {
             font-size: 26px;
+
             color: #0f172a;
         }
 
         .back-btn {
             background-color: #475569;
+
             color: white;
+
             padding: 10px 18px;
+
             border-radius: 8px;
+
             text-decoration: none;
+
             font-weight: 600;
+
             font-size: 14px;
         }
 
+        .back-btn:hover {
+            background-color: #334155;
+        }
+
+        /* ================= GRID ================= */
+
         .history-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(330px, 1fr));
+
             gap: 25px;
         }
 
+        /* ================= BOOKING CARD ================= */
+
         .booking-card {
             background: white;
-            border-radius: 12px;
+
+            border-radius: 14px;
+
             border: 1px solid #e2e8f0;
+
             overflow: hidden;
 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.05);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
         }
 
+        .booking-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.10);
+        }
+
+        /* ================= VEHICLE IMAGE ================= */
+
+        .vehicle-image {
+            width: 100%;
+
+            height: 210px;
+
+            background-color: #e2e8f0;
+
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition: transform 0.3s;
+        }
+
+        .booking-card:hover .vehicle-image img {
+            transform: scale(1.04);
+        }
+
+        .no-image {
+            width: 100%;
+
+            height: 100%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        /* ================= VEHICLE HEADER ================= */
+
         .card-header {
-            background: #f8fafc;
             padding: 18px 20px;
+
+            background: #f8fafc;
+
             border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
         }
 
         .vehicle-name {
             font-size: 19px;
+
             font-weight: 700;
+
             color: #0f172a;
         }
 
         .vehicle-number {
             margin-top: 5px;
+
             font-size: 13px;
+
             color: #64748b;
         }
+
+        .vehicle-type {
+            background: #e0f2fe;
+
+            color: #0369a1;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+        /* ================= BODY ================= */
 
         .card-body {
             padding: 20px;
@@ -129,71 +272,185 @@
 
         .info {
             margin-bottom: 12px;
+
             font-size: 14px;
+
+            color: #475569;
         }
 
         .info strong {
             color: #334155;
         }
 
+        /* ================= AMOUNT ================= */
+
         .amount {
             font-size: 20px;
+
             font-weight: 800;
+
             color: #2563eb;
+
             margin-top: 15px;
         }
 
+        /* ================= STATUS ================= */
+
         .status {
             display: inline-block;
+
             margin-top: 15px;
+
             padding: 5px 12px;
+
             border-radius: 20px;
+
             font-size: 12px;
+
             font-weight: 600;
         }
 
         .pending {
             background: #fef3c7;
+
             color: #92400e;
         }
 
         .confirmed {
             background: #dbeafe;
+
             color: #1d4ed8;
         }
 
         .completed {
             background: #dcfce7;
+
             color: #166534;
         }
 
         .cancelled {
             background: #fee2e2;
+
             color: #991b1b;
         }
 
+        /* ================= ACTION BUTTONS ================= */
+
+        .booking-actions {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .booking-actions form {
+            flex: 1;
+        }
+
+        .action-btn {
+            width: 100%;
+
+            padding: 10px 15px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .confirm-btn {
+            background-color: #16a34a;
+        }
+
+        .confirm-btn:hover {
+            background-color: #15803d;
+        }
+
+        .reject-btn {
+            background-color: #dc2626;
+        }
+
+        .reject-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        /* ================= PAYMENT ================= */
+
         .payment {
-            margin-top: 10px;
+            margin-top: 12px;
+
             font-size: 13px;
+
             color: #64748b;
         }
 
+        /* ================= EMPTY STATE ================= */
+
         .empty-state {
             text-align: center;
+
             padding: 60px 20px;
+
             background: white;
+
             border-radius: 12px;
+
             border: 1px solid #e2e8f0;
         }
 
         .empty-state p {
             color: #64748b;
+
             font-size: 16px;
         }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 18px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                align-items: flex-start;
+            }
+
+            .top-bar {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            .history-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
     </style>
+
 </head>
 
+
 <body>
+
+
+    <!-- ================= HEADER ================= -->
 
     <header>
 
@@ -201,15 +458,21 @@
             <span>V</span>RS - Vehicle Rentals
         </h1>
 
+
         <div class="user-nav">
 
             <span>
+
                 Welcome,
+
                 <strong>
                     <%= user && user.name ? user.name : 'Owner' %>
                 </strong>
+
                 (Owner)
+
             </span>
+
 
             <a href="/logout" class="logout-btn">
                 Logout
@@ -220,51 +483,112 @@
     </header>
 
 
+    <!-- ================= MAIN ================= -->
+
     <div class="container">
+
+
+        <!-- ================= TOP BAR ================= -->
 
         <div class="top-bar">
 
-            <h2>Booking History</h2>
+            <h2>
+                Booking History
+            </h2>
 
-            <a href="/owner/dashboard" class="back-btn">
+
+            <a
+                href="/owner/dashboard"
+                class="back-btn"
+            >
                 ← Back to Dashboard
             </a>
 
         </div>
 
 
+        <!-- ================= BOOKINGS ================= -->
+
         <% if (bookings && bookings.length > 0) { %>
+
 
             <div class="history-grid">
 
+
                 <% bookings.forEach(booking => { %>
+
 
                     <div class="booking-card">
 
-                        <div class="card-header">
 
-                            <div class="vehicle-name">
+                        <!-- ================= VEHICLE IMAGE ================= -->
 
-                                <%= booking.vehicleId.brand %>
-                                <%= booking.vehicleId.model %>
+                        <div class="vehicle-image">
 
-                            </div>
+                            <% if (booking.vehicleId && booking.vehicleId.image) { %>
 
-                            <div class="vehicle-number">
+                                <img
+                                    src="<%= booking.vehicleId.image %>"
+                                    alt="<%= booking.vehicleId.brand %> <%= booking.vehicleId.model %>"
+                                >
 
-                                Reg No:
-                                <%= booking.vehicleId.vehicleNumber %>
+                            <% } else { %>
 
-                            </div>
+                                <div class="no-image">
+                                    No Image Available
+                                </div>
+
+                            <% } %>
 
                         </div>
 
 
+                        <!-- ================= VEHICLE HEADER ================= -->
+
+                        <div class="card-header">
+
+
+                            <div>
+
+                                <div class="vehicle-name">
+
+                                    <%= booking.vehicleId.brand %>
+                                    <%= booking.vehicleId.model %>
+
+                                </div>
+
+
+                                <div class="vehicle-number">
+
+                                    Reg No:
+
+                                    <%= booking.vehicleId.vehicleNumber %>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="vehicle-type">
+
+                                <%= booking.vehicleId.type || 'Vehicle' %>
+
+                            </span>
+
+
+                        </div>
+
+
+                        <!-- ================= BOOKING BODY ================= -->
+
                         <div class="card-body">
+
 
                             <div class="info">
 
-                                <strong>Customer:</strong>
+                                <strong>
+                                    Customer:
+                                </strong>
 
                                 <%= booking.userId.name %>
 
@@ -273,7 +597,9 @@
 
                             <div class="info">
 
-                                <strong>Email:</strong>
+                                <strong>
+                                    Email:
+                                </strong>
 
                                 <%= booking.userId.email %>
 
@@ -282,7 +608,9 @@
 
                             <div class="info">
 
-                                <strong>Start Date:</strong>
+                                <strong>
+                                    Start Date:
+                                </strong>
 
                                 <%= booking.startDate.toLocaleDateString() %>
 
@@ -291,12 +619,16 @@
 
                             <div class="info">
 
-                                <strong>End Date:</strong>
+                                <strong>
+                                    End Date:
+                                </strong>
 
                                 <%= booking.endDate.toLocaleDateString() %>
 
                             </div>
 
+
+                            <!-- ================= AMOUNT ================= -->
 
                             <div class="amount">
 
@@ -305,6 +637,8 @@
                             </div>
 
 
+                            <!-- ================= STATUS ================= -->
+
                             <span class="status <%= booking.status %>">
 
                                 <%= booking.status.toUpperCase() %>
@@ -312,24 +646,85 @@
                             </span>
 
 
+                            <!-- ================= ACTIONS ================= -->
+
+                            <% if (booking.status === 'pending') { %>
+
+
+                                <div class="booking-actions">
+
+
+                                    <!-- CONFIRM -->
+
+                                    <form
+                                        action="/owner/booking/<%= booking._id %>/confirm"
+                                        method="POST"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="action-btn confirm-btn"
+                                        >
+                                            Confirm
+                                        </button>
+
+                                    </form>
+
+
+                                    <!-- REJECT -->
+
+                                    <form
+                                        action="/owner/booking/<%= booking._id %>/reject"
+                                        method="POST"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="action-btn reject-btn"
+                                        >
+                                            Reject
+                                        </button>
+
+                                    </form>
+
+
+                                </div>
+
+
+                            <% } %>
+
+
+                            <!-- ================= PAYMENT ================= -->
+
                             <div class="payment">
 
                                 Payment:
+
                                 <strong>
+
                                     <%= booking.paymentStatus.toUpperCase() %>
+
                                 </strong>
 
                             </div>
 
+
                         </div>
+
 
                     </div>
 
+
                 <% }) %>
+
 
             </div>
 
+
         <% } else { %>
+
+
+            <!-- ================= EMPTY STATE ================= -->
 
             <div class="empty-state">
 
@@ -339,9 +734,12 @@
 
             </div>
 
+
         <% } %>
 
+
     </div>
+
 
 </body>
 

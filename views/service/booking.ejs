@@ -1,13 +1,18 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Book Vehicle</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -21,15 +26,48 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 750px;
             margin: auto;
         }
 
         .card {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
+            border-radius: 14px;
+            overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ================= IMAGE ================= */
+
+        .vehicle-image {
+            width: 100%;
+            height: 300px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .no-image {
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: #777;
+            font-size: 15px;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
         }
 
         h1 {
@@ -37,46 +75,143 @@
             color: #333;
         }
 
+        /* ================= VEHICLE INFO ================= */
+
         .vehicle-info {
             background: #f1f3f5;
+
             padding: 20px;
+
             border-radius: 8px;
+
             margin-bottom: 25px;
         }
 
-        .vehicle-info p {
-            margin: 8px 0;
-            color: #444;
+        .vehicle-heading {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
         }
+
+        .vehicle-heading h2 {
+            color: #222;
+
+            font-size: 23px;
+        }
+
+        .vehicle-type {
+            background: #e0f2fe;
+
+            color: #0369a1;
+
+            padding: 5px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .vehicle-info p {
+            margin: 9px 0;
+
+            color: #444;
+
+            font-size: 14px;
+        }
+
+        .price {
+            font-size: 21px;
+
+            font-weight: 800;
+
+            color: #007bff;
+
+            margin-top: 15px !important;
+        }
+
+        .price span {
+            font-size: 13px;
+
+            font-weight: normal;
+
+            color: #777;
+        }
+
+        /* ================= STATUS ================= */
+
+        .available {
+            color: #16a34a;
+
+            font-weight: bold;
+        }
+
+        .unavailable {
+            color: #dc2626;
+
+            font-weight: bold;
+        }
+
+        /* ================= FORM ================= */
 
         label {
             display: block;
+
             margin-bottom: 8px;
+
             font-weight: bold;
+
             color: #333;
+        }
+
+        .date-group {
+            margin-bottom: 20px;
         }
 
         input[type="date"] {
             width: 100%;
+
             padding: 12px;
+
             border: 1px solid #ccc;
+
             border-radius: 6px;
-            margin-bottom: 20px;
+
             font-size: 16px;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .actions {
+            margin-top: 10px;
         }
 
         .btn {
             display: inline-block;
+
             padding: 12px 20px;
+
             border: none;
+
             border-radius: 6px;
+
             cursor: pointer;
+
             text-decoration: none;
+
             font-size: 16px;
+
+            font-weight: 600;
         }
 
         .btn-primary {
             background: #007bff;
+
             color: white;
         }
 
@@ -86,88 +221,245 @@
 
         .btn-secondary {
             background: #6c757d;
+
             color: white;
+
             margin-left: 10px;
         }
 
         .btn-secondary:hover {
             background: #545b62;
         }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .vehicle-image {
+                height: 220px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .vehicle-heading {
+                align-items: flex-start;
+
+                gap: 10px;
+
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+
+                text-align: center;
+            }
+
+            .btn-secondary {
+                margin-left: 0;
+
+                margin-top: 10px;
+            }
+
+        }
+
     </style>
+
 </head>
 
+
 <body>
+
 
     <div class="container">
 
         <div class="card">
 
-            <h1>Book Vehicle</h1>
 
-            <div class="vehicle-info">
+            <!-- ================= VEHICLE IMAGE ================= -->
 
-                <h2>
-                    <%= vehicle.name || vehicle.vehicleName || 'Vehicle' %>
-                </h2>
+            <div class="vehicle-image">
 
-                <% if (vehicle.brand) { %>
-                    <p><strong>Brand:</strong>
-                        <%= vehicle.brand %>
-                    </p>
-                    <% } %>
+                <% if (vehicle.image) { %>
 
-                        <% if (vehicle.model) { %>
-                            <p><strong>Model:</strong>
-                                <%= vehicle.model %>
-                            </p>
-                            <% } %>
+                    <img
+                        src="<%= vehicle.image %>"
+                        alt="<%= vehicle.brand %> <%= vehicle.model %>"
+                    >
 
-                                <% if (vehicle.pricePerDay) { %>
-                                    <p>
-                                        <strong>Price per Day:</strong>
-                                        ₹<%= vehicle.pricePerDay %>
-                                    </p>
-                                    <% } %>
+                <% } else { %>
 
-                                        <p>
-                                            <strong>Status:</strong>
+                    <div class="no-image">
+                        No Image Available
+                    </div>
 
-                                            <% if (vehicle.availability) { %>
-                                                <span style="color: green;">Available</span>
-                                                <% } else { %>
-                                                    <span style="color: red;">Currently Rented</span>
-                                                    <% } %>
-                                        </p>
+                <% } %>
 
             </div>
 
-            <form action="/book/<%= vehicle._id %>" method="POST">
 
-                <div>
-                    <label for="startDate">Start Date</label>
-                    <input type="date" name="startDate" id="startDate"
-                        min="<%= new Date().toISOString().split('T')[0] %>" required>
+            <div class="content">
+
+
+                <h1>
+                    Book Vehicle
+                </h1>
+
+
+                <!-- ================= VEHICLE INFORMATION ================= -->
+
+                <div class="vehicle-info">
+
+
+                    <div class="vehicle-heading">
+
+                        <h2>
+
+                            <%= vehicle.brand %>
+                            <%= vehicle.model %>
+
+                        </h2>
+
+
+                        <span class="vehicle-type">
+
+                            <%= vehicle.type || 'Vehicle' %>
+
+                        </span>
+
+                    </div>
+
+
+                    <% if (vehicle.vehicleNumber) { %>
+
+                        <p>
+
+                            <strong>
+                                Registration:
+                            </strong>
+
+                            <%= vehicle.vehicleNumber %>
+
+                        </p>
+
+                    <% } %>
+
+
+                    <p class="price">
+
+                        ₹<%= vehicle.pricePerDay %>
+
+                        <span>
+                            / day
+                        </span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Status:
+                        </strong>
+
+
+                        <% if (vehicle.availability) { %>
+
+                            <span class="available">
+                                Available
+                            </span>
+
+                        <% } else { %>
+
+                            <span class="unavailable">
+                                Currently Rented
+                            </span>
+
+                        <% } %>
+
+                    </p>
+
+
                 </div>
 
-                <div>
-                    <label for="endDate">End Date</label>
-                    <input type="date" name="endDate" id="endDate" min="<%= new Date().toISOString().split('T')[0] %>"
-                        required>
-                </div>
 
-                <button type="submit" class="btn btn-primary">
-                    Confirm Booking
-                </button>
+                <!-- ================= BOOKING FORM ================= -->
 
-                <a href="/user/dashboard" class="btn btn-secondary">
-                    Cancel
-                </a>
+                <form
+                    action="/book/<%= vehicle._id %>"
+                    method="POST"
+                >
 
-            </form>
+
+                    <div class="date-group">
+
+                        <label for="startDate">
+                            Start Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="startDate"
+                            id="startDate"
+                            min="<%= new Date().toISOString().split('T')[0] %>"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="date-group">
+
+                        <label for="endDate">
+                            End Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="endDate"
+                            id="endDate"
+                            min="<%= new Date().toISOString().split('T')[0] %>"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Confirm Booking
+                        </button>
+
+
+                        <a
+                            href="/user/dashboard"
+                            class="btn btn-secondary"
+                        >
+                            Cancel
+                        </a>
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
 
         </div>
 
     </div>
+
 
 </body>
 

@@ -1,15 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>My Bookings - Vehicle Rental System</title>
 
-    <link rel="stylesheet" href="/css/auth.css">
-
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -27,11 +29,17 @@
 
         header {
             background: linear-gradient(135deg, #1e293b, #0f172a);
+
             color: #fff;
+
             padding: 20px 40px;
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
@@ -46,39 +54,48 @@
 
         .user-nav {
             display: flex;
+
             align-items: center;
+
             gap: 20px;
         }
 
         .user-nav span {
             font-size: 14px;
+
             color: #cbd5e1;
         }
 
         .bookings-btn {
             background-color: #2563eb;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
 
-        .bookings-btn:hover {
-            background-color: #1d4ed8;
+            color: white;
+
+            padding: 8px 16px;
+
+            border-radius: 6px;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            font-size: 14px;
         }
 
         .logout-btn {
             background-color: #ef4444;
+
             color: white;
+
             padding: 8px 16px;
+
             border-radius: 6px;
+
             text-decoration: none;
+
             font-weight: 600;
+
             font-size: 14px;
-            transition: background 0.2s;
         }
 
         .logout-btn:hover {
@@ -89,7 +106,9 @@
 
         .container {
             max-width: 1200px;
+
             margin: 40px auto;
+
             padding: 0 20px;
         }
 
@@ -97,28 +116,39 @@
 
         .section-header {
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin-bottom: 30px;
         }
 
         .section-header h2 {
             font-size: 28px;
+
             color: #1e293b;
         }
 
         .section-header p {
             color: #64748b;
+
             margin-top: 5px;
         }
 
         .home-btn {
             display: inline-block;
+
             padding: 10px 18px;
+
             background: #007bff;
+
             color: white;
+
             text-decoration: none;
+
             border-radius: 6px;
+
             font-weight: 600;
         }
 
@@ -126,90 +156,245 @@
             background: #0056b3;
         }
 
+        /* ================= BOOKING GRID ================= */
+
+        .booking-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(330px, 1fr));
+
+            gap: 25px;
+        }
+
         /* ================= BOOKING CARD ================= */
 
         .booking-card {
             background: #ffffff;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.05);
+
             border: 1px solid #e2e8f0;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
         }
 
-        .booking-card h2 {
-            margin-bottom: 15px;
+        .booking-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.10);
+        }
+
+        /* ================= VEHICLE IMAGE ================= */
+
+        .vehicle-image {
+            width: 100%;
+
+            height: 210px;
+
+            background-color: #e2e8f0;
+
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition: transform 0.3s;
+        }
+
+        .booking-card:hover .vehicle-image img {
+            transform: scale(1.04);
+        }
+
+        .no-image {
+            width: 100%;
+
+            height: 100%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        /* ================= CARD HEADER ================= */
+
+        .card-header {
+            padding: 18px 20px 10px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+        .vehicle-name {
+            font-size: 20px;
+
+            font-weight: 700;
+
             color: #0f172a;
-            font-size: 21px;
         }
 
-        .booking-card p {
-            margin: 10px 0;
+        .vehicle-number {
+            margin-top: 5px;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+        .vehicle-type {
+            background: #e0f2fe;
+
+            color: #0369a1;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+        /* ================= BODY ================= */
+
+        .card-body {
+            padding: 5px 20px 20px;
+        }
+
+        .info {
+            margin-top: 12px;
+
+            font-size: 14px;
+
             color: #475569;
         }
 
-        .booking-card strong {
+        .info strong {
             color: #334155;
+        }
+
+        /* ================= AMOUNT ================= */
+
+        .amount {
+            font-size: 21px;
+
+            font-weight: 800;
+
+            color: #2563eb;
+
+            margin-top: 18px;
         }
 
         /* ================= STATUS ================= */
 
         .status {
             display: inline-block;
+
+            margin-top: 15px;
+
             padding: 6px 12px;
+
             border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
+
+            font-size: 12px;
+
+            font-weight: 700;
         }
 
         .pending {
             background: #fff3cd;
+
             color: #856404;
         }
 
         .confirmed {
             background: #d4edda;
+
             color: #155724;
         }
 
         .cancelled {
             background: #f8d7da;
+
             color: #721c24;
         }
 
         .completed {
             background: #d1ecf1;
+
             color: #0c5460;
         }
 
-        /* ================= EMPTY STATE ================= */
+        /* ================= EMPTY ================= */
 
         .empty {
             background: white;
+
             padding: 60px 30px;
+
             text-align: center;
+
             border-radius: 12px;
+
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .empty h2 {
             color: #475569;
+
             margin-bottom: 8px;
         }
 
         .empty p {
             color: #94a3b8;
+
             margin-bottom: 20px;
         }
 
         .btn {
             display: inline-block;
+
             padding: 12px 20px;
+
             background: #007bff;
+
             color: white;
+
             text-decoration: none;
+
             border-radius: 6px;
+
             font-weight: 600;
         }
 
@@ -223,31 +408,47 @@
 
             header {
                 padding: 15px 20px;
+
                 flex-direction: column;
+
                 gap: 15px;
+
                 align-items: flex-start;
             }
 
             .user-nav {
                 width: 100%;
+
                 justify-content: space-between;
+
                 gap: 10px;
+
                 flex-wrap: wrap;
             }
 
             .section-header {
                 flex-direction: column;
+
                 align-items: flex-start;
+
                 gap: 15px;
             }
+
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+
         }
+
     </style>
 
 </head>
 
+
 <body>
 
-    <!-- ================= SAME USER HEADER ================= -->
+
+    <!-- ================= HEADER ================= -->
 
     <header>
 
@@ -255,17 +456,26 @@
             <span>V</span>RS - Vehicle Rentals
         </h1>
 
+
         <div class="user-nav">
 
             <span>
+
                 Welcome,
-                <strong><%= user.name %></strong>
+
+                <strong>
+                    <%= user.name %>
+                </strong>
+
                 (Customer)
+
             </span>
+
 
             <a href="/bookings" class="bookings-btn">
                 My Bookings
             </a>
+
 
             <a href="/logout" class="logout-btn">
                 Logout
@@ -276,123 +486,265 @@
     </header>
 
 
-    <!-- ================= MAIN CONTENT ================= -->
+    <!-- ================= MAIN ================= -->
 
     <div class="container">
+
+
+        <!-- ================= PAGE HEADER ================= -->
 
         <div class="section-header">
 
             <div>
-                <h2>My Bookings</h2>
+
+                <h2>
+                    My Bookings
+                </h2>
 
                 <p>
                     View and manage your vehicle rental bookings.
                 </p>
+
             </div>
 
-            <a href="/user/dashboard" class="home-btn">
+
+            <a
+                href="/user/dashboard"
+                class="home-btn"
+            >
                 Go Home
             </a>
 
         </div>
 
 
+        <!-- ================= BOOKINGS ================= -->
+
         <% if (bookings && bookings.length > 0) { %>
 
-            <% bookings.forEach(booking => { %>
 
-                <div class="booking-card">
-
-                    <h2>
-
-                        <% if (booking.vehicleId) { %>
-
-                            <%= booking.vehicleId.brand || '' %>
-                            <%= booking.vehicleId.model || '' %>
-
-                        <% } else { %>
-
-                            Vehicle
-
-                        <% } %>
-
-                    </h2>
+            <div class="booking-grid">
 
 
-                    <p>
-                        <strong>Registration No:</strong>
-
-                        <% if (booking.vehicleId) { %>
-
-                            <%= booking.vehicleId.vehicleNumber || 'N/A' %>
-
-                        <% } else { %>
-
-                            N/A
-
-                        <% } %>
-                    </p>
+                <% bookings.forEach(booking => { %>
 
 
-                    <p>
-                        <strong>Start Date:</strong>
-
-                        <%= new Date(booking.startDate).toLocaleDateString() %>
-                    </p>
+                    <div class="booking-card">
 
 
-                    <p>
-                        <strong>End Date:</strong>
+                        <!-- ================= IMAGE ================= -->
 
-                        <%= new Date(booking.endDate).toLocaleDateString() %>
-                    </p>
+                        <div class="vehicle-image">
 
 
-                    <% if (booking.totalAmount !== undefined) { %>
+                            <% if (booking.vehicleId && booking.vehicleId.image) { %>
 
-                        <p>
-                            <strong>Total Amount:</strong>
+                                <img
+                                    src="<%= booking.vehicleId.image %>"
+                                    alt="<%= booking.vehicleId.brand %> <%= booking.vehicleId.model %>"
+                                >
 
-                            ₹<%= booking.totalAmount %>
-                        </p>
+                            <% } else { %>
 
-                    <% } %>
+                                <div class="no-image">
+                                    No Image Available
+                                </div>
+
+                            <% } %>
 
 
-                    <p>
-                        <strong>Status:</strong>
+                        </div>
 
-                        <span class="status <%= booking.status || 'pending' %>">
 
-                            <%= booking.status || 'Pending' %>
+                        <!-- ================= HEADER ================= -->
 
-                        </span>
-                    </p>
+                        <div class="card-header">
 
-                </div>
 
-            <% }) %>
+                            <div>
+
+
+                                <div class="vehicle-name">
+
+                                    <% if (booking.vehicleId) { %>
+
+                                        <%= booking.vehicleId.brand || '' %>
+                                        <%= booking.vehicleId.model || '' %>
+
+                                    <% } else { %>
+
+                                        Vehicle
+
+                                    <% } %>
+
+                                </div>
+
+
+                                <div class="vehicle-number">
+
+                                    Reg No:
+
+                                    <% if (booking.vehicleId) { %>
+
+                                        <%= booking.vehicleId.vehicleNumber || 'N/A' %>
+
+                                    <% } else { %>
+
+                                        N/A
+
+                                    <% } %>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <% if (booking.vehicleId && booking.vehicleId.type) { %>
+
+                                <span class="vehicle-type">
+
+                                    <%= booking.vehicleId.type %>
+
+                                </span>
+
+                            <% } %>
+
+
+                        </div>
+
+
+                        <!-- ================= BODY ================= -->
+
+                        <div class="card-body">
+
+
+                            <div class="info">
+
+                                <strong>
+                                    Start Date:
+                                </strong>
+
+                                <%= new Date(booking.startDate).toLocaleDateString() %>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <strong>
+                                    End Date:
+                                </strong>
+
+                                <%= new Date(booking.endDate).toLocaleDateString() %>
+
+                            </div>
+
+
+                            <!-- ================= AMOUNT ================= -->
+
+                            <% if (booking.totalAmount !== undefined) { %>
+
+                                <div class="amount">
+
+                                    ₹<%= booking.totalAmount %>
+
+                                </div>
+
+                            <% } %>
+
+
+                            <!-- ================= STATUS ================= -->
+
+                            <div>
+
+                                <strong>
+                                    Status:
+                                </strong>
+
+
+                                <% if (booking.status === 'pending') { %>
+
+                                    <span class="status pending">
+                                        PENDING
+                                    </span>
+
+
+                                <% } else if (booking.status === 'confirmed') { %>
+
+                                    <span class="status confirmed">
+                                        CONFIRMED
+                                    </span>
+
+
+                                <% } else if (booking.status === 'cancelled') { %>
+
+                                    <span class="status cancelled">
+                                        CANCELLED
+                                    </span>
+
+
+                                <% } else if (booking.status === 'completed') { %>
+
+                                    <span class="status completed">
+                                        COMPLETED
+                                    </span>
+
+
+                                <% } else { %>
+
+                                    <span class="status pending">
+                                        PENDING
+                                    </span>
+
+                                <% } %>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                <% }) %>
+
+
+            </div>
 
 
         <% } else { %>
 
+
+            <!-- ================= EMPTY STATE ================= -->
+
             <div class="empty">
 
-                <h2>No Bookings Found</h2>
+                <h2>
+                    No Bookings Found
+                </h2>
 
                 <p>
                     You haven't booked any vehicles yet.
                 </p>
 
-                <a href="/user/dashboard" class="btn">
+                <a
+                    href="/user/dashboard"
+                    class="btn"
+                >
                     Go Home
                 </a>
 
             </div>
 
+
         <% } %>
 
+
     </div>
+
 
 </body>
 

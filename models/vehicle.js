@@ -12,7 +12,9 @@ const vehicleSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true,
-            trim: true
+            trim: true,
+            uppercase: true,
+            match: /^[A-Z]{2}[-\s]?[0-9]{1,2}[-\s]?[A-Z]{1,2}[-\s]?[0-9]{4}$/i
         },
 
         brand: {
@@ -45,12 +47,24 @@ const vehicleSchema = new mongoose.Schema(
         },
 
         image: {
-            type: String
+            type: String,
+            required: true
         },
 
         availability: {
             type: Boolean,
             default: true
+        },
+
+        approvalStatus: {
+            type: String,
+            enum: ['pending', 'approved', 'rejected'],
+            default: 'approved'
+        },
+
+        rejectionReason: {
+            type: String,
+            default: ''
         }
     },
     {

@@ -4,6 +4,7 @@ const rootDir=require('./utils/pathutils');
 const path=require('path');
 const cookieParser = require('cookie-parser');
 const bookingRouter = require('./routes/bookingRouter');
+const ownerRoutes = require('./routes/ownerRouter');
 const session = require('express-session');
 
 
@@ -35,6 +36,7 @@ app.use(session({
 app.use('/', userRouter);
 app.use('/', vehicleRouter);
 app.use('/', bookingRouter);
+app.use('/owner', ownerRoutes);
 
 const port = 3000;
 app.listen(port, () => {

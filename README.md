@@ -267,3 +267,141 @@ node_modules/
 **Vehicle Rental System (VRS)**
 
 Built using Node.js, Express.js, EJS, and MongoDB.
+
+
+## ☁️ Cloudinary Setup
+
+This project uses **Cloudinary** to store and manage vehicle images.
+
+### 1. Create a Cloudinary Account
+
+Go to the official Cloudinary website and create an account:
+
+https://cloudinary.com/
+
+After logging in, open the **Cloudinary Dashboard**.
+
+### 2. Get Cloudinary Credentials
+
+From the Cloudinary Dashboard, get these three values:
+
+* **Cloud Name**
+* **API Key**
+* **API Secret**
+
+### 3. Create a `.env` File
+
+Create a `.env` file in the root directory of the project:
+
+```env
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+Replace the values with the credentials from your Cloudinary Dashboard.
+
+Example:
+
+```env
+CLOUDINARY_CLOUD_NAME=abc123
+CLOUDINARY_API_KEY=123456789012345
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+### 4. Install Cloudinary
+
+If Cloudinary is not already installed:
+
+```bash
+npm install cloudinary
+```
+
+### 5. Configure Cloudinary
+
+Create a configuration file such as:
+
+```text
+config/
+└── cloudinary.js
+```
+
+Add:
+
+```js
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+module.exports = cloudinary;
+```
+
+### 6. Load Environment Variables
+
+Make sure your application loads the `.env` file before using Cloudinary:
+
+```js
+require('dotenv').config();
+```
+
+For example, in `app.js` or `server.js`:
+
+```js
+require('dotenv').config();
+
+const express = require('express');
+```
+
+### 7. Start the Application
+
+Install project dependencies:
+
+```bash
+npm install
+```
+
+Then start the application:
+
+```bash
+npm start
+```
+
+Or, if your project uses nodemon:
+
+```bash
+npm run dev
+```
+
+### ⚠️ Security
+
+Never commit your `.env` file to GitHub.
+
+Add this to `.gitignore`:
+
+```gitignore
+.env
+```
+
+Never expose your **Cloudinary API Secret** in frontend code or public repositories.
+
+### 📌 Image Storage Flow
+
+```text
+User uploads vehicle image
+        ↓
+Node.js / Express
+        ↓
+Cloudinary
+        ↓
+Cloudinary stores the image
+        ↓
+Cloudinary returns image URL
+        ↓
+Image URL is stored in MongoDB
+        ↓
+URL is used to display the image
+```

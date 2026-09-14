@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
@@ -43,7 +44,7 @@
             background: #ffffff;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
         }
 
@@ -78,7 +79,9 @@
             transition: border-color 0.2s;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             border-color: #2563eb;
         }
 
@@ -120,19 +123,25 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
         <h1><span>V</span>RS - Vehicle Rentals</h1>
         <div>
-            <a href="/owner/dashboard" style="color: #cbd5e1; text-decoration: none; font-size: 14px;">← Back to Dashboard</a>
+            <a href="/owner/dashboard" style="color: #cbd5e1; text-decoration: none; font-size: 14px;">← Back to
+                Dashboard</a>
         </div>
     </header>
 
     <div class="container">
-        <h2>Add Vehicle for Rent</h2>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div style="background-color: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #dc2626; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;">
+                ⚠️ <%= error %>
+            </div>
+        <% } %>
 
-        <form action="/owner/vehicles/add" method="POST">
+        <form action="/owner/vehicles/add" method="POST" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label for="vehicleNumber">Vehicle Number / Registration</label>
@@ -167,7 +176,14 @@
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" placeholder="Provide vehicle features, specs, or condition..."></textarea>
+                <textarea id="description" name="description"
+                    placeholder="Provide vehicle features, specs, or condition..."></textarea>
+            </div>
+
+            <!-- IMAGE -->
+            <div class="form-group">
+                <label for="image">Vehicle Image (Uploads to Cloudinary)</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
             </div>
 
             <div class="actions">
@@ -179,4 +195,5 @@
     </div>
 
 </body>
+
 </html>
