@@ -113,41 +113,247 @@ exports.bookVehicle = async (req, res) => {
 
 exports.showBookings = async (req, res) => {
     try {
-        const userId = req.user._id || req.user.id;
-        const bookings = await Booking.find({ userId: userId })
-            .populate('vehicleId', 'vehicleNumber brand model type pricePerDay image')
-            .sort({ createdAt: -1 });
 
-        res.render('service/bookings', { user: req.user, bookings });
+        const userId = req.user._id || req.user.id;
+
+        // Get filter values from URL
+        const {
+            status = '',
+            type = ''
+        } = req.query;
+
+
+        // ==================== BUILD QUERY ====================
+
+        const query = {
+            userId: userId
+        };
+
+
+        // ==================== STATUS FILTER ====================
+
+        if (status) {
+            query.status = status;
+        }
+
+
+        // ==================== GET BOOKINGS ====================
+
+        let bookings = await Booking.find(query)
+            .populate(
+                'vehicleId',
+                'vehicleNumber brand model type pricePerDay image'
+            )
+            .sort({
+                createdAt: -1
+            });
+
+
+        // ==================== VEHICLE TYPE FILTER ====================
+
+        /*
+            Vehicle type belongs to Vehicle document,
+            not Booking document.
+
+            Therefore, after populate(), we filter
+            bookings according to vehicleId.type.
+        */
+
+        if (type) {
+
+            bookings = bookings.filter(
+                booking =>
+                    booking.vehicleId &&
+                    booking.vehicleId.type === type
+            );
+
+        }
+
+
+        // ==================== RENDER ====================
+
+        res.render('service/bookings', {
+
+            user: req.user,
+
+            bookings,
+
+            // Send filters back to EJS
+            // so selected options remain selected
+
+            status,
+
+            type
+
+        });
+
 
     } catch (error) {
+
         console.error('Error fetching bookings:', error);
+
         res.status(500).send('Server Error');
+
     }
 };
 
 exports.showOwnerBookingHistory = async (req, res) => {
+
     try {
+
         const ownerId = req.user._id || req.user.id;
 
-        const vehicles = await Vehicle.find({ ownerId: ownerId });
 
-        const vehicleIds = vehicles.map(vehicle => vehicle._id);
+        // ================= FILTER VALUES =================
 
-        const bookings = await Booking.find({
-            vehicleId: { $in: vehicleIds }
-        })
-            .populate('vehicleId', 'vehicleNumber brand model type pricePerDay image')
-            .populate('userId', 'name email phone')
-            .sort({ createdAt: -1 });
+        const {
+            status = '',
+            paymentStatus = '',
+            search = ''
+        } = req.query;
+
+
+        // ================= OWNER VEHICLES =================
+
+        /*
+         * First get vehicles belonging to this owner.
+         *
+         * This is important because an owner should
+         * only see bookings for their own vehicles.
+         */
+
+        const vehicles = await Vehicle.find({
+            ownerId: ownerId
+        }).select('_id');
+
+
+        const vehicleIds = vehicles.map(
+            vehicle => vehicle._id
+        );
+
+
+        // ================= BOOKING QUERY =================
+
+        const query = {
+            vehicleId: {
+                $in: vehicleIds
+            }
+        };
+
+
+        // ================= STATUS FILTER =================
+
+        if (status) {
+
+            query.status = status;
+
+        }
+
+
+        // ================= PAYMENT FILTER =================
+
+        if (paymentStatus) {
+
+            query.paymentStatus = paymentStatus;
+
+        }
+
+
+        // ================= GET BOOKINGS =================
+
+        let bookings = await Booking.find(query)
+
+            .populate(
+                'vehicleId',
+                'vehicleNumber brand model type pricePerDay image'
+            )
+
+            .populate(
+                'userId',
+                'name email phone'
+            )
+
+            .sort({
+                createdAt: -1
+            });
+
+
+        // ================= SEARCH FILTER =================
+
+        if (search.trim() !== '') {
+
+            const searchText =
+                search.trim().toLowerCase();
+
+
+            bookings = bookings.filter(booking => {
+
+                const vehicle = booking.vehicleId;
+                const customer = booking.userId;
+
+
+                const customerName =
+                    customer?.name?.toLowerCase() || '';
+
+                const customerEmail =
+                    customer?.email?.toLowerCase() || '';
+
+                const vehicleBrand =
+                    vehicle?.brand?.toLowerCase() || '';
+
+                const vehicleModel =
+                    vehicle?.model?.toLowerCase() || '';
+
+                const vehicleNumber =
+                    vehicle?.vehicleNumber?.toLowerCase() || '';
+
+
+                return (
+
+                    customerName.includes(searchText) ||
+
+                    customerEmail.includes(searchText) ||
+
+                    vehicleBrand.includes(searchText) ||
+
+                    vehicleModel.includes(searchText) ||
+
+                    vehicleNumber.includes(searchText)
+
+                );
+
+            });
+
+        }
+
+
+        // ================= RENDER =================
 
         res.render('owner/bookingHistory', {
+
             user: req.user,
-            bookings
+
+            bookings,
+
+            // Keep filters selected in EJS
+            status,
+
+            paymentStatus,
+
+            search
+
         });
 
+
     } catch (error) {
-        console.error('Error fetching owner booking history:', error);
+
+        console.error(
+            'Error fetching owner booking history:',
+            error
+        );
+
         res.status(500).send('Server Error');
+
     }
+
 };

@@ -10,6 +10,7 @@
 
     <title>Customer Dashboard - Vehicle Rental System</title>
 
+
     <style>
 
         * {
@@ -19,11 +20,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+
         body {
             background-color: #f4f6f9;
             color: #333;
             padding-bottom: 50px;
         }
+
 
         /* ================= HEADER ================= */
 
@@ -43,15 +46,17 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+
         header h1 {
             font-size: 24px;
-
             font-weight: 700;
         }
+
 
         header h1 span {
             color: #3b82f6;
         }
+
 
         .user-nav {
             display: flex;
@@ -61,11 +66,12 @@
             gap: 20px;
         }
 
+
         .user-nav span {
             font-size: 14px;
-
             color: #cbd5e1;
         }
+
 
         .logout-btn {
             background-color: #ef4444;
@@ -85,9 +91,11 @@
             transition: background 0.2s;
         }
 
+
         .logout-btn:hover {
             background-color: #dc2626;
         }
+
 
         .bookings-btn {
             background-color: #2563eb;
@@ -105,9 +113,11 @@
             font-size: 14px;
         }
 
+
         .bookings-btn:hover {
             background-color: #1d4ed8;
         }
+
 
         /* ================= CONTAINER ================= */
 
@@ -119,11 +129,13 @@
             padding: 0 20px;
         }
 
+
         /* ================= SECTION ================= */
 
         .section-header {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
+
 
         .section-header h2 {
             font-size: 28px;
@@ -131,11 +143,146 @@
             color: #1e293b;
         }
 
+
         .section-header p {
             color: #64748b;
 
             margin-top: 5px;
         }
+
+
+        /* ================= SEARCH & FILTER ================= */
+
+        .filter-box {
+            background: #ffffff;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.05);
+
+            margin-bottom: 30px;
+        }
+
+
+        .filter-form {
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr 1fr 1fr 1fr auto auto;
+
+            gap: 12px;
+
+            align-items: center;
+        }
+
+
+        .filter-form input,
+        .filter-form select {
+
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            background: #ffffff;
+        }
+
+
+        .filter-form input:focus,
+        .filter-form select:focus {
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+
+        /* ================= SEARCH BUTTON ================= */
+
+        .search-btn {
+
+            background-color: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+        }
+
+
+        .search-btn:hover {
+
+            background-color: #1d4ed8;
+        }
+
+
+        /* ================= CLEAR BUTTON ================= */
+
+        .clear-btn {
+
+            background-color: #e2e8f0;
+
+            color: #334155;
+
+            padding: 11px 16px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            text-align: center;
+
+            white-space: nowrap;
+        }
+
+
+        .clear-btn:hover {
+
+            background-color: #cbd5e1;
+        }
+
+
+        /* ================= RESULTS INFO ================= */
+
+        .results-info {
+
+            margin-bottom: 20px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            font-weight: 500;
+        }
+
 
         /* ================= GRID ================= */
 
@@ -147,6 +294,7 @@
 
             gap: 25px;
         }
+
 
         /* ================= CARD ================= */
 
@@ -171,12 +319,14 @@
             flex-direction: column;
         }
 
+
         .card:hover {
             transform: translateY(-4px);
 
             box-shadow:
                 0 10px 25px rgba(0, 0, 0, 0.10);
         }
+
 
         /* ================= VEHICLE IMAGE ================= */
 
@@ -190,6 +340,7 @@
             overflow: hidden;
         }
 
+
         .vehicle-image img {
             width: 100%;
 
@@ -202,9 +353,11 @@
             transition: transform 0.3s;
         }
 
+
         .card:hover .vehicle-image img {
             transform: scale(1.04);
         }
+
 
         .no-image {
             width: 100%;
@@ -222,6 +375,7 @@
             font-size: 14px;
         }
 
+
         /* ================= CARD HEADER ================= */
 
         .card-header {
@@ -238,6 +392,7 @@
             gap: 10px;
         }
 
+
         .card-title {
             font-size: 20px;
 
@@ -245,6 +400,7 @@
 
             color: #0f172a;
         }
+
 
         .badge-type {
             background: #e0f2fe;
@@ -262,6 +418,7 @@
             white-space: nowrap;
         }
 
+
         /* ================= CARD BODY ================= */
 
         .card-body {
@@ -269,6 +426,7 @@
 
             flex-grow: 1;
         }
+
 
         .vehicle-num {
             font-size: 13px;
@@ -280,6 +438,7 @@
             font-weight: 500;
         }
 
+
         .price-tag {
             font-size: 22px;
 
@@ -290,6 +449,7 @@
             margin-bottom: 15px;
         }
 
+
         .price-tag span {
             font-size: 14px;
 
@@ -297,6 +457,7 @@
 
             color: #64748b;
         }
+
 
         .description {
             font-size: 14px;
@@ -307,6 +468,7 @@
 
             line-height: 1.5;
         }
+
 
         /* ================= OWNER ================= */
 
@@ -322,6 +484,7 @@
             font-size: 13px;
         }
 
+
         .owner-box strong {
             display: block;
 
@@ -330,11 +493,13 @@
             margin-bottom: 4px;
         }
 
+
         .owner-box p {
             color: #64748b;
 
             margin-top: 4px;
         }
+
 
         /* ================= FOOTER ================= */
 
@@ -354,6 +519,7 @@
             gap: 15px;
         }
 
+
         .status-available {
             color: #16a34a;
 
@@ -362,6 +528,7 @@
             font-size: 14px;
         }
 
+
         .status-unavailable {
             color: #dc2626;
 
@@ -369,6 +536,7 @@
 
             font-size: 14px;
         }
+
 
         /* ================= BOOK BUTTON ================= */
 
@@ -390,9 +558,11 @@
             white-space: nowrap;
         }
 
+
         .book-btn:hover {
             background-color: #1d4ed8;
         }
+
 
         /* ================= EMPTY ================= */
 
@@ -408,6 +578,7 @@
             border: 1px solid #e2e8f0;
         }
 
+
         .empty-state h3 {
             font-size: 20px;
 
@@ -416,11 +587,23 @@
             margin-bottom: 8px;
         }
 
+
         .empty-state p {
             color: #94a3b8;
         }
 
+
         /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+
+            .filter-form {
+                grid-template-columns:
+                    2fr 1fr 1fr;
+            }
+
+        }
+
 
         @media (max-width: 700px) {
 
@@ -434,6 +617,7 @@
                 align-items: flex-start;
             }
 
+
             .user-nav {
                 width: 100%;
 
@@ -444,15 +628,31 @@
                 flex-wrap: wrap;
             }
 
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+
+            .search-btn,
+            .clear-btn {
+                width: 100%;
+
+                text-align: center;
+            }
+
+
             .grid {
                 grid-template-columns: 1fr;
             }
+
 
             .card-footer {
                 align-items: flex-start;
 
                 flex-direction: column;
             }
+
 
             .book-btn {
                 width: 100%;
@@ -475,7 +675,9 @@
     <header>
 
         <h1>
+
             <span>V</span>RS - Vehicle Rentals
+
         </h1>
 
 
@@ -514,10 +716,13 @@
     </header>
 
 
+
     <!-- ================= MAIN ================= -->
 
     <div class="container">
 
+
+        <!-- ================= SECTION HEADER ================= -->
 
         <div class="section-header">
 
@@ -532,6 +737,176 @@
         </div>
 
 
+
+        <!-- ================= SEARCH & FILTER ================= -->
+
+        <div class="filter-box">
+
+            <form
+                action="/user/dashboard"
+                method="GET"
+                class="filter-form"
+            >
+
+
+                <!-- SEARCH -->
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="🔍 Search brand, model or registration no."
+                    value="<%= search || '' %>"
+                >
+
+
+
+                <!-- VEHICLE TYPE -->
+
+                <select name="type">
+
+                    <option value="">
+                        All Types
+                    </option>
+
+
+                    <option
+                        value="Car"
+                        <%= type === 'Car' ? 'selected' : '' %>
+                    >
+                        Car
+                    </option>
+
+
+                    <option
+                        value="Bike"
+                        <%= type === 'Bike' ? 'selected' : '' %>
+                    >
+                        Bike
+                    </option>
+
+
+                    <option
+                        value="Scooter"
+                        <%= type === 'Scooter' ? 'selected' : '' %>
+                    >
+                        Scooter
+                    </option>
+
+
+                    <option
+                        value="SUV"
+                        <%= type === 'SUV' ? 'selected' : '' %>
+                    >
+                        SUV
+                    </option>
+
+
+                    <option
+                        value="Other"
+                        <%= type === 'Other' ? 'selected' : '' %>
+                    >
+                        Other
+                    </option>
+
+                </select>
+
+
+
+                <!-- MINIMUM PRICE -->
+
+                <input
+                    type="number"
+                    name="minPrice"
+                    placeholder="Min ₹ / day"
+                    min="0"
+                    value="<%= minPrice || '' %>"
+                >
+
+
+
+                <!-- MAXIMUM PRICE -->
+
+                <input
+                    type="number"
+                    name="maxPrice"
+                    placeholder="Max ₹ / day"
+                    min="0"
+                    value="<%= maxPrice || '' %>"
+                >
+
+
+
+                <!-- SORT -->
+
+                <select name="sort">
+
+                    <option value="">
+                        Sort By
+                    </option>
+
+
+                    <option
+                        value="priceLow"
+                        <%= sort === 'priceLow' ? 'selected' : '' %>
+                    >
+                        Price: Low → High
+                    </option>
+
+
+                    <option
+                        value="priceHigh"
+                        <%= sort === 'priceHigh' ? 'selected' : '' %>
+                    >
+                        Price: High → Low
+                    </option>
+
+                </select>
+
+
+
+                <!-- SEARCH BUTTON -->
+
+                <button
+                    type="submit"
+                    class="search-btn"
+                >
+                    Search
+                </button>
+
+
+
+                <!-- CLEAR BUTTON -->
+
+                <a
+                    href="/user/dashboard"
+                    class="clear-btn"
+                >
+                    Clear
+                </a>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= RESULTS COUNT ================= -->
+
+        <% if (vehicles && vehicles.length > 0) { %>
+
+            <div class="results-info">
+
+                Showing
+                <strong><%= vehicles.length %></strong>
+                vehicle<%= vehicles.length === 1 ? '' : 's' %>
+
+            </div>
+
+        <% } %>
+
+
+
         <!-- ================= VEHICLES ================= -->
 
         <% if (vehicles && vehicles.length > 0) { %>
@@ -543,10 +918,12 @@
                 <% vehicles.forEach(vehicle => { %>
 
 
+                    <!-- ================= VEHICLE CARD ================= -->
+
                     <div class="card">
 
 
-                        <!-- ================= IMAGE ================= -->
+                        <!-- IMAGE -->
 
                         <div class="vehicle-image">
 
@@ -570,7 +947,8 @@
                         </div>
 
 
-                        <!-- ================= HEADER ================= -->
+
+                        <!-- CARD HEADER -->
 
                         <div class="card-header">
 
@@ -593,10 +971,13 @@
                         </div>
 
 
-                        <!-- ================= BODY ================= -->
+
+                        <!-- CARD BODY -->
 
                         <div class="card-body">
 
+
+                            <!-- VEHICLE NUMBER -->
 
                             <div class="vehicle-num">
 
@@ -606,6 +987,9 @@
 
                             </div>
 
+
+
+                            <!-- PRICE -->
 
                             <div class="price-tag">
 
@@ -618,6 +1002,9 @@
                             </div>
 
 
+
+                            <!-- DESCRIPTION -->
+
                             <% if (vehicle.description) { %>
 
                                 <p class="description">
@@ -629,7 +1016,8 @@
                             <% } %>
 
 
-                            <!-- ================= OWNER ================= -->
+
+                            <!-- OWNER -->
 
                             <div class="owner-box">
 
@@ -672,7 +1060,8 @@
                         </div>
 
 
-                        <!-- ================= FOOTER ================= -->
+
+                        <!-- CARD FOOTER -->
 
                         <div class="card-footer">
 
@@ -681,7 +1070,9 @@
 
 
                                 <span class="status-available">
+
                                     ✓ Available for Rent
+
                                 </span>
 
 
@@ -697,7 +1088,9 @@
 
 
                                 <span class="status-unavailable">
+
                                     ✗ Currently Rented
+
                                 </span>
 
 
@@ -716,6 +1109,7 @@
             </div>
 
 
+
         <% } else { %>
 
 
@@ -725,14 +1119,25 @@
 
 
                 <h3>
-                    No Vehicles Available
+                    No Vehicles Found
                 </h3>
 
 
-                <p>
-                    There are currently no vehicles listed by owners.
-                    Please check back later!
-                </p>
+                <% if (search || type || minPrice || maxPrice || sort) { %>
+
+                    <p>
+                        No vehicles match your current search or filter.
+                        Try changing your filters.
+                    </p>
+
+                <% } else { %>
+
+                    <p>
+                        There are currently no vehicles listed by owners.
+                        Please check back later!
+                    </p>
+
+                <% } %>
 
 
             </div>

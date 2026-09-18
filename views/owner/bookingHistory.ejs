@@ -10,6 +10,7 @@
 
     <title>Booking History - Vehicle Rental System</title>
 
+
     <style>
 
         * {
@@ -19,11 +20,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+
         body {
             background-color: #f8fafc;
             color: #1e293b;
             padding-bottom: 50px;
         }
+
 
         /* ================= HEADER ================= */
 
@@ -43,13 +46,16 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+
         header h1 {
             font-size: 24px;
         }
 
+
         header h1 span {
             color: #3b82f6;
         }
+
 
         .user-nav {
             display: flex;
@@ -59,11 +65,13 @@
             gap: 20px;
         }
 
+
         .user-nav span {
             font-size: 14px;
 
             color: #cbd5e1;
         }
+
 
         .logout-btn {
             background-color: #ef4444;
@@ -81,9 +89,11 @@
             font-size: 14px;
         }
 
+
         .logout-btn:hover {
             background-color: #dc2626;
         }
+
 
         /* ================= CONTAINER ================= */
 
@@ -95,6 +105,7 @@
             padding: 0 20px;
         }
 
+
         /* ================= TOP BAR ================= */
 
         .top-bar {
@@ -104,14 +115,16 @@
 
             align-items: center;
 
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
+
 
         .top-bar h2 {
             font-size: 26px;
 
             color: #0f172a;
         }
+
 
         .back-btn {
             background-color: #475569;
@@ -129,9 +142,171 @@
             font-size: 14px;
         }
 
+
         .back-btn:hover {
             background-color: #334155;
         }
+
+
+        /* ================= FILTER ================= */
+
+        .filter-container {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+
+            margin-bottom: 30px;
+
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+
+        .filter-form {
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .filter-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 180px;
+        }
+
+
+        .search-group {
+            flex: 1;
+
+            min-width: 280px;
+        }
+
+
+        .filter-group label {
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #334155;
+        }
+
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+
+            height: 42px;
+
+            padding: 0 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            background-color: white;
+
+            color: #1e293b;
+
+            outline: none;
+        }
+
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #2563eb;
+
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+
+        /* ================= FILTER BUTTONS ================= */
+
+        .filter-buttons {
+            display: flex;
+
+            gap: 8px;
+        }
+
+
+        .filter-btn,
+        .reset-btn {
+            height: 42px;
+
+            padding: 0 18px;
+
+            border-radius: 7px;
+
+            border: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .filter-btn {
+            background-color: #2563eb;
+
+            color: white;
+        }
+
+
+        .filter-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+
+        .reset-btn {
+            background-color: #e2e8f0;
+
+            color: #334155;
+        }
+
+
+        .reset-btn:hover {
+            background-color: #cbd5e1;
+        }
+
+
+        /* ================= FILTER RESULT ================= */
+
+        .filter-result {
+            margin-top: 15px;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+
+        .filter-result strong {
+            color: #334155;
+        }
+
 
         /* ================= GRID ================= */
 
@@ -143,6 +318,7 @@
 
             gap: 25px;
         }
+
 
         /* ================= BOOKING CARD ================= */
 
@@ -163,12 +339,14 @@
                 box-shadow 0.2s;
         }
 
+
         .booking-card:hover {
             transform: translateY(-4px);
 
             box-shadow:
                 0 10px 25px rgba(0, 0, 0, 0.10);
         }
+
 
         /* ================= VEHICLE IMAGE ================= */
 
@@ -182,6 +360,7 @@
             overflow: hidden;
         }
 
+
         .vehicle-image img {
             width: 100%;
 
@@ -194,9 +373,11 @@
             transition: transform 0.3s;
         }
 
+
         .booking-card:hover .vehicle-image img {
             transform: scale(1.04);
         }
+
 
         .no-image {
             width: 100%;
@@ -213,6 +394,7 @@
 
             font-size: 14px;
         }
+
 
         /* ================= VEHICLE HEADER ================= */
 
@@ -232,6 +414,7 @@
             gap: 10px;
         }
 
+
         .vehicle-name {
             font-size: 19px;
 
@@ -240,6 +423,7 @@
             color: #0f172a;
         }
 
+
         .vehicle-number {
             margin-top: 5px;
 
@@ -247,6 +431,7 @@
 
             color: #64748b;
         }
+
 
         .vehicle-type {
             background: #e0f2fe;
@@ -264,11 +449,13 @@
             white-space: nowrap;
         }
 
+
         /* ================= BODY ================= */
 
         .card-body {
             padding: 20px;
         }
+
 
         .info {
             margin-bottom: 12px;
@@ -278,9 +465,11 @@
             color: #475569;
         }
 
+
         .info strong {
             color: #334155;
         }
+
 
         /* ================= AMOUNT ================= */
 
@@ -293,6 +482,7 @@
 
             margin-top: 15px;
         }
+
 
         /* ================= STATUS ================= */
 
@@ -310,11 +500,13 @@
             font-weight: 600;
         }
 
+
         .pending {
             background: #fef3c7;
 
             color: #92400e;
         }
+
 
         .confirmed {
             background: #dbeafe;
@@ -322,17 +514,46 @@
             color: #1d4ed8;
         }
 
+
         .completed {
             background: #dcfce7;
 
             color: #166534;
         }
 
+
         .cancelled {
             background: #fee2e2;
 
             color: #991b1b;
         }
+
+
+        /* ================= PAYMENT ================= */
+
+        .payment {
+            margin-top: 12px;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+
+        .payment strong {
+            color: #334155;
+        }
+
+
+        .payment-paid {
+            color: #16a34a;
+        }
+
+
+        .payment-pending {
+            color: #d97706;
+        }
+
 
         /* ================= ACTION BUTTONS ================= */
 
@@ -344,9 +565,11 @@
             margin-top: 18px;
         }
 
+
         .booking-actions form {
             flex: 1;
         }
+
 
         .action-btn {
             width: 100%;
@@ -368,31 +591,26 @@
             transition: 0.2s;
         }
 
+
         .confirm-btn {
             background-color: #16a34a;
         }
+
 
         .confirm-btn:hover {
             background-color: #15803d;
         }
 
+
         .reject-btn {
             background-color: #dc2626;
         }
+
 
         .reject-btn:hover {
             background-color: #b91c1c;
         }
 
-        /* ================= PAYMENT ================= */
-
-        .payment {
-            margin-top: 12px;
-
-            font-size: 13px;
-
-            color: #64748b;
-        }
 
         /* ================= EMPTY STATE ================= */
 
@@ -408,11 +626,24 @@
             border: 1px solid #e2e8f0;
         }
 
+
+        .empty-state h3 {
+            color: #334155;
+
+            margin-bottom: 10px;
+
+            font-size: 20px;
+        }
+
+
         .empty-state p {
             color: #64748b;
 
             font-size: 16px;
+
+            margin-bottom: 20px;
         }
+
 
         /* ================= MOBILE ================= */
 
@@ -428,6 +659,7 @@
                 align-items: flex-start;
             }
 
+
             .top-bar {
                 flex-direction: column;
 
@@ -435,6 +667,40 @@
 
                 gap: 15px;
             }
+
+
+            .back-btn {
+                width: 100%;
+
+                text-align: center;
+            }
+
+
+            .filter-form {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .filter-group,
+            .search-group {
+                width: 100%;
+
+                min-width: 100%;
+            }
+
+
+            .filter-buttons {
+                width: 100%;
+            }
+
+
+            .filter-buttons button,
+            .filter-buttons a {
+                flex: 1;
+            }
+
 
             .history-grid {
                 grid-template-columns: 1fr;
@@ -474,7 +740,10 @@
             </span>
 
 
-            <a href="/logout" class="logout-btn">
+            <a
+                href="/logout"
+                class="logout-btn"
+            >
                 Logout
             </a>
 
@@ -507,6 +776,204 @@
         </div>
 
 
+        <!-- ================= FILTER ================= -->
+
+        <div class="filter-container">
+
+            <form
+                action="/owner/history"
+                method="GET"
+                class="filter-form"
+            >
+
+
+                <!-- SEARCH -->
+
+                <div class="filter-group search-group">
+
+                    <label for="search">
+                        Search
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="search"
+                        name="search"
+                        placeholder="Customer, email, vehicle or registration..."
+                        value="<%= typeof search !== 'undefined' ? search : '' %>"
+                    >
+
+                </div>
+
+
+                <!-- BOOKING STATUS -->
+
+                <div class="filter-group">
+
+                    <label for="status">
+                        Booking Status
+                    </label>
+
+
+                    <select
+                        name="status"
+                        id="status"
+                    >
+
+                        <option value="">
+                            All Status
+                        </option>
+
+
+                        <option
+                            value="pending"
+                            <%= typeof status !== 'undefined' &&
+                                status === 'pending'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Pending
+                        </option>
+
+
+                        <option
+                            value="confirmed"
+                            <%= typeof status !== 'undefined' &&
+                                status === 'confirmed'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Confirmed
+                        </option>
+
+
+                        <option
+                            value="completed"
+                            <%= typeof status !== 'undefined' &&
+                                status === 'completed'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Completed
+                        </option>
+
+
+                        <option
+                            value="cancelled"
+                            <%= typeof status !== 'undefined' &&
+                                status === 'cancelled'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PAYMENT STATUS -->
+
+                <div class="filter-group">
+
+                    <label for="paymentStatus">
+                        Payment
+                    </label>
+
+
+                    <select
+                        name="paymentStatus"
+                        id="paymentStatus"
+                    >
+
+                        <option value="">
+                            All Payments
+                        </option>
+
+
+                        <option
+                            value="pending"
+                            <%= typeof paymentStatus !== 'undefined' &&
+                                paymentStatus === 'pending'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Pending
+                        </option>
+
+
+                        <option
+                            value="paid"
+                            <%= typeof paymentStatus !== 'undefined' &&
+                                paymentStatus === 'paid'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Paid
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="filter-buttons">
+
+                    <button
+                        type="submit"
+                        class="filter-btn"
+                    >
+                        Apply Filter
+                    </button>
+
+
+                    <a
+                        href="/owner/history"
+                        class="reset-btn"
+                    >
+                        Reset
+                    </a>
+
+                </div>
+
+            </form>
+
+
+            <!-- ================= FILTER RESULT ================= -->
+
+            <% if (
+                (typeof search !== 'undefined' && search) ||
+                (typeof status !== 'undefined' && status) ||
+                (typeof paymentStatus !== 'undefined' && paymentStatus)
+            ) { %>
+
+                <div class="filter-result">
+
+                    Showing
+
+                    <strong>
+                        <%= bookings ? bookings.length : 0 %>
+                    </strong>
+
+                    matching booking(s).
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+
         <!-- ================= BOOKINGS ================= -->
 
         <% if (bookings && bookings.length > 0) { %>
@@ -525,11 +992,14 @@
 
                         <div class="vehicle-image">
 
-                            <% if (booking.vehicleId && booking.vehicleId.image) { %>
+                            <% if (
+                                booking.vehicleId &&
+                                booking.vehicleId.image
+                            ) { %>
 
                                 <img
                                     src="<%= booking.vehicleId.image %>"
-                                    alt="<%= booking.vehicleId.brand %> <%= booking.vehicleId.model %>"
+                                    alt="<%= booking.vehicleId.brand || '' %> <%= booking.vehicleId.model || '' %>"
                                 >
 
                             <% } else { %>
@@ -552,8 +1022,13 @@
 
                                 <div class="vehicle-name">
 
-                                    <%= booking.vehicleId.brand %>
-                                    <%= booking.vehicleId.model %>
+                                    <%= booking.vehicleId
+                                        ? (booking.vehicleId.brand || '')
+                                        : 'Vehicle' %>
+
+                                    <%= booking.vehicleId
+                                        ? (booking.vehicleId.model || '')
+                                        : '' %>
 
                                 </div>
 
@@ -562,7 +1037,9 @@
 
                                     Reg No:
 
-                                    <%= booking.vehicleId.vehicleNumber %>
+                                    <%= booking.vehicleId
+                                        ? (booking.vehicleId.vehicleNumber || 'N/A')
+                                        : 'N/A' %>
 
                                 </div>
 
@@ -571,7 +1048,9 @@
 
                             <span class="vehicle-type">
 
-                                <%= booking.vehicleId.type || 'Vehicle' %>
+                                <%= booking.vehicleId
+                                    ? (booking.vehicleId.type || 'Vehicle')
+                                    : 'Vehicle' %>
 
                             </span>
 
@@ -584,16 +1063,22 @@
                         <div class="card-body">
 
 
+                            <!-- CUSTOMER -->
+
                             <div class="info">
 
                                 <strong>
                                     Customer:
                                 </strong>
 
-                                <%= booking.userId.name %>
+                                <%= booking.userId
+                                    ? (booking.userId.name || 'N/A')
+                                    : 'N/A' %>
 
                             </div>
 
+
+                            <!-- EMAIL -->
 
                             <div class="info">
 
@@ -601,10 +1086,14 @@
                                     Email:
                                 </strong>
 
-                                <%= booking.userId.email %>
+                                <%= booking.userId
+                                    ? (booking.userId.email || 'N/A')
+                                    : 'N/A' %>
 
                             </div>
 
+
+                            <!-- START DATE -->
 
                             <div class="info">
 
@@ -612,10 +1101,14 @@
                                     Start Date:
                                 </strong>
 
-                                <%= booking.startDate.toLocaleDateString() %>
+                                <%= booking.startDate
+                                    ? booking.startDate.toLocaleDateString()
+                                    : 'N/A' %>
 
                             </div>
 
+
+                            <!-- END DATE -->
 
                             <div class="info">
 
@@ -623,7 +1116,9 @@
                                     End Date:
                                 </strong>
 
-                                <%= booking.endDate.toLocaleDateString() %>
+                                <%= booking.endDate
+                                    ? booking.endDate.toLocaleDateString()
+                                    : 'N/A' %>
 
                             </div>
 
@@ -632,16 +1127,18 @@
 
                             <div class="amount">
 
-                                ₹<%= booking.totalAmount %>
+                                ₹<%= booking.totalAmount || 0 %>
 
                             </div>
 
 
-                            <!-- ================= STATUS ================= -->
+                            <!-- ================= BOOKING STATUS ================= -->
 
-                            <span class="status <%= booking.status %>">
+                            <span class="status <%= booking.status || 'pending' %>">
 
-                                <%= booking.status.toUpperCase() %>
+                                <%= booking.status
+                                    ? booking.status.toUpperCase()
+                                    : 'UNKNOWN' %>
 
                             </span>
 
@@ -687,9 +1184,7 @@
 
                                     </form>
 
-
                                 </div>
-
 
                             <% } %>
 
@@ -700,17 +1195,51 @@
 
                                 Payment:
 
-                                <strong>
+                                <% if (booking.paymentStatus === 'paid') { %>
 
-                                    <%= booking.paymentStatus.toUpperCase() %>
+                                    <strong class="payment-paid">
+                                        PAID
+                                    </strong>
 
-                                </strong>
+                                <% } else { %>
+
+                                    <strong class="payment-pending">
+                                        PENDING
+                                    </strong>
+
+                                <% } %>
 
                             </div>
 
 
-                        </div>
+                            <!-- ================= EDGE CASE WARNING ================= -->
 
+                            <% if (
+                                booking.status === 'completed' &&
+                                booking.paymentStatus !== 'paid'
+                            ) { %>
+
+                                <div
+                                    style="
+                                        margin-top: 12px;
+                                        padding: 10px;
+                                        background: #fee2e2;
+                                        color: #991b1b;
+                                        border-radius: 7px;
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                    "
+                                >
+
+                                    ⚠ Invalid booking state:
+                                    Completed booking must have paid payment.
+
+                                </div>
+
+                            <% } %>
+
+
+                        </div>
 
                     </div>
 
@@ -724,13 +1253,51 @@
         <% } else { %>
 
 
-            <!-- ================= EMPTY STATE ================= -->
+            <!-- ================= EMPTY / NO RESULTS ================= -->
 
             <div class="empty-state">
 
-                <p>
-                    No bookings have been made for your vehicles yet.
-                </p>
+
+                <% if (
+                    (typeof search !== 'undefined' && search) ||
+                    (typeof status !== 'undefined' && status) ||
+                    (typeof paymentStatus !== 'undefined' && paymentStatus)
+                ) { %>
+
+
+                    <h3>
+                        No Matching Bookings
+                    </h3>
+
+
+                    <p>
+                        No bookings match your selected filters.
+                    </p>
+
+
+                    <a
+                        href="/owner/history"
+                        class="reset-btn"
+                    >
+                        Clear Filters
+                    </a>
+
+
+                <% } else { %>
+
+
+                    <h3>
+                        No Booking History
+                    </h3>
+
+
+                    <p>
+                        No bookings have been made for your vehicles yet.
+                    </p>
+
+
+                <% } %>
+
 
             </div>
 

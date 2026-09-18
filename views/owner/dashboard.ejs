@@ -115,7 +115,7 @@
             justify-content: space-between;
             align-items: center;
 
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .top-bar h2 {
@@ -162,6 +162,145 @@
             background-color: #334155;
         }
 
+        /* ================= FILTER ================= */
+
+        .filter-container {
+            background: #ffffff;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+
+            margin-bottom: 30px;
+
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .filter-form {
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 160px;
+        }
+
+        .search-group {
+            flex: 1;
+
+            min-width: 250px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #334155;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+
+            height: 42px;
+
+            padding: 0 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            background-color: #ffffff;
+
+            color: #1e293b;
+
+            outline: none;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #2563eb;
+
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+
+            gap: 8px;
+        }
+
+        .filter-btn,
+        .reset-btn {
+            height: 42px;
+
+            padding: 0 18px;
+
+            border-radius: 7px;
+
+            border: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background-color: #2563eb;
+
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .reset-btn {
+            background-color: #e2e8f0;
+
+            color: #334155;
+        }
+
+        .reset-btn:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* ================= FILTER RESULT INFO ================= */
+
+        .filter-result {
+            margin-top: 15px;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
         /* ================= VEHICLE GRID ================= */
 
         .grid {
@@ -188,6 +327,7 @@
                 0 4px 15px rgba(0, 0, 0, 0.05);
 
             display: flex;
+
             flex-direction: column;
 
             transition:
@@ -206,6 +346,7 @@
 
         .vehicle-image {
             width: 100%;
+
             height: 210px;
 
             background-color: #e2e8f0;
@@ -215,6 +356,7 @@
 
         .vehicle-image img {
             width: 100%;
+
             height: 100%;
 
             object-fit: cover;
@@ -228,14 +370,15 @@
             transform: scale(1.04);
         }
 
-        /* If vehicle has no image */
-
         .no-image {
             width: 100%;
+
             height: 100%;
 
             display: flex;
+
             justify-content: center;
+
             align-items: center;
 
             color: #64748b;
@@ -249,7 +392,9 @@
             padding: 18px 20px 10px;
 
             display: flex;
+
             justify-content: space-between;
+
             align-items: flex-start;
 
             gap: 10px;
@@ -257,6 +402,7 @@
 
         .card-title {
             font-size: 19px;
+
             font-weight: 700;
 
             color: #0f172a;
@@ -264,9 +410,11 @@
 
         .badge-type {
             background: #e0f2fe;
+
             color: #0369a1;
 
             font-size: 12px;
+
             font-weight: 600;
 
             padding: 5px 10px;
@@ -286,6 +434,7 @@
 
         .vehicle-num {
             font-size: 13px;
+
             color: #64748b;
 
             margin-bottom: 12px;
@@ -293,6 +442,7 @@
 
         .price-tag {
             font-size: 21px;
+
             font-weight: 800;
 
             color: #2563eb;
@@ -302,6 +452,7 @@
 
         .price-tag span {
             font-size: 13px;
+
             font-weight: 400;
 
             color: #64748b;
@@ -321,6 +472,7 @@
 
         .status-tag {
             font-size: 13px;
+
             font-weight: 600;
         }
 
@@ -402,6 +554,12 @@
             border: 1px solid #e2e8f0;
         }
 
+        .empty-state h3 {
+            color: #334155;
+
+            margin-bottom: 10px;
+        }
+
         .empty-state p {
             color: #64748b;
 
@@ -436,7 +594,30 @@
 
             .top-actions a {
                 flex: 1;
+
                 text-align: center;
+            }
+
+            .filter-form {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .filter-group,
+            .search-group {
+                width: 100%;
+
+                min-width: 100%;
+            }
+
+            .filter-buttons {
+                width: 100%;
+            }
+
+            .filter-buttons button,
+            .filter-buttons a {
+                flex: 1;
             }
 
             .grid {
@@ -460,12 +641,14 @@
 
             <span>
                 Welcome,
+
                 <strong>
                     <%= typeof user !== 'undefined' && user && user.name
                         ? user.name
                         : 'Owner'
                     %>
                 </strong>
+
                 (Owner)
             </span>
 
@@ -484,10 +667,13 @@
 
         <div class="profile-card">
 
-            <h3>Owner Profile</h3>
+            <h3>
+                Owner Profile
+            </h3>
 
             <p>
                 <strong>Name:</strong>
+
                 <%= typeof user !== 'undefined' && user && user.name
                     ? user.name
                     : 'N/A'
@@ -496,6 +682,7 @@
 
             <p>
                 <strong>Email:</strong>
+
                 <%= typeof user !== 'undefined' && user && user.email
                     ? user.email
                     : 'N/A'
@@ -515,15 +702,238 @@
 
             <div class="top-actions">
 
-                <a href="/owner/history" class="btn-history">
+                <a
+                    href="/owner/history"
+                    class="btn-history"
+                >
                     Rental History
                 </a>
 
-                <a href="/owner/vehicles/add" class="btn-add">
+                <a
+                    href="/owner/vehicles/add"
+                    class="btn-add"
+                >
                     + Add New Vehicle
                 </a>
 
             </div>
+
+        </div>
+
+
+        <!-- ================= FILTER ================= -->
+
+        <div class="filter-container">
+
+            <form
+                action="/owner/dashboard"
+                method="GET"
+                class="filter-form"
+            >
+
+                <!-- SEARCH -->
+
+                <div class="filter-group search-group">
+
+                    <label for="search">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="search"
+                        name="search"
+                        placeholder="Brand, model or vehicle number..."
+                        value="<%= typeof search !== 'undefined' ? search : '' %>"
+                    >
+
+                </div>
+
+
+                <!-- VEHICLE TYPE -->
+
+                <div class="filter-group">
+
+                    <label for="type">
+                        Vehicle Type
+                    </label>
+
+                    <select
+                        name="type"
+                        id="type"
+                    >
+
+                        <option value="">
+                            All Types
+                        </option>
+
+                        <option
+                            value="Car"
+                            <%= typeof selectedType !== 'undefined' &&
+                                selectedType === 'Car'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Car
+                        </option>
+
+                        <option
+                            value="Bike"
+                            <%= typeof selectedType !== 'undefined' &&
+                                selectedType === 'Bike'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Bike
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- AVAILABILITY -->
+
+                <div class="filter-group">
+
+                    <label for="availability">
+                        Availability
+                    </label>
+
+                    <select
+                        name="availability"
+                        id="availability"
+                    >
+
+                        <option value="">
+                            All
+                        </option>
+
+                        <option
+                            value="available"
+                            <%= typeof selectedAvailability !== 'undefined' &&
+                                selectedAvailability === 'available'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Available
+                        </option>
+
+                        <option
+                            value="unavailable"
+                            <%= typeof selectedAvailability !== 'undefined' &&
+                                selectedAvailability === 'unavailable'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Not Available
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- SORT -->
+
+                <div class="filter-group">
+
+                    <label for="sort">
+                        Sort By
+                    </label>
+
+                    <select
+                        name="sort"
+                        id="sort"
+                    >
+
+                        <option value="">
+                            Latest
+                        </option>
+
+                        <option
+                            value="priceAsc"
+                            <%= typeof selectedSort !== 'undefined' &&
+                                selectedSort === 'priceAsc'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Price: Low to High
+                        </option>
+
+                        <option
+                            value="priceDesc"
+                            <%= typeof selectedSort !== 'undefined' &&
+                                selectedSort === 'priceDesc'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Price: High to Low
+                        </option>
+
+                        <option
+                            value="nameAsc"
+                            <%= typeof selectedSort !== 'undefined' &&
+                                selectedSort === 'nameAsc'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Name: A-Z
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="filter-buttons">
+
+                    <button
+                        type="submit"
+                        class="filter-btn"
+                    >
+                        Apply Filter
+                    </button>
+
+                    <a
+                        href="/owner/dashboard"
+                        class="reset-btn"
+                    >
+                        Reset
+                    </a>
+
+                </div>
+
+            </form>
+
+
+            <!-- FILTER RESULT -->
+
+            <% if (
+                (typeof search !== 'undefined' && search) ||
+                (typeof selectedType !== 'undefined' && selectedType) ||
+                (typeof selectedAvailability !== 'undefined' && selectedAvailability) ||
+                (typeof selectedSort !== 'undefined' && selectedSort)
+            ) { %>
+
+                <div class="filter-result">
+
+                    Showing
+                    <strong><%= vehicles ? vehicles.length : 0 %></strong>
+                    matching vehicle(s).
+
+                </div>
+
+            <% } %>
 
         </div>
 
@@ -587,6 +997,7 @@
                             <div class="vehicle-num">
 
                                 Vehicle Reg No:
+
                                 <strong>
                                     <%= vehicle.vehicleNumber %>
                                 </strong>
@@ -620,7 +1031,8 @@
                                 <%= vehicle.availability
                                     ? 'status-available'
                                     : 'status-unavailable'
-                                %>">
+                                %>"
+                            >
 
                                 Status:
 
@@ -650,6 +1062,7 @@
                                 action="/owner/vehicles/delete/<%= vehicle._id %>"
                                 method="POST"
                                 style="display:inline;"
+
                                 onsubmit="return confirm(
                                     'Are you sure you want to delete this vehicle?'
                                 );"
@@ -674,20 +1087,49 @@
 
         <% } else { %>
 
-            <!-- ================= EMPTY STATE ================= -->
+            <!-- ================= NO RESULTS / EMPTY STATE ================= -->
 
             <div class="empty-state">
 
-                <p>
-                    You haven't listed any vehicles for rent yet.
-                </p>
+                <% if (
+                    (typeof search !== 'undefined' && search) ||
+                    (typeof selectedType !== 'undefined' && selectedType) ||
+                    (typeof selectedAvailability !== 'undefined' && selectedAvailability)
+                ) { %>
 
-                <a
-                    href="/owner/vehicles/add"
-                    class="btn-add"
-                >
-                    + Add Your First Vehicle
-                </a>
+                    <h3>
+                        No Vehicles Found
+                    </h3>
+
+                    <p>
+                        No vehicles match your current filter.
+                    </p>
+
+                    <a
+                        href="/owner/dashboard"
+                        class="reset-btn"
+                    >
+                        Clear Filters
+                    </a>
+
+                <% } else { %>
+
+                    <h3>
+                        No Vehicles Listed
+                    </h3>
+
+                    <p>
+                        You haven't listed any vehicles for rent yet.
+                    </p>
+
+                    <a
+                        href="/owner/vehicles/add"
+                        class="btn-add"
+                    >
+                        + Add Your First Vehicle
+                    </a>
+
+                <% } %>
 
             </div>
 

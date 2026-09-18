@@ -18,11 +18,67 @@ const resolveImageUrl = (req, fallbackUrl = '') => {
 const getOwnerDashboard = async (req, res) => {
     try {
         const ownerId = req.user._id || req.user.id;
-        const vehicles = await Vehicle.find({ ownerId });
+
+        const {
+            search = '',
+            type = '',
+            availability = '',
+            sort = ''
+        } = req.query;
+
+        // Always restrict vehicles to logged-in owner
+        const filter = {
+            ownerId: ownerId
+        };
+
+        // Search by brand, model, or vehicle number
+        if (search.trim() !== '') {
+            filter.$or = [
+                { brand: { $regex: search.trim(), $options: 'i' } },
+                { model: { $regex: search.trim(), $options: 'i' } },
+                { vehicleNumber: { $regex: search.trim(), $options: 'i' } }
+            ];
+        }
+
+        // Filter by vehicle type
+        if (type !== '') {
+            filter.type = type;
+        }
+
+        // Filter by availability
+        if (availability === 'available') {
+            filter.availability = true;
+        } 
+        else if (availability === 'unavailable') {
+            filter.availability = false;
+        }
+
+        // Sorting
+        let sortOption = { _id: -1 };
+
+        if (sort === 'priceAsc') {
+            sortOption = { pricePerDay: 1 };
+        } 
+        else if (sort === 'priceDesc') {
+            sortOption = { pricePerDay: -1 };
+        } 
+        else if (sort === 'nameAsc') {
+            sortOption = { brand: 1, model: 1 };
+        }
+
+        const vehicles = await Vehicle
+            .find(filter)
+            .sort(sortOption);
 
         res.render('owner/dashboard', {
             user: req.user,
-            vehicles
+            vehicles,
+
+            // Send current filter values to EJS
+            search,
+            selectedType: type,
+            selectedAvailability: availability,
+            selectedSort: sort
         });
 
     } catch (error) {
@@ -217,19 +273,120 @@ const deletevehicle = async (req, res) => {
 
 // ==================== USER DASHBOARD ====================
 
+// ==================== USER DASHBOARD ====================
+
+// ==================== USER DASHBOARD ====================
+
 const getUserDashboard = async (req, res) => {
     try {
-        const vehicles = await Vehicle.find()
-            .populate('ownerId', 'name email phone');
+
+        const {
+            search = '',
+            type = '',
+            minPrice = '',
+            maxPrice = '',
+            sort = ''
+        } = req.query;
+
+
+        // ==================== BUILD QUERY ====================
+
+        const query = {};
+
+
+        // Search by brand, model or vehicle number
+        if (search.trim()) {
+
+            query.$or = [
+                {
+                    brand: {
+                        $regex: search.trim(),
+                        $options: 'i'
+                    }
+                },
+                {
+                    model: {
+                        $regex: search.trim(),
+                        $options: 'i'
+                    }
+                },
+                {
+                    vehicleNumber: {
+                        $regex: search.trim(),
+                        $options: 'i'
+                    }
+                }
+            ];
+
+        }
+
+
+        // Filter by vehicle type
+        if (type) {
+            query.type = type;
+        }
+
+
+        // Filter by price range
+        if (minPrice || maxPrice) {
+
+            query.pricePerDay = {};
+
+            if (minPrice) {
+                query.pricePerDay.$gte = Number(minPrice);
+            }
+
+            if (maxPrice) {
+                query.pricePerDay.$lte = Number(maxPrice);
+            }
+
+        }
+
+
+        // ==================== SORT ====================
+
+        let sortOption = {};
+
+        if (sort === 'priceLow') {
+
+            sortOption.pricePerDay = 1;
+
+        } else if (sort === 'priceHigh') {
+
+            sortOption.pricePerDay = -1;
+
+        }
+
+
+        // ==================== GET VEHICLES ====================
+
+        const vehicles = await Vehicle.find(query)
+            .populate('ownerId', 'name email phone')
+            .sort(sortOption);
+
+
+        // ==================== RENDER ====================
 
         res.render('user/dashboard', {
+
             user: req.user,
-            vehicles
+            vehicles,
+
+            // Keep filter values in the form
+            search,
+            type,
+            minPrice,
+            maxPrice,
+            sort
+
         });
 
     } catch (error) {
+
         console.error('Error fetching customer dashboard:', error);
+
         res.status(500).send('Server Error');
+
     }
 };
 
