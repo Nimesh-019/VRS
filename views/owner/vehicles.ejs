@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -30,14 +29,11 @@
 
         <div>
 
-            <a
-                href="/owner/dashboard"
-                style="
+            <a href="/owner/dashboard" style="
                     color: #cbd5e1;
                     text-decoration: none;
                     font-size: 14px;
-                "
-            >
+                ">
                 ← Back to Dashboard
             </a>
 
@@ -57,10 +53,7 @@
                 My Vehicles
             </h2>
 
-            <a
-                href="/owner/vehicles/add"
-                class="btn-add"
-            >
+            <a href="/owner/vehicles/add" class="btn-add">
                 + Add Vehicle
             </a>
 
@@ -69,11 +62,11 @@
 
         <!-- ================= VEHICLES ================= -->
 
-        <% if (vehicles && vehicles.length > 0) { %>
+        <% if (vehicles && vehicles.length> 0) { %>
 
             <div class="grid">
 
-                <% vehicles.forEach(vehicle => { %>
+                <% vehicles.forEach(vehicle=> { %>
 
 
                     <!-- ================= VEHICLE CARD ================= -->
@@ -87,18 +80,15 @@
 
                             <% if (vehicle.image) { %>
 
-                                <img
-                                    src="<%= vehicle.image %>"
-                                    alt="<%= vehicle.brand %> <%= vehicle.model %>"
-                                >
+                                <img src="<%= vehicle.image %>" alt="<%= vehicle.brand %> <%= vehicle.model %>">
 
-                            <% } else { %>
+                                <% } else { %>
 
-                                <div class="no-image">
-                                    No Image Available
-                                </div>
+                                    <div class="no-image">
+                                        No Image Available
+                                    </div>
 
-                            <% } %>
+                                    <% } %>
 
                         </div>
 
@@ -110,7 +100,7 @@
                             <div class="card-title">
 
                                 <%= vehicle.brand %>
-                                <%= vehicle.model %>
+                                    <%= vehicle.model %>
 
                             </div>
 
@@ -153,9 +143,9 @@
 
                                 ₹<%= vehicle.pricePerDay %>
 
-                                <span>
-                                    / day
-                                </span>
+                                    <span>
+                                        / day
+                                    </span>
 
                             </div>
 
@@ -166,15 +156,11 @@
                                 <%= vehicle.availability
                                     ? 'available'
                                     : 'unavailable'
-                                %>"
-                            >
+                                %>">
 
                                 Status:
 
-                                <%= vehicle.availability
-                                    ? 'Available for Rent'
-                                    : 'Not Available'
-                                %>
+                                <%= vehicle.availability ? 'Available for Rent' : 'Not Available' %>
 
                             </div>
 
@@ -186,28 +172,17 @@
                         <div class="card-actions">
 
 
-                            <a
-                                href="/owner/vehicles/edit/<%= vehicle._id %>"
-                                class="btn-edit"
-                            >
+                            <a href="/owner/vehicles/edit/<%= vehicle._id %>" class="btn-edit">
                                 Edit
                             </a>
 
 
-                            <form
-                                action="/owner/vehicles/delete/<%= vehicle._id %>"
-                                method="POST"
-                                onsubmit="
+                            <form action="/owner/vehicles/delete/<%= vehicle._id %>" method="POST" onsubmit="
                                     return confirm(
                                         'Are you sure you want to delete this vehicle?'
                                     );
-                                "
-                            >
-
-                                <button
-                                    type="submit"
-                                    class="btn-delete"
-                                >
+                                ">
+                                <button type="submit" class="btn-delete">
                                     Delete
                                 </button>
 
@@ -220,33 +195,30 @@
                     </div>
 
 
-                <% }) %>
+                    <% }) %>
 
             </div>
 
 
-        <% } else { %>
+            <% } else { %>
 
 
-            <!-- ================= EMPTY STATE ================= -->
+                <!-- ================= EMPTY STATE ================= -->
 
-            <div class="empty-state">
+                <div class="empty-state">
 
-                <p>
-                    No vehicles found.
-                </p>
+                    <p>
+                        No vehicles found.
+                    </p>
 
-                <a
-                    href="/owner/vehicles/add"
-                    class="btn-add"
-                >
-                    + Add Your First Vehicle
-                </a>
+                    <a href="/owner/vehicles/add" class="btn-add">
+                        + Add Your First Vehicle
+                    </a>
 
-            </div>
+                </div>
 
 
-        <% } %>
+                <% } %>
 
 
     </div>
@@ -255,4 +227,3 @@
 </body>
 
 </html>
-

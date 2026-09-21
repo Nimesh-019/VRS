@@ -1,4 +1,6 @@
 const Vehicle = require('../models/vehicle');
+const multer = require('multer');
+const upload = require('../middleware/upload');
 
 const resolveImageUrl = (req, fallbackUrl = '') => {
     if (req.file) {
@@ -48,7 +50,7 @@ const getOwnerDashboard = async (req, res) => {
         // Filter by availability
         if (availability === 'available') {
             filter.availability = true;
-        } 
+        }
         else if (availability === 'unavailable') {
             filter.availability = false;
         }
@@ -58,10 +60,10 @@ const getOwnerDashboard = async (req, res) => {
 
         if (sort === 'priceAsc') {
             sortOption = { pricePerDay: 1 };
-        } 
+        }
         else if (sort === 'priceDesc') {
             sortOption = { pricePerDay: -1 };
-        } 
+        }
         else if (sort === 'nameAsc') {
             sortOption = { brand: 1, model: 1 };
         }
@@ -101,50 +103,79 @@ const getAddVehicle = (req, res) => {
 // ==================== ADD VEHICLE ====================
 
 const addVehicle = async (req, res) => {
-    try {
-        const {
-            vehicleNumber,
-            brand,
-            model,
-            type,
-            pricePerDay,
-            description
-        } = req.body;
 
-        const imageUrl = resolveImageUrl(req);
+    upload.single('image')(req, res, async (error) => {
 
-        if (!imageUrl) {
+        if (error) {
+
+            if (error instanceof multer.MulterError) {
+
+                if (error.code === 'LIMIT_FILE_SIZE') {
+                    return res.render('owner/addVehicle', {
+                        user: req.user,
+                        error: 'Vehicle image must be 5 MB or smaller.'
+                    });
+                }
+
+                return res.render('owner/addVehicle', {
+                    user: req.user,
+                    error: 'Error uploading vehicle image.'
+                });
+            }
+
             return res.render('owner/addVehicle', {
                 user: req.user,
-                error: 'Vehicle image is required'
+                error: error.message || 'Error uploading image.'
             });
         }
 
-        const newVehicle = new Vehicle({
-            ownerId: req.user._id || req.user.id,
-            vehicleNumber,
-            brand,
-            model,
-            type,
-            pricePerDay,
-            description,
-            image: imageUrl,
-            availability: true
-        });
+        try {
 
-        await newVehicle.save();
+            const {
+                vehicleNumber,
+                brand,
+                model,
+                type,
+                pricePerDay,
+                description
+            } = req.body;
 
-        res.redirect('/owner/dashboard');
+            const imageUrl = resolveImageUrl(req);
 
-    } catch (error) {
-        console.error('Error adding vehicle:', error);
-        res.render('owner/addVehicle', {
-            user: req.user,
-            error: error.message || 'Error adding vehicle'
-        });
-    }
+            if (!imageUrl) {
+                return res.render('owner/addVehicle', {
+                    user: req.user,
+                    error: 'Vehicle image is required'
+                });
+            }
+
+            const newVehicle = new Vehicle({
+                ownerId: req.user._id || req.user.id,
+                vehicleNumber,
+                brand,
+                model,
+                type,
+                pricePerDay,
+                description,
+                image: imageUrl,
+                availability: true
+            });
+
+            await newVehicle.save();
+
+            res.redirect('/owner/dashboard');
+
+        } catch (error) {
+
+            console.error('Error adding vehicle:', error);
+
+            res.render('owner/addVehicle', {
+                user: req.user,
+                error: error.message || 'Error adding vehicle'
+            });
+        }
+    });
 };
-
 
 // ==================== OWNER VEHICLES ====================
 
