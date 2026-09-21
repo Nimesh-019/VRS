@@ -12,6 +12,21 @@ body {
     color: #333;
     padding-bottom: 50px;
 }
+.complaint-btn {
+    display: inline-block;
+    padding: 9px 15px;
+    background: #dc2626;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.complaint-btn:hover {
+    background: #b91c1c;
+}
 
 /* ================= HEADER ================= */
 

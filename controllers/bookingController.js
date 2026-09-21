@@ -4,12 +4,21 @@ const Booking = require('../models/Booking');
 exports.showBookingForm = async (req, res) => {
     try {
         const vehicleId = req.params.vehicleId;
+
         const vehicle = await Vehicle.findById(vehicleId);
 
         if (!vehicle) {
             return res.status(404).send('Vehicle not found');
         }
 
+        // Vehicle must be approved by admin
+        if (vehicle.approvalStatus !== 'approved') {
+            return res.status(403).send(
+                'This vehicle is not approved for rental.'
+            );
+        }
+
+        // Vehicle must also be available
         if (!vehicle.availability) {
             return res.render('service/booking', {
                 user: req.user,
@@ -39,6 +48,13 @@ exports.bookVehicle = async (req, res) => {
 
         if (!vehicle) {
             return res.status(404).send('Vehicle not found');
+        }
+
+        // Check admin approval
+        if (vehicle.approvalStatus !== 'approved') {
+            return res.status(403).send(
+                'This vehicle is not approved for rental.'
+            );
         }
 
         if (!startDate || !endDate) {
@@ -84,10 +100,16 @@ exports.bookVehicle = async (req, res) => {
         }
 
         const diffTime = Math.abs(end - start);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+        const diffDays =
+            Math.ceil(
+                diffTime / (1000 * 60 * 60 * 24)
+            ) + 1;
+
         const totalDays = Math.max(1, diffDays);
 
-        const totalAmount = totalDays * vehicle.pricePerDay;
+        const totalAmount =
+            totalDays * vehicle.pricePerDay;
 
         const userId = req.user._id || req.user.id;
 

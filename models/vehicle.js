@@ -59,7 +59,7 @@ const vehicleSchema = new mongoose.Schema(
         approvalStatus: {
             type: String,
             enum: ['pending', 'approved', 'rejected'],
-            default: 'approved'
+            default: 'pending'
         },
 
         rejectionReason: {

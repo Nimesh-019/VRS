@@ -1,0 +1,748 @@
+/* ==========================================================================
+   VRS - UNIFIED MASTER STYLESHEET (style.css)
+   ========================================================================== */
+
+/* ==========================================================================
+   1. GLOBAL RESET & BASE STYLES
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+body {
+    background-color: #f8fafc;
+    color: #0f172a;
+    min-height: 100vh;
+    padding-bottom: 50px;
+    margin: 0;
+}
+
+/* Auth Page Body Theme */
+body.auth-page {
+    background-color: #0b0f14;
+    color: #ffffff;
+    padding-bottom: 0;
+}
+
+/* ==========================================================================
+   2. HEADER & NAVIGATION
+   ========================================================================== */
+
+header, nav.navbar {
+    width: 100%;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #ffffff !important;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+header h1, header h1 a, nav.navbar h2 {
+    color: #ffffff !important;
+    font-size: 22px;
+    font-weight: 700;
+    text-decoration: none;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+header h1 span, header h1 a span, nav.navbar h2 span {
+    color: #3b82f6 !important;
+}
+
+.user-nav, .nav-links, .admin-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-nav span, .nav-links span, .admin-info span, .admin-name {
+    font-size: 14px;
+    color: #cbd5e1 !important;
+}
+
+.user-nav strong, .admin-info strong {
+    color: #ffffff;
+}
+
+.logout-btn, .logout {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-btn:hover, .logout:hover {
+    background-color: #dc2626 !important;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background-color: #334155;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.nav-links a:hover {
+    background-color: #475569;
+}
+
+/* ==========================================================================
+   3. LAYOUT & CONTAINERS
+   ========================================================================== */
+
+.container {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.top-bar, .section-header, .page-header, .page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.top-bar h2, .section-header h2, .page-header h2, .page-title h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.section-header p, .page-header p, .page-title p {
+    color: #64748b;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.top-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   4. FILTER BAR & FORM CONTROLS
+   ========================================================================== */
+
+.filter-container, .filter-box {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.filter-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 160px;
+}
+
+.search-group {
+    flex: 1;
+    min-width: 250px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.filter-group input,
+.filter-group select,
+.filter-group textarea,
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea, .form-group textarea {
+    height: auto;
+    padding: 12px 14px;
+}
+
+.filter-group input:focus,
+.filter-group select:focus,
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.filter-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 42px;
+}
+
+.filter-btn, .btn-submit, .btn-add, .btn-primary {
+    height: 42px;
+    padding: 0 22px;
+    border-radius: 7px;
+    border: none;
+    background-color: #2563eb;
+    color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.filter-btn:hover, .btn-submit:hover, .btn-add:hover, .btn-primary:hover {
+    background-color: #1d4ed8 !important;
+}
+
+.reset-btn, .btn-cancel, .btn-secondary, .back-btn, .home-btn {
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 7px;
+    border: 1px solid #cbd5e1;
+    background-color: #f1f5f9;
+    color: #334155 !important;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.reset-btn:hover, .btn-cancel:hover, .btn-secondary:hover, .back-btn:hover, .home-btn:hover {
+    background-color: #e2e8f0 !important;
+}
+
+.btn-history {
+    background-color: #475569;
+    color: #ffffff !important;
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-history:hover {
+    background-color: #334155 !important;
+}
+
+.btn-edit {
+    background-color: #f59e0b;
+    color: #ffffff !important;
+    padding: 7px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-edit:hover {
+    background-color: #d97706 !important;
+}
+
+.btn-delete {
+    background-color: #ef4444;
+    color: #ffffff !important;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626 !important;
+}
+
+.view-btn {
+    background-color: #2563eb;
+    color: #ffffff !important;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.view-btn:hover {
+    background-color: #1d4ed8 !important;
+}
+
+.filter-result {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ==========================================================================
+   5. CARDS & VEHICLE GRID
+   ========================================================================== */
+
+.profile-card, .owner-card {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.profile-card h3, .owner-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.profile-card p, .owner-card p {
+    font-size: 14px;
+    color: #475569;
+    margin: 4px 0;
+}
+
+.grid, .history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.card, .booking-card {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover, .booking-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.vehicle-image {
+    width: 100%;
+    height: 200px;
+    background-color: #e2e8f0;
+    overflow: hidden;
+}
+
+.vehicle-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.no-image, .no-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #64748b;
+    font-size: 14px;
+    background-color: #f1f5f9;
+}
+
+.card-header {
+    padding: 16px 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.card-title, .vehicle-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.badge-type, .vehicle-type {
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.card-body {
+    padding: 5px 20px 20px;
+    flex-grow: 1;
+}
+
+.vehicle-num, .vehicle-number {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.price-tag, .amount {
+    font-size: 20px;
+    font-weight: 800;
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.price-tag span {
+    font-size: 13px;
+    font-weight: 400;
+    color: #64748b;
+}
+
+.card-actions {
+    padding: 15px 20px;
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    gap: 10px;
+}
+
+/* ==========================================================================
+   6. TABLES & DATA LISTS
+   ========================================================================== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    background: #f8fafc;
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* Status Badges */
+.status, .approval-badge, .status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-approved, .approval-approved, .status.confirmed, .status.resolved {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-rejected, .approval-rejected, .status.cancelled {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.status-pending, .approval-pending, .status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* ==========================================================================
+   7. AUTH PAGES (LOGIN / SIGNUP)
+   ========================================================================== */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+}
+
+.auth-banner {
+    width: 50%;
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(8, 15, 25, 0.95), rgba(20, 35, 50, 0.9)), url("https://images.unsplash.com/photo-1503376780353-7e6692767b70") center / cover;
+    position: relative;
+}
+
+.brand {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.brand span {
+    color: #38bdf8;
+}
+
+.banner-content h1 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.banner-content h1 span {
+    color: #38bdf8;
+}
+
+.banner-content p {
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+.banner-footer {
+    display: flex;
+    gap: 20px;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.auth-form-container {
+    width: 50%;
+    background-color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-form h2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #94a3b8;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #cbd5e1;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background-color: #1e293b;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.input-group input:focus, .input-group select:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.auth-button {
+    width: 100%;
+    height: 48px;
+    background: #00d2ff;
+    background: linear-gradient(90deg, #00d2ff 0%, #0080ff 100%);
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+.auth-button:hover {
+    opacity: 0.9;
+}
+
+.divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #334155;
+}
+
+.divider span {
+    position: relative;
+    background: #0f172a;
+    padding: 0 12px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.switch-page {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.switch-page a {
+    color: #38bdf8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   8. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 900px) {
+    .auth-banner {
+        display: none;
+    }
+
+    .auth-form-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    header, nav.navbar {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .container {
+        padding: 0 15px;
+        margin: 20px auto;
+    }
+
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group, .search-group {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .filter-buttons {
+        width: 100%;
+    }
+
+    .filter-buttons button, .filter-buttons a {
+        flex: 1;
+    }
+
+    .grid, .history-grid {
+        grid-template-columns: 1fr;
+    }
+}

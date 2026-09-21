@@ -322,7 +322,10 @@ const getUserDashboard = async (req, res) => {
 
         // ==================== BUILD QUERY ====================
 
-        const query = {};
+        const query = {
+    approvalStatus: 'approved',
+    availability: true
+};
 
 
         // Search by brand, model or vehicle number

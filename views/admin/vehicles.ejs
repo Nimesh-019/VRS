@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= owner.name %>'s Vehicles | Admin VRS</title>
+
+        <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>VRS Admin</h2>
+        <div class="admin-info">
+            <span>Welcome, <strong><%= user.name %></strong></span>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="top-bar">
+            <div>
+                <h1 style="margin: 0; font-size: 26px;">Owner Vehicles</h1>
+                <p style="margin: 5px 0 0; color: #6c757d; font-size: 14px;">Viewing all vehicles listed by <%= owner.name %></p>
+            </div>
+            <a href="/admin/dashboard" class="back-btn">← Back to Dashboard</a>
+        </div>
+
+        <div class="owner-card">
+            <div class="owner-details">
+                <h3><%= owner.name %></h3>
+                <p><strong>Email:</strong> <%= owner.email %></p>
+                <p><strong>Phone:</strong> <%= owner.phone %></p>
+            </div>
+            <div class="owner-badge">
+                🚘 <%= vehicles.length %> Vehicle(s) Listed
+            </div>
+        </div>
+
+        <% if (vehicles && vehicles.length > 0) { %>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Brand & Model</th>
+                            <th>Registration No</th>
+                            <th>Type</th>
+                            <th>Price / Day</th>
+                            <th>Availability</th>
+                            <th>Approval Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% vehicles.forEach(vehicle => { %>
+                            <tr>
+                                <td>
+                                    <% if (vehicle.image) { %>
+                                        <img src="<%= vehicle.image %>" alt="<%= vehicle.brand %>" class="vehicle-img">
+                                    <% } else { %>
+                                        <div class="no-img">No Image</div>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <strong><%= vehicle.brand %> <%= vehicle.model %></strong>
+                                </td>
+                                <td><%= vehicle.vehicleNumber %></td>
+                                <td><%= vehicle.type %></td>
+                                <td>₹<%= vehicle.pricePerDay %></td>
+                                <td>
+                                    <% if (vehicle.availability) { %>
+                                        <span class="status status-approved">Available</span>
+                                    <% } else { %>
+                                        <span class="status status-rejected">Unavailable</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if (vehicle.approvalStatus === 'approved') { %>
+                                        <span class="status status-approved">✓ Approved</span>
+                                    <% } else if (vehicle.approvalStatus === 'rejected') { %>
+                                        <span class="status status-rejected">✕ Rejected</span>
+                                        <% if (vehicle.rejectionReason) { %>
+                                            <div class="rejection-reason">Reason: <%= vehicle.rejectionReason %></div>
+                                        <% } %>
+                                    <% } else { %>
+                                        <span class="status status-pending">⏳ Pending Approval</span>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+        <% } else { %>
+
+            <div class="empty">
+                <h3>No Vehicles Found</h3>
+                <p>This owner has not registered any vehicles yet.</p>
+            </div>
+
+        <% } %>
+
+    </div>
+
+</body>
+
+</html>

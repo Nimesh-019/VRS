@@ -11,6 +11,8 @@ exports.showLogin = (req, res) => {
                 return res.redirect('/owner/dashboard');
             } else if (decoded.role === 'user') {
                 return res.redirect('/user/dashboard');
+            } else if (decoded.role === 'admin') {
+                return res.redirect('/admin/dashboard');
             }
         } catch (err) {
             res.clearCookie('token');
@@ -57,6 +59,11 @@ exports.login = async (req, res) => {
         if (user.role === 'user') {
             return res.redirect('/user/dashboard');
         }
+
+        if (user.role === 'admin') {
+            return res.redirect('/admin/dashboard');
+        }
+
         return res.render('user/login', { error: 'Invalid role', email, role });
 
     } catch (error) {

@@ -10,13 +10,10 @@
 
     <title>Customer Dashboard - Vehicle Rental System</title>
 
-
-    <link rel="stylesheet" href="/css/user-dashboard.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
-
 <body>
-
 
     <!-- ================= HEADER ================= -->
 
@@ -27,7 +24,6 @@
             <span>V</span>RS - Vehicle Rentals
 
         </h1>
-
 
         <div class="user-nav">
 
@@ -43,14 +39,12 @@
 
             </span>
 
-
             <a
                 href="/bookings"
                 class="bookings-btn"
             >
                 My Bookings
             </a>
-
 
             <a
                 href="/logout"
@@ -63,12 +57,9 @@
 
     </header>
 
-
-
     <!-- ================= MAIN ================= -->
 
     <div class="container">
-
 
         <!-- ================= SECTION HEADER ================= -->
 
@@ -84,8 +75,6 @@
 
         </div>
 
-
-
         <!-- ================= SEARCH & FILTER ================= -->
 
         <div class="filter-box">
@@ -96,7 +85,6 @@
                 class="filter-form"
             >
 
-
                 <!-- SEARCH -->
 
                 <input
@@ -106,8 +94,6 @@
                     value="<%= search || '' %>"
                 >
 
-
-
                 <!-- VEHICLE TYPE -->
 
                 <select name="type">
@@ -116,14 +102,12 @@
                         All Types
                     </option>
 
-
                     <option
                         value="Car"
                         <%= type === 'Car' ? 'selected' : '' %>
                     >
                         Car
                     </option>
-
 
                     <option
                         value="Bike"
@@ -132,7 +116,6 @@
                         Bike
                     </option>
 
-
                     <option
                         value="Scooter"
                         <%= type === 'Scooter' ? 'selected' : '' %>
@@ -140,14 +123,12 @@
                         Scooter
                     </option>
 
-
                     <option
                         value="SUV"
                         <%= type === 'SUV' ? 'selected' : '' %>
                     >
                         SUV
                     </option>
-
 
                     <option
                         value="Other"
@@ -157,8 +138,6 @@
                     </option>
 
                 </select>
-
-
 
                 <!-- MINIMUM PRICE -->
 
@@ -170,8 +149,6 @@
                     value="<%= minPrice || '' %>"
                 >
 
-
-
                 <!-- MAXIMUM PRICE -->
 
                 <input
@@ -182,8 +159,6 @@
                     value="<%= maxPrice || '' %>"
                 >
 
-
-
                 <!-- SORT -->
 
                 <select name="sort">
@@ -192,14 +167,12 @@
                         Sort By
                     </option>
 
-
                     <option
                         value="priceLow"
                         <%= sort === 'priceLow' ? 'selected' : '' %>
                     >
                         Price: Low → High
                     </option>
-
 
                     <option
                         value="priceHigh"
@@ -210,8 +183,6 @@
 
                 </select>
 
-
-
                 <!-- SEARCH BUTTON -->
 
                 <button
@@ -220,8 +191,6 @@
                 >
                     Search
                 </button>
-
-
 
                 <!-- CLEAR BUTTON -->
 
@@ -232,12 +201,9 @@
                     Clear
                 </a>
 
-
             </form>
 
         </div>
-
-
 
         <!-- ================= RESULTS COUNT ================= -->
 
@@ -253,28 +219,21 @@
 
         <% } %>
 
-
-
         <!-- ================= VEHICLES ================= -->
 
         <% if (vehicles && vehicles.length > 0) { %>
 
-
             <div class="grid">
 
-
                 <% vehicles.forEach(vehicle => { %>
-
 
                     <!-- ================= VEHICLE CARD ================= -->
 
                     <div class="card">
 
-
                         <!-- IMAGE -->
 
                         <div class="vehicle-image">
-
 
                             <% if (vehicle.image) { %>
 
@@ -291,15 +250,11 @@
 
                             <% } %>
 
-
                         </div>
-
-
 
                         <!-- CARD HEADER -->
 
                         <div class="card-header">
-
 
                             <div class="card-title">
 
@@ -308,22 +263,17 @@
 
                             </div>
 
-
                             <span class="badge-type">
 
                                 <%= vehicle.type || 'Vehicle' %>
 
                             </span>
 
-
                         </div>
-
-
 
                         <!-- CARD BODY -->
 
                         <div class="card-body">
-
 
                             <!-- VEHICLE NUMBER -->
 
@@ -334,8 +284,6 @@
                                 <%= vehicle.vehicleNumber %>
 
                             </div>
-
-
 
                             <!-- PRICE -->
 
@@ -349,8 +297,6 @@
 
                             </div>
 
-
-
                             <!-- DESCRIPTION -->
 
                             <% if (vehicle.description) { %>
@@ -363,35 +309,27 @@
 
                             <% } %>
 
-
-
                             <!-- OWNER -->
 
                             <div class="owner-box">
-
 
                                 <strong>
                                     Owner Details
                                 </strong>
 
-
                                 <% if (vehicle.ownerId) { %>
-
 
                                     <p>
                                         👤 <%= vehicle.ownerId.name %>
                                     </p>
 
-
                                     <p>
                                         📧 <%= vehicle.ownerId.email %>
                                     </p>
 
-
                                     <p>
                                         📞 <%= vehicle.ownerId.phone %>
                                     </p>
-
 
                                 <% } else { %>
 
@@ -401,28 +339,21 @@
 
                                 <% } %>
 
-
                             </div>
 
-
                         </div>
-
-
 
                         <!-- CARD FOOTER -->
 
                         <div class="card-footer">
 
-
                             <% if (vehicle.availability) { %>
-
 
                                 <span class="status-available">
 
                                     ✓ Available for Rent
 
                                 </span>
-
 
                                 <a
                                     href="/book/<%= vehicle._id %>"
@@ -431,9 +362,7 @@
                                     Book Now
                                 </a>
 
-
                             <% } else { %>
-
 
                                 <span class="status-unavailable">
 
@@ -441,35 +370,25 @@
 
                                 </span>
 
-
                             <% } %>
-
 
                         </div>
 
-
                     </div>
-
 
                 <% }) %>
 
-
             </div>
 
-
-
         <% } else { %>
-
 
             <!-- ================= EMPTY STATE ================= -->
 
             <div class="empty-state">
 
-
                 <h3>
                     No Vehicles Found
                 </h3>
-
 
                 <% if (search || type || minPrice || maxPrice || sort) { %>
 
@@ -487,15 +406,11 @@
 
                 <% } %>
 
-
             </div>
-
 
         <% } %>
 
-
     </div>
-
 
 </body>
 

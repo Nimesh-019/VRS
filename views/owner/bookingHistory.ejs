@@ -10,15 +10,10 @@
 
     <title>Booking History - Vehicle Rental System</title>
 
-
-    <link rel="stylesheet" href="/css/owner-booking-history.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-
-</head>
-
 
 <body>
-
 
     <!-- ================= HEADER ================= -->
 
@@ -27,7 +22,6 @@
         <h1>
             <span>V</span>RS - Vehicle Rentals
         </h1>
-
 
         <div class="user-nav">
 
@@ -43,7 +37,6 @@
 
             </span>
 
-
             <a
                 href="/logout"
                 class="logout-btn"
@@ -55,11 +48,9 @@
 
     </header>
 
-
     <!-- ================= MAIN ================= -->
 
     <div class="container">
-
 
         <!-- ================= TOP BAR ================= -->
 
@@ -69,7 +60,6 @@
                 Booking History
             </h2>
 
-
             <a
                 href="/owner/dashboard"
                 class="back-btn"
@@ -78,7 +68,6 @@
             </a>
 
         </div>
-
 
         <!-- ================= FILTER ================= -->
 
@@ -90,7 +79,6 @@
                 class="filter-form"
             >
 
-
                 <!-- SEARCH -->
 
                 <div class="filter-group search-group">
@@ -98,7 +86,6 @@
                     <label for="search">
                         Search
                     </label>
-
 
                     <input
                         type="text"
@@ -110,7 +97,6 @@
 
                 </div>
 
-
                 <!-- BOOKING STATUS -->
 
                 <div class="filter-group">
@@ -118,7 +104,6 @@
                     <label for="status">
                         Booking Status
                     </label>
-
 
                     <select
                         name="status"
@@ -128,7 +113,6 @@
                         <option value="">
                             All Status
                         </option>
-
 
                         <option
                             value="pending"
@@ -141,7 +125,6 @@
                             Pending
                         </option>
 
-
                         <option
                             value="confirmed"
                             <%= typeof status !== 'undefined' &&
@@ -153,7 +136,6 @@
                             Confirmed
                         </option>
 
-
                         <option
                             value="completed"
                             <%= typeof status !== 'undefined' &&
@@ -164,7 +146,6 @@
                         >
                             Completed
                         </option>
-
 
                         <option
                             value="cancelled"
@@ -181,7 +162,6 @@
 
                 </div>
 
-
                 <!-- PAYMENT STATUS -->
 
                 <div class="filter-group">
@@ -189,7 +169,6 @@
                     <label for="paymentStatus">
                         Payment
                     </label>
-
 
                     <select
                         name="paymentStatus"
@@ -199,7 +178,6 @@
                         <option value="">
                             All Payments
                         </option>
-
 
                         <option
                             value="pending"
@@ -211,7 +189,6 @@
                         >
                             Pending
                         </option>
-
 
                         <option
                             value="paid"
@@ -228,7 +205,6 @@
 
                 </div>
 
-
                 <!-- BUTTONS -->
 
                 <div class="filter-buttons">
@@ -240,7 +216,6 @@
                         Apply Filter
                     </button>
 
-
                     <a
                         href="/owner/history"
                         class="reset-btn"
@@ -251,7 +226,6 @@
                 </div>
 
             </form>
-
 
             <!-- ================= FILTER RESULT ================= -->
 
@@ -277,20 +251,15 @@
 
         </div>
 
-
         <!-- ================= BOOKINGS ================= -->
 
         <% if (bookings && bookings.length > 0) { %>
 
-
             <div class="history-grid">
-
 
                 <% bookings.forEach(booking => { %>
 
-
                     <div class="booking-card">
-
 
                         <!-- ================= VEHICLE IMAGE ================= -->
 
@@ -316,11 +285,9 @@
 
                         </div>
 
-
                         <!-- ================= VEHICLE HEADER ================= -->
 
                         <div class="card-header">
-
 
                             <div>
 
@@ -336,7 +303,6 @@
 
                                 </div>
 
-
                                 <div class="vehicle-number">
 
                                     Reg No:
@@ -349,7 +315,6 @@
 
                             </div>
 
-
                             <span class="vehicle-type">
 
                                 <%= booking.vehicleId
@@ -358,14 +323,11 @@
 
                             </span>
 
-
                         </div>
-
 
                         <!-- ================= BOOKING BODY ================= -->
 
                         <div class="card-body">
-
 
                             <!-- CUSTOMER -->
 
@@ -381,7 +343,6 @@
 
                             </div>
 
-
                             <!-- EMAIL -->
 
                             <div class="info">
@@ -395,7 +356,6 @@
                                     : 'N/A' %>
 
                             </div>
-
 
                             <!-- START DATE -->
 
@@ -411,7 +371,6 @@
 
                             </div>
 
-
                             <!-- END DATE -->
 
                             <div class="info">
@@ -426,7 +385,6 @@
 
                             </div>
 
-
                             <!-- ================= AMOUNT ================= -->
 
                             <div class="amount">
@@ -434,7 +392,6 @@
                                 ₹<%= booking.totalAmount || 0 %>
 
                             </div>
-
 
                             <!-- ================= BOOKING STATUS ================= -->
 
@@ -446,14 +403,11 @@
 
                             </span>
 
-
                             <!-- ================= ACTIONS ================= -->
 
                             <% if (booking.status === 'pending') { %>
 
-
                                 <div class="booking-actions">
-
 
                                     <!-- CONFIRM -->
 
@@ -470,7 +424,6 @@
                                         </button>
 
                                     </form>
-
 
                                     <!-- REJECT -->
 
@@ -491,7 +444,6 @@
                                 </div>
 
                             <% } %>
-
 
                             <!-- ================= PAYMENT ================= -->
 
@@ -514,7 +466,6 @@
                                 <% } %>
 
                             </div>
-
 
                             <!-- ================= EDGE CASE WARNING ================= -->
 
@@ -542,25 +493,19 @@
 
                             <% } %>
 
-
                         </div>
 
                     </div>
 
-
                 <% }) %>
-
 
             </div>
 
-
         <% } else { %>
-
 
             <!-- ================= EMPTY / NO RESULTS ================= -->
 
             <div class="empty-state">
-
 
                 <% if (
                     (typeof search !== 'undefined' && search) ||
@@ -568,16 +513,13 @@
                     (typeof paymentStatus !== 'undefined' && paymentStatus)
                 ) { %>
 
-
                     <h3>
                         No Matching Bookings
                     </h3>
 
-
                     <p>
                         No bookings match your selected filters.
                     </p>
-
 
                     <a
                         href="/owner/history"
@@ -586,31 +528,23 @@
                         Clear Filters
                     </a>
 
-
                 <% } else { %>
-
 
                     <h3>
                         No Booking History
                     </h3>
 
-
                     <p>
                         No bookings have been made for your vehicles yet.
                     </p>
 
-
                 <% } %>
-
 
             </div>
 
-
         <% } %>
 
-
     </div>
-
 
 </body>
 

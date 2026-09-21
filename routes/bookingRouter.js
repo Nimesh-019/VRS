@@ -6,5 +6,5 @@ const { isLoggedIn, isUser, isOwner } = require('../middleware/auth');
 router.get('/book/:vehicleId', isLoggedIn, isUser, showBookingForm);
 router.post('/book/:vehicleId', isLoggedIn, isUser, bookVehicle);
 router.get('/bookings', isLoggedIn, isUser, showBookings);
-router.get('/owner/history', isLoggedIn, isOwner, showOwnerBookingHistory);
+
 module.exports = router;

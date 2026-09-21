@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | VRS</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+
+<nav class="navbar">
+
+<h2>
+    VRS Admin
+</h2>
+
+<div class="admin-info">
+
+    <span class="admin-name">
+
+        Welcome,
+        <%= user.name %>
+
+    </span>
+
+    <a href="/logout" class="logout-btn">
+        Logout
+    </a>
+
+</div>
+
+</nav>
+
+<!-- ==================== MAIN ==================== -->
+
+<div class="container">
+
+<div class="page-title">
+
+    <h1>
+        Admin Dashboard
+    </h1>
+
+    <p>
+        Manage vehicle owners and vehicle approvals.
+    </p>
+
+</div>
+
+<!-- ==================== STATISTICS ==================== -->
+
+<div class="stats">
+
+    <div class="stat-card">
+
+        <h2>
+            <%= totalOwners %>
+        </h2>
+
+        <p>
+            Total Vehicle Owners
+        </p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h2>
+            <%= totalVehicles %>
+        </h2>
+
+        <p>
+            Total Vehicles
+        </p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h2>
+            <%= pendingVehiclesCount %>
+        </h2>
+
+        <p>
+            Pending Approvals
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ================================================= -->
+<!-- PENDING VEHICLE APPROVALS -->
+<!-- ================================================= -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h2>
+            Pending Vehicle Approvals
+        </h2>
+
+        <p>
+            Review vehicles submitted by owners.
+        </p>
+
+    </div>
+
+    <% if (pendingVehicles.length === 0) { %>
+
+        <div class="empty">
+
+            <p>
+                No vehicles are waiting for approval.
+            </p>
+
+        </div>
+
+    <% } else { %>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Vehicle
+                        </th>
+
+                        <th>
+                            Vehicle Number
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Owner
+                        </th>
+
+                        <th>
+                            Price / Day
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <% pendingVehicles.forEach(vehicle => { %>
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    <%= vehicle.brand %>
+                                    <%= vehicle.model %>
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                <%= vehicle.vehicleNumber %>
+
+                            </td>
+
+                            <td>
+
+                                <%= vehicle.type %>
+
+                            </td>
+
+                            <td>
+
+                                <% if (vehicle.ownerId) { %>
+
+                                    <div class="owner-name">
+
+                                        <%= vehicle.ownerId.name %>
+
+                                    </div>
+
+                                    <div class="owner-email">
+
+                                        <%= vehicle.ownerId.email %>
+
+                                    </div>
+
+                                <% } else { %>
+
+                                    Unknown Owner
+
+                                <% } %>
+
+                            </td>
+
+                            <td>
+
+                                ₹<%= vehicle.pricePerDay %>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status status-pending">
+
+                                    Pending
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <div class="action-container">
+
+                                    <!-- APPROVE -->
+
+                                     <form
+                                        class="approve-form"
+                                        action="/admin/vehicles/<%= vehicle._id %>/approve"
+                                        method="POST"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="approve-btn"
+                                        >
+                                            Approve
+                                        </button>
+
+                                    </form>
+
+                                    <!-- REJECT -->
+
+                                    <form
+                                        class="reject-form"
+                                        action="/admin/vehicles/<%= vehicle._id %>/reject"
+                                        method="POST"
+                                    >
+
+                                        <input
+                                            type="text"
+                                            name="rejectionReason"
+                                            class="reason-input"
+                                            placeholder="Rejection reason"
+                                            required
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="reject-btn"
+                                        >
+                                            Reject
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    <% }) %>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    <% } %>
+
+</div>
+
+<!-- ================================================= -->
+<!-- ALL VEHICLE OWNERS -->
+<!-- ================================================= -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h2>
+            Vehicle Owners
+        </h2>
+
+        <p>
+            All registered vehicle owners.
+        </p>
+
+    </div>
+
+    <% if (owners.length === 0) { %>
+
+        <div class="empty">
+
+            <p>
+                No vehicle owners registered yet.
+            </p>
+
+        </div>
+
+    <% } else { %>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Name
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Phone
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <% owners.forEach(owner => { %>
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    <%= owner.name %>
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                <%= owner.email %>
+
+                            </td>
+
+                            <td>
+
+                                <%= owner.phone %>
+
+                            </td>
+
+                            <td>
+
+                                <a href="/admin/owners/<%= owner._id %>/vehicles" class="view-btn">
+                                    View Vehicles ➔
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    <% }) %>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    <% } %>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

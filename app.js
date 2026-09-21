@@ -6,8 +6,8 @@ const cookieParser = require('cookie-parser');
 const bookingRouter = require('./routes/bookingRouter');
 const ownerRoutes = require('./routes/ownerRouter');
 const session = require('express-session');
-
-
+const adminRouter = require('./routes/adminRouter');
+const complaintRouter = require('./routes/complaintRouter');
 
 const userRouter=require('./routes/userRouter');
 const vehicleRouter=require('./routes/vehicleRoutes');
@@ -37,6 +37,8 @@ app.use('/', userRouter);
 app.use('/', vehicleRouter);
 app.use('/', bookingRouter);
 app.use('/owner', ownerRoutes);
+app.use('/admin', adminRouter);
+app.use('/', complaintRouter);
 
 const port = 3000;
 app.listen(port, () => {

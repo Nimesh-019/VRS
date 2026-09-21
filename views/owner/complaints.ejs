@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Complaints - Owner
+    </title>
+
+        <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <h1>
+            VRS - Owner Panel
+        </h1>
+
+        <div class="nav-links">
+
+            <span>
+                Welcome,
+                <strong>
+                    <%= user.name %>
+                </strong>
+            </span>
+
+            <a href="/owner/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/owner/history">
+                Booking History
+            </a>
+
+            <a href="/owner/complaints">
+                Complaints
+            </a>
+
+            <a
+                href="/logout"
+                class="logout"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </header>
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <h2>
+                Customer Complaints
+            </h2>
+
+            <p>
+                View complaints related to your vehicles and responses from the admin.
+            </p>
+
+        </div>
+
+        <!-- ================= COMPLAINTS ================= -->
+
+        <% if (complaints && complaints.length > 0) { %>
+
+            <% complaints.forEach(complaint => { %>
+
+                <div class="complaint-card">
+
+                    <!-- ================= HEADER ================= -->
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                <%= complaint.subject %>
+                            </h3>
+
+                            <div class="date">
+
+                                Submitted:
+
+                                <%= new Date(
+                                    complaint.createdAt
+                                ).toLocaleString() %>
+
+                            </div>
+
+                        </div>
+
+                        <% if (
+                            complaint.status === 'resolved'
+                        ) { %>
+
+                            <span class="status resolved">
+                                RESOLVED
+                            </span>
+
+                        <% } else { %>
+
+                            <span class="status pending">
+                                PENDING
+                            </span>
+
+                        <% } %>
+
+                    </div>
+
+                    <!-- ================= CUSTOMER INFO ================= -->
+
+                    <div class="info-grid">
+
+                        <div class="info-box">
+
+                            <h4>
+                                Customer
+                            </h4>
+
+                            <% if (complaint.customerId) { %>
+
+                                <p>
+                                    <strong>
+                                        Name:
+                                    </strong>
+
+                                    <%= complaint.customerId.name %>
+                                </p>
+
+                                <p>
+                                    <strong>
+                                        Email:
+                                    </strong>
+
+                                    <%= complaint.customerId.email %>
+                                </p>
+
+                                <p>
+                                    <strong>
+                                        Phone:
+                                    </strong>
+
+                                    <%= complaint.customerId.phone %>
+                                </p>
+
+                            <% } %>
+
+                        </div>
+
+                        <!-- ================= BOOKING ================= -->
+
+                        <div class="info-box">
+
+                            <h4>
+                                Rental Details
+                            </h4>
+
+                            <% if (complaint.bookingId) { %>
+
+                                <p>
+
+                                    <strong>
+                                        Start:
+                                    </strong>
+
+                                    <%= new Date(
+                                        complaint.bookingId.startDate
+                                    ).toLocaleDateString() %>
+
+                                </p>
+
+                                <p>
+
+                                    <strong>
+                                        End:
+                                    </strong>
+
+                                    <%= new Date(
+                                        complaint.bookingId.endDate
+                                    ).toLocaleDateString() %>
+
+                                </p>
+
+                                <p>
+
+                                    <strong>
+                                        Amount:
+                                    </strong>
+
+                                    ₹<%= complaint.bookingId.totalAmount %>
+
+                                </p>
+
+                            <% } %>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ================= VEHICLE ================= -->
+
+                    <div class="vehicle-section">
+
+                        <% if (
+                            complaint.vehicleId &&
+                            complaint.vehicleId.image
+                        ) { %>
+
+                            <img
+                                src="<%= complaint.vehicleId.image %>"
+                                alt="Vehicle"
+                                class="vehicle-image"
+                            >
+
+                        <% } else { %>
+
+                            <div class="no-image">
+                                No Image Available
+                            </div>
+
+                        <% } %>
+
+                        <div class="vehicle-info">
+
+                            <h3>
+
+                                <% if (complaint.vehicleId) { %>
+
+                                    <%= complaint.vehicleId.brand || '' %>
+
+                                    <%= complaint.vehicleId.model || '' %>
+
+                                <% } else { %>
+
+                                    Vehicle
+
+                                <% } %>
+
+                            </h3>
+
+                            <% if (complaint.vehicleId) { %>
+
+                                <p>
+
+                                    <strong>
+                                        Vehicle Number:
+                                    </strong>
+
+                                    <%= complaint.vehicleId.vehicleNumber || 'N/A' %>
+
+                                </p>
+
+                                <p>
+
+                                    <strong>
+                                        Type:
+                                    </strong>
+
+                                    <%= complaint.vehicleId.type || 'N/A' %>
+
+                                </p>
+
+                            <% } %>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ================= COMPLAINT ================= -->
+
+                    <div class="complaint-section">
+
+                        <h3>
+                            Customer Complaint
+                        </h3>
+
+                        <div class="subject">
+                            <%= complaint.subject %>
+                        </div>
+
+                        <div class="message">
+                            <%= complaint.message %>
+                        </div>
+
+                    </div>
+
+                    <!-- ================= ADMIN MESSAGE ================= -->
+
+                    <% if (complaint.adminReply) { %>
+
+                        <div class="admin-message">
+
+                            <h4>
+                                Message from Admin
+                            </h4>
+
+                            <p>
+                                <%= complaint.adminReply %>
+                            </p>
+
+                        </div>
+
+                    <% } else { %>
+
+                        <div
+                            style="
+                                margin-top: 20px;
+                                padding: 15px;
+                                background: #f9fafb;
+                                border-radius: 8px;
+                                color: #6b7280;
+                            "
+                        >
+
+                            Waiting for admin response.
+
+                        </div>
+
+                    <% } %>
+
+                </div>
+
+            <% }) %>
+
+        <% } else { %>
+
+            <!-- ================= EMPTY ================= -->
+
+            <div class="empty">
+
+                <h2>
+                    No Complaints
+                </h2>
+
+                <p>
+                    There are no complaints related to your vehicles.
+                </p>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+</body>
+
+</html>

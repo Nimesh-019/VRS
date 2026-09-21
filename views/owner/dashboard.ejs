@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -7,7 +8,8 @@
 
     <title>Owner Dashboard - Vehicle Rental System</title>
 
-    <link rel="stylesheet" href="/css/owner-dashboard.css">
+    <link rel="stylesheet" href="/css/style.css">
+
 </head>
 
 <body>
@@ -23,16 +25,15 @@
         <div class="user-nav">
 
             <span>
+
                 Welcome,
 
                 <strong>
-                    <%= typeof user !== 'undefined' && user && user.name
-                        ? user.name
-                        : 'Owner'
-                    %>
+                    <%= typeof user !=='undefined' && user && user.name ? user.name : 'Owner' %>
                 </strong>
 
                 (Owner)
+
             </span>
 
             <a href="/logout" class="logout-btn">
@@ -42,7 +43,6 @@
         </div>
 
     </header>
-
 
     <div class="container">
 
@@ -55,25 +55,22 @@
             </h3>
 
             <p>
+
                 <strong>Name:</strong>
 
-                <%= typeof user !== 'undefined' && user && user.name
-                    ? user.name
-                    : 'N/A'
-                %>
+                <%= typeof user !=='undefined' && user && user.name ? user.name : 'N/A' %>
+
             </p>
 
             <p>
+
                 <strong>Email:</strong>
 
-                <%= typeof user !== 'undefined' && user && user.email
-                    ? user.email
-                    : 'N/A'
-                %>
+                <%= typeof user !=='undefined' && user && user.email ? user.email : 'N/A' %>
+
             </p>
 
         </div>
-
 
         <!-- ================= TOP BAR ================= -->
 
@@ -85,17 +82,13 @@
 
             <div class="top-actions">
 
-                <a
-                    href="/owner/history"
-                    class="btn-history"
-                >
+                <a href="/owner/history" class="btn-history">
                     Rental History
                 </a>
-
-                <a
-                    href="/owner/vehicles/add"
-                    class="btn-add"
-                >
+                <a href="/owner/complaints" class="btn-history">
+                    Customer Complaints
+                </a>
+                <a href="/owner/vehicles/add" class="btn-add">
                     + Add New Vehicle
                 </a>
 
@@ -103,16 +96,11 @@
 
         </div>
 
-
         <!-- ================= FILTER ================= -->
 
         <div class="filter-container">
 
-            <form
-                action="/owner/dashboard"
-                method="GET"
-                class="filter-form"
-            >
+            <form action="/owner/dashboard" method="GET" class="filter-form">
 
                 <!-- SEARCH -->
 
@@ -122,16 +110,10 @@
                         Search
                     </label>
 
-                    <input
-                        type="text"
-                        id="search"
-                        name="search"
-                        placeholder="Brand, model or vehicle number..."
-                        value="<%= typeof search !== 'undefined' ? search : '' %>"
-                    >
+                    <input type="text" id="search" name="search" placeholder="Brand, model or vehicle number..."
+                        value="<%= typeof search !== 'undefined' ? search : '' %>">
 
                 </div>
-
 
                 <!-- VEHICLE TYPE -->
 
@@ -141,41 +123,27 @@
                         Vehicle Type
                     </label>
 
-                    <select
-                        name="type"
-                        id="type"
-                    >
+                    <select name="type" id="type">
 
                         <option value="">
                             All Types
                         </option>
 
-                        <option
-                            value="Car"
-                            <%= typeof selectedType !== 'undefined' &&
-                                selectedType === 'Car'
-                                ? 'selected'
-                                : ''
-                            %>
-                        >
+                        <option value="Car" <%=typeof selectedType !=='undefined' && selectedType==='Car' ? 'selected'
+                            : '' %>
+                            >
                             Car
                         </option>
 
-                        <option
-                            value="Bike"
-                            <%= typeof selectedType !== 'undefined' &&
-                                selectedType === 'Bike'
-                                ? 'selected'
-                                : ''
-                            %>
-                        >
+                        <option value="Bike" <%=typeof selectedType !=='undefined' && selectedType==='Bike' ? 'selected'
+                            : '' %>
+                            >
                             Bike
                         </option>
 
                     </select>
 
                 </div>
-
 
                 <!-- AVAILABILITY -->
 
@@ -185,41 +153,27 @@
                         Availability
                     </label>
 
-                    <select
-                        name="availability"
-                        id="availability"
-                    >
+                    <select name="availability" id="availability">
 
                         <option value="">
                             All
                         </option>
 
-                        <option
-                            value="available"
-                            <%= typeof selectedAvailability !== 'undefined' &&
-                                selectedAvailability === 'available'
-                                ? 'selected'
-                                : ''
-                            %>
-                        >
+                        <option value="available" <%=typeof selectedAvailability !=='undefined' &&
+                            selectedAvailability==='available' ? 'selected' : '' %>
+                            >
                             Available
                         </option>
 
-                        <option
-                            value="unavailable"
-                            <%= typeof selectedAvailability !== 'undefined' &&
-                                selectedAvailability === 'unavailable'
-                                ? 'selected'
-                                : ''
-                            %>
-                        >
+                        <option value="unavailable" <%=typeof selectedAvailability !=='undefined' &&
+                            selectedAvailability==='unavailable' ? 'selected' : '' %>
+                            >
                             Not Available
                         </option>
 
                     </select>
 
                 </div>
-
 
                 <!-- SORT -->
 
@@ -229,45 +183,27 @@
                         Sort By
                     </label>
 
-                    <select
-                        name="sort"
-                        id="sort"
-                    >
+                    <select name="sort" id="sort">
 
                         <option value="">
                             Latest
                         </option>
 
-                        <option
-                            value="priceAsc"
-                            <%= typeof selectedSort !== 'undefined' &&
-                                selectedSort === 'priceAsc'
-                                ? 'selected'
-                                : ''
-                            %>
-                        >
+                        <option value="priceAsc" <%=typeof selectedSort !=='undefined' && selectedSort==='priceAsc'
+                            ? 'selected' : '' %>
+                            >
                             Price: Low to High
                         </option>
 
-                        <option
-                            value="priceDesc"
-                            <%= typeof selectedSort !== 'undefined' &&
-                                selectedSort === 'priceDesc'
-                                ? 'selected'
-                                : ''
-                            %>
-                        >
+                        <option value="priceDesc" <%=typeof selectedSort !=='undefined' && selectedSort==='priceDesc'
+                            ? 'selected' : '' %>
+                            >
                             Price: High to Low
                         </option>
 
-                        <option
-                            value="nameAsc"
-                            <%= typeof selectedSort !== 'undefined' &&
-                                selectedSort === 'nameAsc'
-                                ? 'selected'
-                                : ''
-                            %>
-                        >
+                        <option value="nameAsc" <%=typeof selectedSort !=='undefined' && selectedSort==='nameAsc'
+                            ? 'selected' : '' %>
+                            >
                             Name: A-Z
                         </option>
 
@@ -275,22 +211,15 @@
 
                 </div>
 
-
                 <!-- BUTTONS -->
 
                 <div class="filter-buttons">
 
-                    <button
-                        type="submit"
-                        class="filter-btn"
-                    >
+                    <button type="submit" class="filter-btn">
                         Apply Filter
                     </button>
 
-                    <a
-                        href="/owner/dashboard"
-                        class="reset-btn"
-                    >
+                    <a href="/owner/dashboard" class="reset-btn">
                         Reset
                     </a>
 
@@ -298,36 +227,35 @@
 
             </form>
 
-
             <!-- FILTER RESULT -->
 
-            <% if (
-                (typeof search !== 'undefined' && search) ||
-                (typeof selectedType !== 'undefined' && selectedType) ||
-                (typeof selectedAvailability !== 'undefined' && selectedAvailability) ||
-                (typeof selectedSort !== 'undefined' && selectedSort)
-            ) { %>
+            <% if ( (typeof search !=='undefined' && search) || (typeof selectedType !=='undefined' && selectedType) ||
+                (typeof selectedAvailability !=='undefined' && selectedAvailability) || (typeof selectedSort
+                !=='undefined' && selectedSort) ) { %>
 
                 <div class="filter-result">
 
                     Showing
-                    <strong><%= vehicles ? vehicles.length : 0 %></strong>
+
+                    <strong>
+                        <%= vehicles ? vehicles.length : 0 %>
+                    </strong>
+
                     matching vehicle(s).
 
                 </div>
 
-            <% } %>
+                <% } %>
 
         </div>
 
-
         <!-- ================= VEHICLES ================= -->
 
-        <% if (vehicles && vehicles.length > 0) { %>
+        <% if (vehicles && vehicles.length> 0) { %>
 
             <div class="grid">
 
-                <% vehicles.forEach(vehicle => { %>
+                <% vehicles.forEach(vehicle=> { %>
 
                     <div class="card">
 
@@ -337,21 +265,17 @@
 
                             <% if (vehicle.image) { %>
 
-                                <img
-                                    src="<%= vehicle.image %>"
-                                    alt="<%= vehicle.brand %> <%= vehicle.model %>"
-                                >
+                                <img src="<%= vehicle.image %>" alt="<%= vehicle.brand %> <%= vehicle.model %>">
 
-                            <% } else { %>
+                                <% } else { %>
 
-                                <div class="no-image">
-                                    No Image Available
-                                </div>
+                                    <div class="no-image">
+                                        No Image Available
+                                    </div>
 
-                            <% } %>
+                                    <% } %>
 
                         </div>
-
 
                         <!-- CARD HEADER -->
 
@@ -360,7 +284,7 @@
                             <div class="card-title">
 
                                 <%= vehicle.brand %>
-                                <%= vehicle.model %>
+                                    <%= vehicle.model %>
 
                             </div>
 
@@ -371,7 +295,6 @@
                             </span>
 
                         </div>
-
 
                         <!-- CARD BODY -->
 
@@ -387,17 +310,15 @@
 
                             </div>
 
-
                             <div class="price-tag">
 
                                 ₹<%= vehicle.pricePerDay %>
 
-                                <span>
-                                    / day
-                                </span>
+                                    <span>
+                                        / day
+                                    </span>
 
                             </div>
-
 
                             <% if (vehicle.description) { %>
 
@@ -407,54 +328,89 @@
 
                                 </p>
 
-                            <% } %>
+                                <% } %>
 
+                                    <!-- VEHICLE AVAILABILITY -->
 
-                            <p class="status-tag
-                                <%= vehicle.availability
-                                    ? 'status-available'
-                                    : 'status-unavailable'
-                                %>"
-                            >
+                                    <p class="status-tag
+                            <%= vehicle.availability
+                                ? 'status-available'
+                                : 'status-unavailable'
+                            %>">
 
-                                Status:
+                                        Status:
 
-                                <%= vehicle.availability
-                                    ? 'Available for Rent'
-                                    : 'Not Available'
-                                %>
+                                        <%= vehicle.availability ? 'Available for Rent' : 'Not Available' %>
 
-                            </p>
+                                    </p>
+
+                                    <!-- ================= APPROVAL STATUS ================= -->
+
+                                    <div class="approval-section">
+
+                                        <div class="approval-label">
+                                            Admin Approval:
+                                        </div>
+
+                                        <% if (vehicle.approvalStatus==='approved' ) { %>
+
+                                            <span class="approval-badge approval-approved">
+                                                ✓ Approved
+                                            </span>
+
+                                            <% } else if (vehicle.approvalStatus==='rejected' ) { %>
+
+                                                <span class="approval-badge approval-rejected">
+                                                    ✕ Rejected
+                                                </span>
+
+                                                <% if (vehicle.rejectionReason) { %>
+
+                                                    <div class="rejection-reason">
+
+                                                        <strong>
+                                                            Admin Reason:
+                                                        </strong>
+
+                                                        <%= vehicle.rejectionReason %>
+
+                                                    </div>
+
+                                                    <% } %>
+
+                                                        <% } else { %>
+
+                                                            <span class="approval-badge approval-pending">
+                                                                ⏳ Pending Approval
+                                                            </span>
+
+                                                            <p class="pending-message">
+
+                                                                Your vehicle is waiting for
+                                                                admin approval.
+
+                                                            </p>
+
+                                                            <% } %>
+
+                                    </div>
 
                         </div>
-
 
                         <!-- CARD ACTIONS -->
 
                         <div class="card-actions">
 
-                            <a
-                                href="/owner/vehicles/edit/<%= vehicle._id %>"
-                                class="btn-edit"
-                            >
+                            <a href="/owner/vehicles/edit/<%= vehicle._id %>" class="btn-edit">
                                 Edit
                             </a>
 
+                            <form action="/owner/vehicles/delete/<%= vehicle._id %>" method="POST"
+                                style="display:inline;" onsubmit="return confirm(
+                                'Are you sure you want to delete this vehicle?'
+                            );">
 
-                            <form
-                                action="/owner/vehicles/delete/<%= vehicle._id %>"
-                                method="POST"
-                                style="display:inline;"
-
-                                onsubmit="return confirm(
-                                    'Are you sure you want to delete this vehicle?'
-                                );"
-                            >
-
-                                <button
-                                    type="submit"
-                                    class="btn-delete"
-                                >
+                                <button type="submit" class="btn-delete">
                                     Delete
                                 </button>
 
@@ -464,62 +420,52 @@
 
                     </div>
 
-                <% }) %>
+                    <% }) %>
 
             </div>
 
-        <% } else { %>
+            <% } else { %>
 
-            <!-- ================= NO RESULTS / EMPTY STATE ================= -->
+                <!-- ================= NO RESULTS / EMPTY STATE ================= -->
 
-            <div class="empty-state">
+                <div class="empty-state">
 
-                <% if (
-                    (typeof search !== 'undefined' && search) ||
-                    (typeof selectedType !== 'undefined' && selectedType) ||
-                    (typeof selectedAvailability !== 'undefined' && selectedAvailability)
-                ) { %>
+                    <% if ( (typeof search !=='undefined' && search) || (typeof selectedType !=='undefined' &&
+                        selectedType) || (typeof selectedAvailability !=='undefined' && selectedAvailability) ) { %>
 
-                    <h3>
-                        No Vehicles Found
-                    </h3>
+                        <h3>
+                            No Vehicles Found
+                        </h3>
 
-                    <p>
-                        No vehicles match your current filter.
-                    </p>
+                        <p>
+                            No vehicles match your current filter.
+                        </p>
 
-                    <a
-                        href="/owner/dashboard"
-                        class="reset-btn"
-                    >
-                        Clear Filters
-                    </a>
+                        <a href="/owner/dashboard" class="reset-btn">
+                            Clear Filters
+                        </a>
 
-                <% } else { %>
+                        <% } else { %>
 
-                    <h3>
-                        No Vehicles Listed
-                    </h3>
+                            <h3>
+                                No Vehicles Listed
+                            </h3>
 
-                    <p>
-                        You haven't listed any vehicles for rent yet.
-                    </p>
+                            <p>
+                                You haven't listed any vehicles for rent yet.
+                            </p>
 
-                    <a
-                        href="/owner/vehicles/add"
-                        class="btn-add"
-                    >
-                        + Add Your First Vehicle
-                    </a>
+                            <a href="/owner/vehicles/add" class="btn-add">
+                                + Add Your First Vehicle
+                            </a>
+
+                            <% } %>
+
+                </div>
 
                 <% } %>
 
-            </div>
-
-        <% } %>
-
     </div>
-
 </body>
 
 </html>
