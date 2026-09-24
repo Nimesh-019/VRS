@@ -12,10 +12,11 @@
     >
 
     <title>
-        My Complaints - Vehicle Rental System
+        Report Complaint - Vehicle Rental System
     </title>
 
-        <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+
 </head>
 
 <body>
@@ -59,6 +60,13 @@
             </a>
 
             <a
+                href="/complaints"
+                class="home-btn"
+            >
+                My Complaints
+            </a>
+
+            <a
                 href="/logout"
                 class="logout-btn"
             >
@@ -80,249 +88,167 @@
             <div>
 
                 <h2>
-                    My Complaints
+                    Report Complaint
                 </h2>
 
                 <p>
-                    View complaints submitted for your completed rentals.
+                    Submit a complaint for any of your rental bookings.
                 </p>
 
             </div>
 
             <a
                 href="/bookings"
-                class="btn"
+                class="reset-btn"
             >
-                Back to Bookings
+                ← Back to Bookings
             </a>
 
         </div>
 
-        <!-- ================= COMPLAINTS ================= -->
+        <!-- ================= COMPLAINT FORM ================= -->
 
-        <% if (complaints && complaints.length > 0) { %>
+        <div class="auth-wrapper" style="padding: 20px 0;">
 
-            <% complaints.forEach(complaint => { %>
+            <div class="auth-card" style="max-width: 600px;">
 
-                <div class="complaint-card">
+                <h3 style="font-size: 18px; margin: 0 0 15px 0; color: #0f172a; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+                    File a Complaint
+                </h3>
 
-                    <!-- ================= VEHICLE ================= -->
+                <% if (typeof error !== 'undefined' && error) { %>
 
-                    <div class="vehicle-section">
+                    <div class="alert-error">
 
-                        <% if (
-                            complaint.vehicleId &&
-                            complaint.vehicleId.image
-                        ) { %>
+                        <%= error %>
 
-                            <img
-                                src="<%= complaint.vehicleId.image %>"
-                                alt="Vehicle"
-                                class="vehicle-image"
+                    </div>
+
+                <% } %>
+
+                <form
+                    action="/complaint"
+                    method="POST"
+                >
+
+                    <!-- SELECT BOOKING -->
+
+                    <div class="form-group">
+
+                        <label for="bookingId">
+                            Select Rental Booking
+                        </label>
+
+                        <% if (typeof bookings !== 'undefined' && bookings && bookings.length > 0) { %>
+
+                            <select
+                                name="bookingId"
+                                id="bookingId"
+                                required
+                            >
+
+                                <% bookings.forEach(b => { %>
+
+                                    <option
+                                        value="<%= b._id %>"
+                                        <%= (typeof booking !== 'undefined' && booking && booking._id.toString() === b._id.toString()) ? 'selected' : '' %>
+                                    >
+                                        <%= b.vehicleId ? (b.vehicleId.brand + ' ' + b.vehicleId.model) : 'Vehicle' %>
+                                        (<%= b.vehicleId ? b.vehicleId.vehicleNumber : 'N/A' %>) -
+                                        <%= new Date(b.startDate).toLocaleDateString() %> [<%= b.status.toUpperCase() %>]
+                                    </option>
+
+                                <% }) %>
+
+                            </select>
+
+                        <% } else if (typeof booking !== 'undefined' && booking) { %>
+
+                            <input
+                                type="hidden"
+                                name="bookingId"
+                                value="<%= booking._id %>"
+                            >
+
+                            <input
+                                type="text"
+                                readonly
+                                value="<%= vehicle ? (vehicle.brand + ' ' + vehicle.model) : 'Vehicle' %> (<%= new Date(booking.startDate).toLocaleDateString() %>)"
                             >
 
                         <% } else { %>
 
-                            <div class="no-image">
-
-                                No Image Available
-
-                            </div>
-
-                        <% } %>
-
-                        <div class="vehicle-info">
-
-                            <h3>
-
-                                <% if (complaint.vehicleId) { %>
-
-                                    <%= complaint.vehicleId.brand || '' %>
-
-                                    <%= complaint.vehicleId.model || '' %>
-
-                                <% } else { %>
-
-                                    Vehicle
-
-                                <% } %>
-
-                            </h3>
-
-                            <% if (complaint.vehicleId) { %>
-
-                                <p>
-
-                                    <strong>
-                                        Vehicle Number:
-                                    </strong>
-
-                                    <%= complaint.vehicleId.vehicleNumber || 'N/A' %>
-
-                                </p>
-
-                                <p>
-
-                                    <strong>
-                                        Type:
-                                    </strong>
-
-                                    <%= complaint.vehicleId.type || 'N/A' %>
-
-                                </p>
-
-                            <% } %>
-
-                            <% if (complaint.ownerId) { %>
-
-                                <p>
-
-                                    <strong>
-                                        Owner:
-                                    </strong>
-
-                                    <%= complaint.ownerId.name %>
-
-                                </p>
-
-                            <% } %>
-
-                        </div>
-
-                    </div>
-
-                    <!-- ================= RENTAL INFO ================= -->
-
-                    <% if (complaint.bookingId) { %>
-
-                        <div class="rental-info">
-
-                            <p>
-
-                                <strong>
-                                    Rental Start:
-                                </strong>
-
-                                <%= new Date(
-                                    complaint.bookingId.startDate
-                                ).toLocaleDateString() %>
-
+                            <p style="color: #ef4444; font-size: 14px; margin-top: 5px;">
+                                You don't have any bookings to report a complaint for.
                             </p>
-
-                            <p>
-
-                                <strong>
-                                    Rental End:
-                                </strong>
-
-                                <%= new Date(
-                                    complaint.bookingId.endDate
-                                ).toLocaleDateString() %>
-
-                            </p>
-
-                        </div>
-
-                    <% } %>
-
-                    <!-- ================= COMPLAINT ================= -->
-
-                    <div class="complaint-content">
-
-                        <h3>
-                            Complaint
-                        </h3>
-
-                        <div class="complaint-subject">
-
-                            <%= complaint.subject %>
-
-                        </div>
-
-                        <div class="complaint-message">
-
-                            <%= complaint.message %>
-
-                        </div>
-
-                        <!-- ================= STATUS ================= -->
-
-                        <div class="status-row">
-
-                            <strong>
-                                Status:
-                            </strong>
-
-                            <% if (
-                                complaint.status === 'resolved'
-                            ) { %>
-
-                                <span class="status resolved">
-
-                                    RESOLVED
-
-                                </span>
-
-                            <% } else { %>
-
-                                <span class="status pending">
-
-                                    PENDING
-
-                                </span>
-
-                            <% } %>
-
-                        </div>
-
-                        <!-- ================= ADMIN RESPONSE ================= -->
-
-                        <% if (complaint.adminReply) { %>
-
-                            <div class="admin-response">
-
-                                <h4>
-                                    Admin Response
-                                </h4>
-
-                                <p>
-                                    <%= complaint.adminReply %>
-                                </p>
-
-                            </div>
 
                         <% } %>
 
                     </div>
 
-                </div>
+                    <!-- SUBJECT -->
 
-            <% }) %>
+                    <div class="form-group">
 
-        <% } else { %>
+                        <label for="subject">
+                            Complaint Subject
+                        </label>
 
-            <!-- ================= EMPTY STATE ================= -->
+                        <input
+                            type="text"
+                            id="subject"
+                            name="subject"
+                            required
+                            placeholder="e.g. Vehicle condition / cleanliness / billing / delay"
+                        >
 
-            <div class="empty">
+                    </div>
 
-                <h2>
-                    No Complaints
-                </h2>
+                    <!-- MESSAGE -->
 
-                <p>
-                    You have not submitted any complaints yet.
-                </p>
+                    <div class="form-group">
 
-                <a
-                    href="/bookings"
-                    class="btn"
-                >
-                    View My Bookings
-                </a>
+                        <label for="message">
+                            Detailed Description
+                        </label>
+
+                        <textarea
+                            id="message"
+                            name="message"
+                            required
+                            rows="5"
+                            placeholder="Please describe your complaint in detail..."
+                        ></textarea>
+
+                    </div>
+
+                    <!-- ACTIONS -->
+
+                    <div style="display: flex; gap: 12px; margin-top: 25px;">
+
+                        <button
+                            type="submit"
+                            class="btn"
+                            style="flex: 1;"
+                            <%= (typeof bookings !== 'undefined' && bookings && bookings.length === 0 && !booking) ? 'disabled' : '' %>
+                        >
+                            Submit Complaint
+                        </button>
+
+                        <a
+                            href="/bookings"
+                            class="reset-btn"
+                        >
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </form>
 
             </div>
 
-        <% } %>
+        </div>
 
     </div>
 

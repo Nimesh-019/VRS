@@ -18,7 +18,14 @@ const {
 // CUSTOMER COMPLAINT ROUTES
 // ======================================================
 
-// Show complaint form
+// Show complaint form (general or vehicle specific)
+router.get(
+    '/complaint',
+    isLoggedIn,
+    isUser,
+    showComplaintForm
+);
+
 router.get(
     '/complaint/:vehicleId',
     isLoggedIn,
@@ -28,6 +35,13 @@ router.get(
 
 
 // Submit complaint
+router.post(
+    '/complaint',
+    isLoggedIn,
+    isUser,
+    submitComplaint
+);
+
 router.post(
     '/complaint/:vehicleId',
     isLoggedIn,

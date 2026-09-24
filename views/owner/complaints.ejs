@@ -15,7 +15,7 @@
         Complaints - Owner
     </title>
 
-        <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -71,7 +71,7 @@
             </h2>
 
             <p>
-                View complaints related to your vehicles and responses from the admin.
+                View complaints related to your vehicles and respond directly to customers.
             </p>
 
         </div>
@@ -301,37 +301,41 @@
 
                     </div>
 
-                    <!-- ================= ADMIN MESSAGE ================= -->
+                    <!-- ================= OWNER RESPONSE ================= -->
 
-                    <% if (complaint.adminReply) { %>
+                    <% if (complaint.ownerReply || complaint.adminReply) { %>
 
-                        <div class="admin-message">
+                        <div style="margin-top: 20px; padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px;">
 
-                            <h4>
-                                Message from Admin
+                            <h4 style="color: #166534; font-size: 14px; margin-bottom: 6px; font-weight: 700;">
+                                ✓ Your Response to Customer:
                             </h4>
 
-                            <p>
-                                <%= complaint.adminReply %>
+                            <p style="color: #15803d; font-size: 14px; margin: 0; line-height: 1.5;">
+                                <%= complaint.ownerReply || complaint.adminReply %>
                             </p>
 
                         </div>
 
                     <% } else { %>
 
-                        <div
-                            style="
-                                margin-top: 20px;
-                                padding: 15px;
-                                background: #f9fafb;
-                                border-radius: 8px;
-                                color: #6b7280;
-                            "
-                        >
+                        <form action="/owner/complaint/<%= complaint._id %>/reply" method="POST" style="margin-top: 20px; padding: 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;">
 
-                            Waiting for admin response.
+                            <div class="form-group" style="margin-bottom: 12px;">
 
-                        </div>
+                                <label for="reply-<%= complaint._id %>" style="font-weight: 600; font-size: 13px; color: #1e293b;">
+                                    Send Response to Customer:
+                                </label>
+
+                                <textarea name="ownerReply" id="reply-<%= complaint._id %>" required rows="3" placeholder="Type your response to the customer here..." style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 7px; font-size: 14px; margin-top: 6px;"></textarea>
+
+                            </div>
+
+                            <button type="submit" class="btn" style="height: 38px; padding: 0 20px; font-size: 13px;">
+                                Send Response
+                            </button>
+
+                        </form>
 
                     <% } %>
 

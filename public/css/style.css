@@ -270,9 +270,20 @@ body.auth-body {
 
 .filter-form {
     display: flex;
-    align-items: flex-end;
-    gap: 15px;
+    align-items: center;
+    gap: 12px;
     flex-wrap: wrap;
+}
+
+.filter-form > input[type="text"] {
+    flex: 2;
+    min-width: 200px;
+}
+
+.filter-form > input[type="number"],
+.filter-form > select {
+    flex: 1;
+    min-width: 130px;
 }
 
 .filter-group, .form-group, .date-group {
@@ -301,6 +312,8 @@ body.auth-body {
 .filter-group input,
 .filter-group select,
 .filter-group textarea,
+.filter-form input,
+.filter-form select,
 .form-group input,
 .form-group select,
 .form-group textarea,
@@ -325,6 +338,8 @@ textarea, .form-group textarea {
 
 .filter-group input:focus,
 .filter-group select:focus,
+.filter-form input:focus,
+.filter-form select:focus,
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus,
@@ -347,7 +362,7 @@ textarea, .form-group textarea {
 }
 
 /* BUTTON STYLES */
-.filter-btn, .btn-submit, .btn-add, .btn-primary, .btn {
+.filter-btn, .btn-submit, .btn-add, .btn-primary, .btn, .search-btn {
     height: 42px;
     padding: 0 22px;
     border-radius: 7px;
@@ -365,11 +380,11 @@ textarea, .form-group textarea {
     transition: background-color 0.2s;
 }
 
-.filter-btn:hover, .btn-submit:hover, .btn-add:hover, .btn-primary:hover, .btn:hover {
+.filter-btn:hover, .btn-submit:hover, .btn-add:hover, .btn-primary:hover, .btn:hover, .search-btn:hover {
     background-color: #1d4ed8 !important;
 }
 
-.reset-btn, .btn-cancel, .btn-secondary, .back-btn, .home-btn {
+.reset-btn, .btn-cancel, .btn-secondary, .back-btn, .home-btn, .clear-filter-btn, .clear-btn {
     height: 42px;
     padding: 0 18px;
     border-radius: 7px;
@@ -387,8 +402,27 @@ textarea, .form-group textarea {
     transition: background-color 0.2s;
 }
 
-.reset-btn:hover, .btn-cancel:hover, .btn-secondary:hover, .back-btn:hover, .home-btn:hover {
+.reset-btn:hover, .btn-cancel:hover, .btn-secondary:hover, .back-btn:hover, .home-btn:hover, .clear-filter-btn:hover, .clear-btn:hover {
     background-color: #e2e8f0 !important;
+}
+
+.book-btn {
+    background-color: #2563eb;
+    color: #ffffff !important;
+    padding: 8px 18px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.book-btn:hover {
+    background-color: #1d4ed8 !important;
 }
 
 .btn-history {
@@ -459,10 +493,16 @@ textarea, .form-group textarea {
     background-color: #1d4ed8 !important;
 }
 
-.filter-result {
+.filter-result, .results-info {
     margin-top: 15px;
-    font-size: 13px;
+    margin-bottom: 20px;
+    font-size: 14px;
     color: #64748b;
+    font-weight: 500;
+}
+
+.filter-result strong, .results-info strong {
+    color: #0f172a;
 }
 
 /* ==========================================================================
@@ -508,7 +548,7 @@ textarea, .form-group textarea {
     font-size: 14px;
 }
 
-.grid, .history-grid {
+.grid, .history-grid, .booking-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
@@ -528,6 +568,10 @@ textarea, .form-group textarea {
 .card:hover, .booking-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.booking-card .btn {
+    width: 100%;
 }
 
 .vehicle-image {
@@ -585,6 +629,16 @@ textarea, .form-group textarea {
     flex-grow: 1;
 }
 
+.card-body .info {
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.card-body .info strong {
+    color: #1e293b;
+}
+
 .vehicle-num, .vehicle-number {
     font-size: 13px;
     color: #64748b;
@@ -604,22 +658,56 @@ textarea, .form-group textarea {
     color: #64748b;
 }
 
-.card-actions {
-    padding: 15px 20px;
+.card-actions, .card-footer {
+    padding: 14px 20px;
     background: #f8fafc;
     border-top: 1px solid #f1f5f9;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
 }
 
-.available {
+.available, .status-available {
     color: #16a34a;
     font-weight: 600;
+    font-size: 13px;
 }
 
-.unavailable {
+.unavailable, .status-unavailable {
     color: #dc2626;
     font-weight: 600;
+    font-size: 13px;
+}
+
+.owner-box {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.owner-box strong {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.owner-box p {
+    font-size: 13px;
+    color: #334155;
+    margin: 3px 0;
+}
+
+.card-body .description {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 12px;
+    line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -764,10 +852,161 @@ td .no-img {
     margin: 20px 0;
 }
 
-.empty h3, .empty-state p {
-    font-size: 16px;
-    color: #475569;
+.empty h2, .empty h3, .empty-state h2, .empty-state h3 {
+    font-size: 20px;
+    color: #0f172a;
+    font-weight: 700;
     margin-bottom: 12px;
+}
+
+.empty p, .empty-state p {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 16px;
+}
+
+.complaint-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 7px;
+    border: 1px solid #fca5a5;
+    background-color: #fef2f2;
+    color: #991b1b !important;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.complaint-btn:hover {
+    background-color: #fee2e2 !important;
+    border-color: #f87171;
+}
+
+/* Owner Booking History Actions */
+.booking-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 12px;
+}
+
+.booking-actions form {
+    flex: 1;
+}
+
+.action-btn {
+    width: 100%;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.action-btn.confirm-btn, .confirm-btn {
+    background-color: #16a34a;
+    color: #ffffff !important;
+}
+
+.action-btn.confirm-btn:hover, .confirm-btn:hover {
+    background-color: #15803d !important;
+}
+
+.action-btn.reject-btn, .reject-btn {
+    background-color: #ef4444;
+    color: #ffffff !important;
+}
+
+.action-btn.reject-btn:hover, .reject-btn:hover {
+    background-color: #dc2626 !important;
+}
+
+/* Admin Vehicle Approval Table Actions */
+.action-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 240px;
+    padding: 4px 0;
+}
+
+.approve-form {
+    width: 100%;
+}
+
+.approve-btn {
+    width: 100%;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 6px;
+    border: none;
+    background-color: #16a34a;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.approve-btn:hover {
+    background-color: #15803d !important;
+}
+
+.reject-form {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.reason-input {
+    flex: 1;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reason-input:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.reject-form .reject-btn {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 6px;
+    border: none;
+    background-color: #ef4444;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.reject-form .reject-btn:hover {
+    background-color: #dc2626 !important;
 }
 
 /* ==========================================================================

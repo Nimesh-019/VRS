@@ -103,78 +103,50 @@ const getAddVehicle = (req, res) => {
 // ==================== ADD VEHICLE ====================
 
 const addVehicle = async (req, res) => {
+    try {
+        const {
+            vehicleNumber,
+            brand,
+            model,
+            type,
+            pricePerDay,
+            description
+        } = req.body;
 
-    upload.single('image')(req, res, async (error) => {
+        const imageUrl = resolveImageUrl(req);
 
-        if (error) {
-
-            if (error instanceof multer.MulterError) {
-
-                if (error.code === 'LIMIT_FILE_SIZE') {
-                    return res.render('owner/addVehicle', {
-                        user: req.user,
-                        error: 'Vehicle image must be 5 MB or smaller.'
-                    });
-                }
-
-                return res.render('owner/addVehicle', {
-                    user: req.user,
-                    error: 'Error uploading vehicle image.'
-                });
-            }
-
+        if (!imageUrl) {
             return res.render('owner/addVehicle', {
                 user: req.user,
-                error: error.message || 'Error uploading image.'
+                error: 'Vehicle image is required'
             });
         }
 
-        try {
+        const newVehicle = new Vehicle({
+            ownerId: req.user._id || req.user.id,
+            vehicleNumber,
+            brand,
+            model,
+            type,
+            pricePerDay,
+            description,
+            image: imageUrl,
+            availability: true
+        });
 
-            const {
-                vehicleNumber,
-                brand,
-                model,
-                type,
-                pricePerDay,
-                description
-            } = req.body;
+        await newVehicle.save();
 
-            const imageUrl = resolveImageUrl(req);
+        res.redirect('/owner/dashboard');
 
-            if (!imageUrl) {
-                return res.render('owner/addVehicle', {
-                    user: req.user,
-                    error: 'Vehicle image is required'
-                });
-            }
+    } catch (error) {
 
-            const newVehicle = new Vehicle({
-                ownerId: req.user._id || req.user.id,
-                vehicleNumber,
-                brand,
-                model,
-                type,
-                pricePerDay,
-                description,
-                image: imageUrl,
-                availability: true
-            });
+        console.error('Error adding vehicle:', error);
 
-            await newVehicle.save();
-
-            res.redirect('/owner/dashboard');
-
-        } catch (error) {
-
-            console.error('Error adding vehicle:', error);
-
-            res.render('owner/addVehicle', {
-                user: req.user,
-                error: error.message || 'Error adding vehicle'
-            });
-        }
-    });
+        res.render('owner/addVehicle', {
+            user: req.user,
+            error: error.message || 'Error adding vehicle'
+        });
+    }
 };
 
 // ==================== OWNER VEHICLES ====================

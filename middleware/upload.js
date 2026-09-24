@@ -1,29 +1,30 @@
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('../config/cloudinary');
 
-const isCloudinaryConfigured = process.env.CLOUDINARY_CLOUD_NAME && 
-    process.env.CLOUDINARY_CLOUD_NAME !== 'your_cloud_name' &&
-    process.env.CLOUDINARY_API_KEY !== 'your_api_key';
-
-let storage;
-
-if (isCloudinaryConfigured) {
-    storage = new CloudinaryStorage({
-        cloudinary: cloudinary,
-        params: {
-            folder: 'vrs_vehicles',
-            allowed_formats: ['jpg', 'jpeg', 'png', 'webp']
-        }
-    });
-} else {
-    // Memory storage fallback when Cloudinary credentials are not set yet
-    storage = multer.memoryStorage();
-}
+// Use memory storage for clean, reliable image uploads (converted to base64 Data URIs)
+const storage = multer.memoryStorage();
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
-module.exports = upload;
+// Middleware function with error handling to avoid raw Express [object Object] errors
+const uploadSingleImage = (req, res, next) => {
+    upload.single('image')(req, res, (err) => {
+        if (err) {
+            console.error('File Upload Error:', err);
+            const errorMessage = typeof err === 'string' 
+                ? err 
+                : (err.message || 'Error uploading vehicle image.');
+            
+            return res.render('owner/addVehicle', {
+                user: req.user,
+                error: errorMessage
+            });
+        }
+        next();
+    });
+};
+
+module.exports = uploadSingleImage;
+module.exports.single = () => uploadSingleImage;

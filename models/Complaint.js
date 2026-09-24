@@ -46,8 +46,15 @@ const complaintSchema = new mongoose.Schema(
             maxlength: 1000
         },
 
-        // Message sent by admin to owner
+        // Message sent by admin
         adminReply: {
+            type: String,
+            default: '',
+            trim: true
+        },
+
+        // Message sent by vehicle owner directly to customer
+        ownerReply: {
             type: String,
             default: '',
             trim: true

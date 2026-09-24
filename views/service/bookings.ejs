@@ -13,9 +13,12 @@
     </title>
 
     <link rel="stylesheet" href="/css/style.css">
+
 </head>
 
+
 <body>
+
 
     <!-- ================= HEADER ================= -->
 
@@ -26,6 +29,7 @@
             <span>V</span>RS - Vehicle Rentals
 
         </h1>
+
 
         <div class="user-nav">
 
@@ -41,9 +45,15 @@
 
             </span>
 
+
             <a href="/bookings" class="bookings-btn">
                 My Bookings
             </a>
+
+            <a href="/complaints" class="bookings-btn">
+                My Complaints
+            </a>
+
 
             <a href="/logout" class="logout-btn">
                 Logout
@@ -53,9 +63,12 @@
 
     </header>
 
+
+
     <!-- ================= MAIN ================= -->
 
     <div class="container">
+
 
         <!-- ================= PAGE HEADER ================= -->
 
@@ -73,17 +86,31 @@
 
             </div>
 
-            <a href="/user/dashboard" class="home-btn">
-                Go Home
-            </a>
+
+            <div style="display: flex; gap: 10px;">
+                <a href="/complaint" class="btn">
+                    Report a Complaint
+                </a>
+
+                <a href="/complaints" class="reset-btn">
+                    My Complaints
+                </a>
+
+                <a href="/user/dashboard" class="home-btn">
+                    Go Home
+                </a>
+            </div>
 
         </div>
+
+
 
         <!-- ================= FILTER ================= -->
 
         <div class="filter-box">
 
             <form action="/bookings" method="GET" class="filter-form">
+
 
                 <!-- BOOKING STATUS -->
 
@@ -93,27 +120,27 @@
                         All Booking Status
                     </option>
 
+
                     <option value="pending" <%=status==='pending' ? 'selected' : '' %>
                         >
                         Pending
                     </option>
+
 
                     <option value="confirmed" <%=status==='confirmed' ? 'selected' : '' %>
                         >
                         Confirmed
                     </option>
 
+
                     <option value="cancelled" <%=status==='cancelled' ? 'selected' : '' %>
                         >
                         Cancelled
                     </option>
 
-                    <option value="completed" <%=status==='completed' ? 'selected' : '' %>
-                        >
-                        Completed
-                    </option>
-
                 </select>
+
+
 
                 <!-- VEHICLE TYPE -->
 
@@ -123,25 +150,30 @@
                         All Vehicle Types
                     </option>
 
+
                     <option value="Car" <%=type==='Car' ? 'selected' : '' %>
                         >
                         Car
                     </option>
+
 
                     <option value="Bike" <%=type==='Bike' ? 'selected' : '' %>
                         >
                         Bike
                     </option>
 
+
                     <option value="Scooter" <%=type==='Scooter' ? 'selected' : '' %>
                         >
                         Scooter
                     </option>
 
+
                     <option value="SUV" <%=type==='SUV' ? 'selected' : '' %>
                         >
                         SUV
                     </option>
+
 
                     <option value="Other" <%=type==='Other' ? 'selected' : '' %>
                         >
@@ -150,11 +182,15 @@
 
                 </select>
 
+
+
                 <!-- FILTER BUTTON -->
 
                 <button type="submit" class="filter-btn">
                     Filter
                 </button>
+
+
 
                 <!-- CLEAR -->
 
@@ -165,6 +201,8 @@
             </form>
 
         </div>
+
+
 
         <!-- ================= RESULTS ================= -->
 
@@ -184,26 +222,36 @@
 
             <% } %>
 
+
+
                 <!-- ================= BOOKINGS ================= -->
 
                 <% if (bookings && bookings.length> 0) { %>
 
+
                     <div class="booking-grid">
+
 
                         <% bookings.forEach(booking=> { %>
 
+
                             <div class="booking-card">
+
 
                                 <!-- ================= IMAGE ================= -->
 
                                 <div class="vehicle-image">
 
+
                                     <% if ( booking.vehicleId && booking.vehicleId.image ) { %>
+
 
                                         <img src="<%= booking.vehicleId.image %>"
                                             alt="<%= booking.vehicleId.brand %> <%= booking.vehicleId.model %>">
 
+
                                         <% } else { %>
+
 
                                             <div class="no-image">
 
@@ -211,53 +259,77 @@
 
                                             </div>
 
+
                                             <% } %>
 
+
                                 </div>
+
+
 
                                 <!-- ================= HEADER ================= -->
 
                                 <div class="card-header">
 
+
                                     <div>
+
 
                                         <div class="vehicle-name">
 
+
                                             <% if (booking.vehicleId) { %>
 
-                                                <%= booking.vehicleId.brand || '' %>
 
+                                                <%= booking.vehicleId.brand || '' %>
                                                     <%= booking.vehicleId.model || '' %>
+
 
                                                         <% } else { %>
 
+
                                                             Vehicle
+
 
                                                             <% } %>
 
+
                                         </div>
+
+
 
                                         <div class="vehicle-number">
 
+
                                             Reg No:
+
 
                                             <% if (booking.vehicleId) { %>
 
+
                                                 <%= booking.vehicleId.vehicleNumber || 'N/A' %>
+
 
                                                     <% } else { %>
 
+
                                                         N/A
+
 
                                                         <% } %>
 
+
                                         </div>
 
+
                                     </div>
+
+
 
                                     <!-- VEHICLE TYPE -->
 
                                     <% if ( booking.vehicleId && booking.vehicleId.type ) { %>
+
 
                                         <span class="vehicle-type">
 
@@ -265,13 +337,18 @@
 
                                         </span>
 
+
                                         <% } %>
 
+
                                 </div>
+
+
 
                                 <!-- ================= BODY ================= -->
 
                                 <div class="card-body">
+
 
                                     <!-- START DATE -->
 
@@ -285,6 +362,8 @@
 
                                     </div>
 
+
+
                                     <!-- END DATE -->
 
                                     <div class="info">
@@ -297,9 +376,12 @@
 
                                     </div>
 
+
+
                                     <!-- ================= AMOUNT ================= -->
 
-                                    <% if ( booking.totalAmount !==undefined ) { %>
+                                    <% if (booking.totalAmount !==undefined) { %>
+
 
                                         <div class="amount">
 
@@ -307,7 +389,10 @@
 
                                         </div>
 
+
                                         <% } %>
+
+
 
                                             <!-- ================= STATUS ================= -->
 
@@ -317,78 +402,148 @@
                                                     Status:
                                                 </strong>
 
+
                                                 <% if (booking.status==='pending' ) { %>
 
+
                                                     <span class="status pending">
+
                                                         PENDING
+
                                                     </span>
+
 
                                                     <% } else if (booking.status==='confirmed' ) { %>
 
+
                                                         <span class="status confirmed">
+
                                                             CONFIRMED
+
                                                         </span>
+
 
                                                         <% } else if (booking.status==='cancelled' ) { %>
 
+
                                                             <span class="status cancelled">
+
                                                                 CANCELLED
+
                                                             </span>
 
-                                                            <% } else if (booking.status==='completed' ) { %>
 
-                                                                <span class="status completed">
-                                                                    COMPLETED
+                                                            <% } else { %>
+
+
+                                                                <span class="status pending">
+
+                                                                    PENDING
+
                                                                 </span>
 
-                                                                <!-- COMPLAINT OPTION -->
 
-                                                                <div style="margin-top: 15px;">
-
-                                                                    <a href="/complaint/<%= booking.vehicleId._id %>?bookingId=<%= booking._id %>"
-                                                                        class="complaint-btn">
-                                                                        Report Complaint
-                                                                    </a>
-
-                                                                </div>
-
-                                                                <% } else { %>
-
-                                                                    <span class="status pending">
-                                                                        PENDING
-                                                                    </span>
-
-                                                                    <% } %>
+                                                                <% } %>
 
                                             </div>
+
+
+
+                                            <!-- ================= PAYMENT STATUS ================= -->
+
+                                            <div style="margin-top: 10px;">
+
+                                                <strong>
+                                                    Payment:
+                                                </strong>
+
+
+                                                <% if (booking.paymentStatus==='paid' ) { %>
+
+
+                                                    <span class="status confirmed">
+
+                                                        PAID
+
+                                                    </span>
+
+
+                                                    <% } else { %>
+
+
+                                                        <span class="status pending">
+
+                                                            PENDING
+
+                                                        </span>
+
+
+                                                        <% } %>
+
+                                            </div>
+
+
+
+                                            <!-- ================= PAY NOW ================= -->
+
+                                            <% if ( booking.status==='confirmed' && booking.paymentStatus !=='paid' ) {
+                                                %>
+
+
+                                                <div style="margin-top: 15px;">
+
+                                                    <a href="/payment/pay/<%= booking._id %>" class="btn">
+                                                        Pay Now
+                                                    </a>
+
+                                                </div>
+
+
+                                                <% } %>
+
+
+
+
+
+
                                 </div>
 
                             </div>
 
+
                             <% }) %>
+
 
                     </div>
 
+
                     <% } else { %>
+
 
                         <!-- ================= EMPTY STATE ================= -->
 
                         <div class="empty">
 
+
                             <h2>
                                 No Bookings Found
                             </h2>
 
+
                             <% if (status || type) { %>
+
 
                                 <p>
 
                                     No bookings match your selected filters.
+
                                     Try changing the filters.
 
                                 </p>
 
+
                                 <% } else { %>
+
 
                                     <p>
 
@@ -396,17 +551,24 @@
 
                                     </p>
 
+
                                     <% } %>
+
+
 
                                         <a href="/user/dashboard" class="btn">
                                             Go Home
                                         </a>
 
+
                         </div>
+
 
                         <% } %>
 
+
     </div>
+
 
 </body>
 

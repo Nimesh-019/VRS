@@ -136,120 +136,47 @@ exports.respondToComplaint = async (req, res) => {
 
 exports.showComplaintForm = async (req, res) => {
     try {
-
-        const vehicleId = req.params.vehicleId;
-        const bookingId = req.query.bookingId;
-
         const customerId = req.user._id || req.user.id;
+        const bookingId = req.query.bookingId;
+        const vehicleId = req.params.vehicleId;
 
+        // Fetch all bookings for this customer
+        const bookings = await Booking.find({ userId: customerId })
+            .populate('vehicleId')
+            .sort({ createdAt: -1 });
 
-        // ------------------------------------------------
-        // Booking ID is required
-        // ------------------------------------------------
+        let selectedBooking = null;
+        let vehicle = null;
 
-        if (!bookingId) {
-
-            return res.status(400).send(
-                'Booking ID is required.'
-            );
-
+        if (bookingId) {
+            selectedBooking = await Booking.findOne({
+                _id: bookingId,
+                userId: customerId
+            }).populate('vehicleId');
+        } else if (vehicleId) {
+            selectedBooking = await Booking.findOne({
+                vehicleId: vehicleId,
+                userId: customerId
+            }).populate('vehicleId');
+        } else if (bookings.length > 0) {
+            selectedBooking = bookings[0];
         }
 
-
-        // ------------------------------------------------
-        // Check completed booking
-        // ------------------------------------------------
-
-        const booking = await Booking.findOne({
-
-            _id: bookingId,
-
-            userId: customerId,
-
-            vehicleId: vehicleId,
-
-            status: 'completed'
-
-        });
-
-
-        if (!booking) {
-
-            return res.status(403).send(
-                'Complaint can only be submitted for a completed booking.'
-            );
-
+        if (selectedBooking && selectedBooking.vehicleId) {
+            vehicle = selectedBooking.vehicleId;
         }
-
-
-        // ------------------------------------------------
-        // Prevent duplicate complaint
-        // ------------------------------------------------
-
-        const existingComplaint = await Complaint.findOne({
-
-            bookingId: booking._id
-
-        });
-
-
-        if (existingComplaint) {
-
-            return res.status(400).send(
-                'You have already submitted a complaint for this booking.'
-            );
-
-        }
-
-
-        // ------------------------------------------------
-        // Find vehicle
-        // ------------------------------------------------
-
-        const vehicle = await Vehicle.findById(vehicleId)
-            .populate(
-                'ownerId',
-                'name email phone'
-            );
-
-
-        if (!vehicle) {
-
-            return res.status(404).send(
-                'Vehicle not found'
-            );
-
-        }
-
-
-        // ------------------------------------------------
-        // Render complaint page
-        // ------------------------------------------------
 
         res.render('service/complaint', {
-
             user: req.user,
-
-            vehicle,
-
-            booking,
-
+            bookings,
+            booking: selectedBooking,
+            vehicle: vehicle,
             error: null
-
         });
 
-
     } catch (error) {
-
-        console.error(
-            'Error showing complaint form:',
-            error
-        );
-
-        res.status(500).send(
-            'Server Error'
-        );
-
+        console.error('Error showing complaint form:', error);
+        res.status(500).send('Server Error');
     }
 };
 
@@ -261,167 +188,59 @@ exports.showComplaintForm = async (req, res) => {
 
 exports.submitComplaint = async (req, res) => {
     try {
-
-        const vehicleId = req.params.vehicleId;
-
-        const bookingId = req.query.bookingId;
-
-        const {
-            subject,
-            message
-        } = req.body;
-
-
-        const customerId =
-            req.user._id || req.user.id;
-
-
-        // ------------------------------------------------
-        // Validate booking ID
-        // ------------------------------------------------
+        const { subject, message, bookingId: bodyBookingId } = req.body;
+        const queryBookingId = req.query.bookingId;
+        const bookingId = bodyBookingId || queryBookingId;
+        const customerId = req.user._id || req.user.id;
 
         if (!bookingId) {
-
-            return res.status(400).send(
-                'Booking ID is required.'
-            );
-
+            return res.status(400).send('Booking ID is required.');
         }
 
-
-        // ------------------------------------------------
-        // Validate complaint fields
-        // ------------------------------------------------
-
-        if (
-            !subject ||
-            !subject.trim() ||
-            !message ||
-            !message.trim()
-        ) {
-
-            return res.status(400).send(
-                'Subject and message are required.'
-            );
-
+        if (!subject || !subject.trim() || !message || !message.trim()) {
+            return res.status(400).send('Subject and message are required.');
         }
 
-
-        // ------------------------------------------------
-        // Verify completed booking
-        // ------------------------------------------------
-
+        // Find customer's booking regardless of status
         const booking = await Booking.findOne({
-
             _id: bookingId,
-
-            userId: customerId,
-
-            vehicleId: vehicleId,
-
-            status: 'completed'
-
-        });
-
+            userId: customerId
+        }).populate('vehicleId');
 
         if (!booking) {
-
-            return res.status(403).send(
-                'Complaint can only be submitted for a completed booking.'
-            );
-
+            return res.status(404).send('Booking not found.');
         }
 
-
-        // ------------------------------------------------
-        // Prevent duplicate complaint
-        // ------------------------------------------------
-
-        const existingComplaint =
-            await Complaint.findOne({
-
-                bookingId: booking._id
-
-            });
-
-
-        if (existingComplaint) {
-
-            return res.status(400).send(
-                'You have already submitted a complaint for this booking.'
-            );
-
-        }
-
-
-        // ------------------------------------------------
-        // Find vehicle
-        // ------------------------------------------------
-
-        const vehicle =
-            await Vehicle.findById(vehicleId);
-
+        const vehicle = booking.vehicleId;
 
         if (!vehicle) {
-
-            return res.status(404).send(
-                'Vehicle not found'
-            );
-
+            return res.status(404).send('Associated vehicle not found.');
         }
 
-
-        // ------------------------------------------------
-        // Owner comes from vehicle
-        // ------------------------------------------------
-
-        const ownerId = vehicle.ownerId;
-
-
-        // ------------------------------------------------
-        // Create complaint
-        // ------------------------------------------------
-
-        const complaint = new Complaint({
-
-            customerId: customerId,
-
-            bookingId: booking._id,
-
-            vehicleId: vehicle._id,
-
-            ownerId: ownerId,
-
-            subject: subject.trim(),
-
-            message: message.trim(),
-
-            status: 'pending'
-
+        const existingComplaint = await Complaint.findOne({
+            bookingId: booking._id
         });
 
+        if (existingComplaint) {
+            return res.status(400).send('You have already submitted a complaint for this booking.');
+        }
+
+        const complaint = new Complaint({
+            customerId: customerId,
+            bookingId: booking._id,
+            vehicleId: vehicle._id,
+            ownerId: vehicle.ownerId,
+            subject: subject.trim(),
+            message: message.trim(),
+            status: 'pending'
+        });
 
         await complaint.save();
-
-
-        // ------------------------------------------------
-        // Redirect to customer's complaints
-        // ------------------------------------------------
-
         res.redirect('/complaints');
 
-
     } catch (error) {
-
-        console.error(
-            'Error submitting complaint:',
-            error
-        );
-
-        res.status(500).send(
-            'Server Error'
-        );
-
+        console.error('Error submitting complaint:', error);
+        res.status(500).send('Server Error');
     }
 };
 
@@ -533,11 +352,40 @@ exports.getOwnerComplaints = async (req, res) => {
     }
 };
 
-// module.exports = {
-//     getAdminComplaints,
-//     respondToComplaint,
-//     showComplaintForm,
-//     submitComplaint,
-//     showMyComplaints,
-//     getOwnerComplaints
-// };
+// ======================================================
+// OWNER RESPONDS TO COMPLAINT DIRECTLY
+// ======================================================
+
+exports.ownerRespondToComplaint = async (req, res) => {
+    try {
+        const complaintId = req.params.id;
+        const ownerId = req.user._id || req.user.id;
+        const { ownerReply } = req.body;
+
+        if (!ownerReply || !ownerReply.trim()) {
+            return res.status(400).send('Response message is required.');
+        }
+
+        const complaint = await Complaint.findOne({
+            _id: complaintId,
+            ownerId: ownerId
+        });
+
+        if (!complaint) {
+            return res.status(404).send('Complaint not found.');
+        }
+
+        complaint.ownerReply = ownerReply.trim();
+        complaint.adminReply = ownerReply.trim(); // Sync with adminReply for compatibility
+        complaint.status = 'resolved';
+        complaint.resolvedAt = new Date();
+
+        await complaint.save();
+
+        res.redirect('/owner/complaints');
+
+    } catch (error) {
+        console.error('Error responding to complaint:', error);
+        res.status(500).send('Server Error');
+    }
+};

@@ -9,6 +9,8 @@ const session = require('express-session');
 const adminRouter = require('./routes/adminRouter');
 const complaintRouter = require('./routes/complaintRouter');
 
+const paymentRouter = require('./routes/paymentRouter');
+
 const userRouter=require('./routes/userRouter');
 const vehicleRouter=require('./routes/vehicleRoutes');
 const connectDB=require('./config/db');
@@ -39,7 +41,7 @@ app.use('/', bookingRouter);
 app.use('/owner', ownerRoutes);
 app.use('/admin', adminRouter);
 app.use('/', complaintRouter);
-
+app.use('/payment', paymentRouter);
 const port = 3000;
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

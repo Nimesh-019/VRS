@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Redirecting to Payment</title>
+
+</head>
+
+<body>
+
+    <h3>
+        Redirecting to PayU...
+    </h3>
+
+
+    <form
+        id="payuForm"
+        action="<%= payuUrl %>"
+        method="POST"
+    >
+
+        <input
+            type="hidden"
+            name="key"
+            value="<%= key %>"
+        >
+
+
+        <input
+            type="hidden"
+            name="txnid"
+            value="<%= txnid %>"
+        >
+
+
+        <input
+            type="hidden"
+            name="amount"
+            value="<%= amount %>"
+        >
+
+
+        <input
+            type="hidden"
+            name="productinfo"
+            value="<%= productinfo %>"
+        >
+
+
+        <input
+            type="hidden"
+            name="firstname"
+            value="<%= firstname %>"
+        >
+
+
+        <input
+            type="hidden"
+            name="email"
+            value="<%= email %>"
+        >
+
+
+        <input
+            type="hidden"
+            name="phone"
+            value="<%= phone %>"
+        >
+
+
+        <input
+            type="hidden"
+            name="surl"
+            value="http://localhost:3000/payment/success"
+        >
+
+
+        <input
+            type="hidden"
+            name="furl"
+            value="http://localhost:3000/payment/failure"
+        >
+
+
+        <input
+            type="hidden"
+            name="hash"
+            value="<%= hash %>"
+        >
+
+    </form>
+
+
+    <script>
+
+        document
+            .getElementById('payuForm')
+            .submit();
+
+    </script>
+
+</body>
+
+</html>
