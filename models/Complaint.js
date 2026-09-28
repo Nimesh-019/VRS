@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const complaintSchema = new mongoose.Schema(
     {
         // Customer who submitted the complaint

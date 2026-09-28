@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const bookingSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,12 +33,10 @@ const bookingSchema = new mongoose.Schema({
         enum: ['pending', 'paid', 'refunded'],
         default: 'pending'
     },
-
     paymentTxnId: {
         type: String,
         default: null
     }
-
 }, {
     timestamps: true
 });
