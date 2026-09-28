@@ -70,6 +70,14 @@
 
             </p>
 
+            <p>
+
+                <strong>City:</strong>
+
+                <%= typeof user !=='undefined' && user && user.city ? user.city : 'N/A' %>
+
+            </p>
+
         </div>
 
         <!-- ================= TOP BAR ================= -->
@@ -306,6 +314,16 @@
 
                                 <strong>
                                     <%= vehicle.vehicleNumber %>
+                                </strong>
+
+                            </div>
+
+                            <div class="vehicle-num">
+
+                                City:
+
+                                <strong>
+                                    <%= vehicle.city || 'N/A' %>
                                 </strong>
 
                             </div>

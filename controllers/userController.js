@@ -49,6 +49,7 @@ exports.login = async (req, res) => {
             name: user.name,
             email: user.email,
             phone: user.phone,
+            city: user.city,
             role: user.role
         };
 
@@ -92,7 +93,11 @@ exports.showSignup = (req, res) => {
 
 exports.signup = async (req, res) => {
     try {
-        const { name, email, phone, password, role } = req.body;
+        const { name, email, phone, password, city, role } = req.body;
+
+        if (!city || !city.trim()) {
+            return res.render('user/signup', { error: 'City is required.' });
+        }
 
         const existingUser = await User.findOne({
             $or: [{ email }, { phone }]
@@ -109,6 +114,7 @@ exports.signup = async (req, res) => {
             email,
             phone,
             password: hashedPassword,
+            city: city.trim(),
             role
         });
 

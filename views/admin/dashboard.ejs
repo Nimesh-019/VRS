@@ -350,7 +350,7 @@
                             Phone
                         </th>
 
-                        <th>
+                        <th>City</th><th>
                             Action
                         </th>
 
@@ -384,7 +384,7 @@
 
                             </td>
 
-                            <td>
+                            <td><%= owner.city || 'N/A' %></td><td>
 
                                 <a href="/admin/owners/<%= owner._id %>/vehicles" class="view-btn">
                                     View Vehicles ➔

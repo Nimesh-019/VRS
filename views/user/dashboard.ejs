@@ -146,6 +146,15 @@
 
                 </select>
 
+                <!-- CITY -->
+
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="📍 City (e.g. Ahmedabad)"
+                    value="<%= typeof city !== 'undefined' ? city : '' %>"
+                >
+
                 <!-- MINIMUM PRICE -->
 
                 <input
@@ -289,6 +298,16 @@
                                 Reg No:
 
                                 <%= vehicle.vehicleNumber %>
+
+                            </div>
+
+                            <!-- CITY -->
+
+                            <div class="vehicle-num" style="margin-top: 4px;">
+
+                                City:
+
+                                <strong><%= vehicle.city || (vehicle.ownerId && vehicle.ownerId.city) || 'N/A' %></strong>
 
                             </div>
 

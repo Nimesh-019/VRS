@@ -1,4 +1,5 @@
 const Vehicle = require('../models/vehicle');
+const User = require('../models/user');
 const multer = require('multer');
 const upload = require('../middleware/upload');
 
@@ -25,6 +26,7 @@ const getOwnerDashboard = async (req, res) => {
             search = '',
             type = '',
             availability = '',
+            city = '',
             sort = ''
         } = req.query;
 
@@ -55,6 +57,11 @@ const getOwnerDashboard = async (req, res) => {
             filter.availability = false;
         }
 
+        // Filter by city
+        if (city && city.trim() !== '') {
+            filter.city = { $regex: city.trim(), $options: 'i' };
+        }
+
         // Sorting
         let sortOption = { _id: -1 };
 
@@ -80,6 +87,7 @@ const getOwnerDashboard = async (req, res) => {
             search,
             selectedType: type,
             selectedAvailability: availability,
+            selectedCity: city,
             selectedSort: sort
         });
 
@@ -104,6 +112,16 @@ const getAddVehicle = (req, res) => {
 
 const addVehicle = async (req, res) => {
     try {
+        const ownerId = req.user._id || req.user.id;
+        const owner = await User.findById(ownerId);
+
+        if (!owner || !owner.city || !owner.city.trim()) {
+            return res.render('owner/addVehicle', {
+                user: req.user,
+                error: 'Your profile does not have a registered city. Please update your profile with a city before adding a vehicle.'
+            });
+        }
+
         const {
             vehicleNumber,
             brand,
@@ -123,7 +141,7 @@ const addVehicle = async (req, res) => {
         }
 
         const newVehicle = new Vehicle({
-            ownerId: req.user._id || req.user.id,
+            ownerId: owner._id,
             vehicleNumber,
             brand,
             model,
@@ -131,6 +149,7 @@ const addVehicle = async (req, res) => {
             pricePerDay,
             description,
             image: imageUrl,
+            city: owner.city,
             availability: true
         });
 
@@ -288,6 +307,7 @@ const getUserDashboard = async (req, res) => {
             type = '',
             minPrice = '',
             maxPrice = '',
+            city = '',
             sort = ''
         } = req.query;
 
@@ -333,6 +353,12 @@ const getUserDashboard = async (req, res) => {
         }
 
 
+        // Filter by city
+        if (city && city.trim()) {
+            query.city = { $regex: city.trim(), $options: 'i' };
+        }
+
+
         // Filter by price range
         if (minPrice || maxPrice) {
 
@@ -367,7 +393,7 @@ const getUserDashboard = async (req, res) => {
         // ==================== GET VEHICLES ====================
 
         const vehicles = await Vehicle.find(query)
-            .populate('ownerId', 'name email phone')
+            .populate('ownerId', 'name email phone city')
             .sort(sortOption);
 
 
@@ -383,6 +409,7 @@ const getUserDashboard = async (req, res) => {
             type,
             minPrice,
             maxPrice,
+            city,
             sort
 
         });

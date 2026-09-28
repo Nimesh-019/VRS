@@ -51,6 +51,12 @@ const vehicleSchema = new mongoose.Schema(
             required: true
         },
 
+        city: {
+            type: String,
+            required: true,
+            trim: true
+        },
+
         availability: {
             type: Boolean,
             default: true

@@ -51,6 +51,8 @@ const createAdmin = async () => {
 
             password: hashedPassword,
 
+            city: 'System',
+
             role: 'admin'
 
         });

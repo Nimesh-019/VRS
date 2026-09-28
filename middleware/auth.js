@@ -25,6 +25,7 @@ const isLoggedIn = async (req, res, next) => {
             name: user.name,
             email: user.email,
             phone: user.phone,
+            city: user.city,
             role: user.role
         };
         next();

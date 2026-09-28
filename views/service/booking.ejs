@@ -47,6 +47,12 @@
                     Book Vehicle
                 </h1>
 
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert-error">
+                        <span>⚠️</span> <%= error %>
+                    </div>
+                <% } %>
+
                 <!-- ================= VEHICLE INFORMATION ================= -->
 
                 <div class="vehicle-info">
@@ -81,6 +87,16 @@
                         </p>
 
                     <% } %>
+
+                    <p>
+
+                        <strong>
+                            City:
+                        </strong>
+
+                        <%= vehicle.city || 'N/A' %>
+
+                    </p>
 
                     <p class="price">
 

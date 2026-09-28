@@ -95,7 +95,7 @@ exports.bookVehicle = async (req, res) => {
             return res.render('service/booking', {
                 user: req.user,
                 vehicle,
-                error: 'Vehicle is already booked for the selected period'
+                error: 'Vehicle is already booked for this period. Please choose a different date.'
             });
         }
 
@@ -138,10 +138,12 @@ exports.showBookings = async (req, res) => {
 
         const userId = req.user._id || req.user.id;
 
-        // Get filter values from URL
+        // Get filter values and query messages from URL
         const {
             status = '',
-            type = ''
+            type = '',
+            success = '',
+            error = ''
         } = req.query;
 
 
@@ -205,7 +207,11 @@ exports.showBookings = async (req, res) => {
 
             status,
 
-            type
+            type,
+
+            success,
+
+            error
 
         });
 
@@ -378,4 +384,54 @@ exports.showOwnerBookingHistory = async (req, res) => {
 
     }
 
+};
+
+exports.cancelBooking = async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        const userId = req.user._id || req.user.id;
+
+        const booking = await Booking.findById(bookingId);
+
+        if (!booking) {
+            return res.redirect('/bookings?error=' + encodeURIComponent('Booking not found.'));
+        }
+
+        // Authorization check: ensure user owns this booking
+        if (booking.userId.toString() !== userId.toString()) {
+            return res.redirect('/bookings?error=' + encodeURIComponent('You are not authorized to cancel this booking.'));
+        }
+
+        // Check if booking is already cancelled
+        if (booking.status === 'cancelled') {
+            return res.redirect('/bookings?error=' + encodeURIComponent('Booking is already cancelled.'));
+        }
+
+        // Time check: cancellation allowed strictly BEFORE startDate/time
+        const now = new Date();
+        const startDate = new Date(booking.startDate);
+
+        if (now >= startDate) {
+            return res.redirect('/bookings?error=' + encodeURIComponent('Cannot cancel booking: The booking start time has already passed or started.'));
+        }
+
+        // Update booking status to "cancelled"
+        booking.status = 'cancelled';
+        await booking.save();
+
+        // Restore vehicle availability
+        if (booking.vehicleId) {
+            const vehicle = await Vehicle.findById(booking.vehicleId);
+            if (vehicle) {
+                vehicle.availability = true;
+                await vehicle.save();
+            }
+        }
+
+        return res.redirect('/bookings?success=' + encodeURIComponent('Booking cancelled successfully.'));
+
+    } catch (error) {
+        console.error('Error cancelling booking:', error);
+        res.status(500).send('Server Error');
+    }
 };

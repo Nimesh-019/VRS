@@ -50,6 +50,7 @@
                             <th>Brand & Model</th>
                             <th>Registration No</th>
                             <th>Type</th>
+                            <th>City</th>
                             <th>Price / Day</th>
                             <th>Availability</th>
                             <th>Approval Status</th>
@@ -70,6 +71,7 @@
                                 </td>
                                 <td><%= vehicle.vehicleNumber %></td>
                                 <td><%= vehicle.type %></td>
+                                <td><%= vehicle.city || 'N/A' %></td>
                                 <td>₹<%= vehicle.pricePerDay %></td>
                                 <td>
                                     <% if (vehicle.availability) { %>

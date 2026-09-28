@@ -104,6 +104,21 @@
         </div>
 
 
+        <!-- ================= MESSAGES ================= -->
+
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success" style="background-color: #d1fae5; color: #065f46; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #a7f3d0; font-weight: 500;">
+                <%= success %>
+            </div>
+        <% } %>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger" style="background-color: #fee2e2; color: #991b1b; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #fca5a5; font-weight: 500;">
+                <%= error %>
+            </div>
+        <% } %>
+
+
 
         <!-- ================= FILTER ================= -->
 
@@ -500,6 +515,26 @@
 
 
                                                 <% } %>
+
+
+
+                                            <!-- ================= CANCEL BOOKING ================= -->
+
+                                            <% if (booking.status !== 'cancelled' && new Date(booking.startDate) > new Date()) { %>
+
+                                                <div style="margin-top: 15px;">
+
+                                                    <form action="/bookings/cancel/<%= booking._id %>" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+
+                                                        <button type="submit" class="reject-btn" style="width: 100%; height: 38px; border-radius: 7px; border: none; font-size: 13px; font-weight: 600; cursor: pointer;">
+                                                            Cancel Booking
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+
+                                            <% } %>
 
 
 
