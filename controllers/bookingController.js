@@ -1,5 +1,10 @@
 const Vehicle = require('../models/vehicle');
 const Booking = require('../models/Booking');
+const {
+    syncBookingStatus,
+    syncBookings,
+    syncAllActiveBookings
+} = require('../utils/bookingLifecycle');
 
 exports.showBookingForm = async (req, res) => {
     try {
@@ -84,9 +89,12 @@ exports.bookVehicle = async (req, res) => {
             });
         }
 
+        // Make sure active bookings are synced before checking overlap
+        await syncAllActiveBookings();
+
         const existingBookings = await Booking.find({
             vehicleId: vehicleId,
-            status: { $in: ['pending', 'confirmed'] },
+            status: { $in: ['pending', 'confirmed', 'ongoing'] },
             startDate: { $lte: end },
             endDate: { $gte: start }
         });
@@ -154,6 +162,9 @@ exports.showBookings = async (req, res) => {
         };
 
 
+        // Sync active bookings so transitions are reflected in DB
+        await syncAllActiveBookings();
+
         // ==================== STATUS FILTER ====================
 
         if (status) {
@@ -164,13 +175,16 @@ exports.showBookings = async (req, res) => {
         // ==================== GET BOOKINGS ====================
 
         let bookings = await Booking.find(query)
-            .populate(
-                'vehicleId',
-                'vehicleNumber brand model type pricePerDay image'
-            )
+            .populate({
+                path: 'vehicleId',
+                select: 'vehicleNumber brand model type pricePerDay image ownerId',
+                populate: { path: 'ownerId', select: 'name email phone' }
+            })
             .sort({
                 createdAt: -1
             });
+
+        await syncBookings(bookings);
 
 
         // ==================== VEHICLE TYPE FILTER ====================
@@ -262,6 +276,9 @@ exports.showOwnerBookingHistory = async (req, res) => {
 
         // ================= BOOKING QUERY =================
 
+        // Sync active bookings so transitions are reflected in DB
+        await syncAllActiveBookings();
+
         const query = {
             vehicleId: {
                 $in: vehicleIds
@@ -304,6 +321,8 @@ exports.showOwnerBookingHistory = async (req, res) => {
             .sort({
                 createdAt: -1
             });
+
+        await syncBookings(bookings);
 
 
         // ================= SEARCH FILTER =================
@@ -402,9 +421,26 @@ exports.cancelBooking = async (req, res) => {
             return res.redirect('/bookings?error=' + encodeURIComponent('You are not authorized to cancel this booking.'));
         }
 
+        // Sync status first in case it transitioned to ongoing/completed
+        await syncBookingStatus(booking);
+
         // Check if booking is already cancelled
         if (booking.status === 'cancelled') {
             return res.redirect('/bookings?error=' + encodeURIComponent('Booking is already cancelled.'));
+        }
+
+        // Check if booking is completed, ongoing, rejected, or expired
+        if (booking.status === 'completed') {
+            return res.redirect('/bookings?error=' + encodeURIComponent('Cannot cancel a completed booking.'));
+        }
+        if (booking.status === 'ongoing') {
+            return res.redirect('/bookings?error=' + encodeURIComponent('Cannot cancel an ongoing rental.'));
+        }
+        if (booking.status === 'rejected') {
+            return res.redirect('/bookings?error=' + encodeURIComponent('Cannot cancel a rejected booking.'));
+        }
+        if (booking.status === 'expired') {
+            return res.redirect('/bookings?error=' + encodeURIComponent('Cannot cancel an expired booking.'));
         }
 
         // Time check: cancellation allowed strictly BEFORE startDate/time
@@ -421,11 +457,7 @@ exports.cancelBooking = async (req, res) => {
 
         // Restore vehicle availability
         if (booking.vehicleId) {
-            const vehicle = await Vehicle.findById(booking.vehicleId);
-            if (vehicle) {
-                vehicle.availability = true;
-                await vehicle.save();
-            }
+            await Vehicle.updateOne({ _id: booking.vehicleId }, { $set: { availability: true } });
         }
 
         return res.redirect('/bookings?success=' + encodeURIComponent('Booking cancelled successfully.'));

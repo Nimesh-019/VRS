@@ -1,9 +1,5 @@
 /* ==========================================================================
-   VRS - UNIFIED MASTER STYLESHEET (public/css/style.css)
-   ========================================================================== */
-
-/* ==========================================================================
-   1. GLOBAL RESET & BASE STYLES
+   VRS - UNIFIED MASTER STYLESHEET FOR REACT FRONTEND
    ========================================================================== */
 
 * {
@@ -43,6 +39,8 @@ header h1, header h1 a, nav.navbar h2 {
     text-decoration: none;
     margin: 0;
     letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
 }
 
 header h1 span, header h1 a span, nav.navbar h2 span {
@@ -99,8 +97,13 @@ header h1 span, header h1 a span, nav.navbar h2 span {
     background-color: #475569 !important;
 }
 
+/* Active Nav link */
+.bookings-btn.active, .nav-links a.active {
+    background-color: #2563eb !important;
+}
+
 /* ==========================================================================
-   3. AUTHENTICATION PAGES (SIMPLE LIGHT DESIGN)
+   3. AUTHENTICATION PAGES
    ========================================================================== */
 
 body.auth-body {
@@ -145,7 +148,7 @@ body.auth-body {
     margin-bottom: 25px;
 }
 
-.alert-error {
+.alert-error, .alert-danger {
     background-color: #fef2f2;
     border: 1px solid #fca5a5;
     color: #991b1b;
@@ -156,6 +159,17 @@ body.auth-body {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.alert-success {
+    background-color: #d1fae5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .form-row {
@@ -419,6 +433,8 @@ textarea, .form-group textarea {
     justify-content: center;
     white-space: nowrap;
     transition: background-color 0.2s ease, transform 0.1s ease;
+    border: none;
+    cursor: pointer;
 }
 
 .book-btn:hover {
@@ -453,6 +469,8 @@ textarea, .form-group textarea {
     font-weight: 600;
     display: inline-flex;
     align-items: center;
+    border: none;
+    cursor: pointer;
 }
 
 .btn-edit:hover {
@@ -487,6 +505,8 @@ textarea, .form-group textarea {
     display: inline-flex;
     align-items: center;
     transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
 }
 
 .view-btn:hover {
@@ -931,7 +951,6 @@ tr:hover td {
     background-color: #f8fafc;
 }
 
-/* Image inside Table Cell */
 .vehicle-img, td img, table img {
     width: 80px;
     height: 55px;
@@ -1038,14 +1057,6 @@ td .no-img {
     margin-top: 4px;
 }
 
-.vehicle-section img.vehicle-image {
-    width: 120px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-}
-
 .empty, .empty-state {
     text-align: center;
     padding: 45px 20px;
@@ -1068,38 +1079,11 @@ td .no-img {
     margin-bottom: 16px;
 }
 
-.complaint-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 38px;
-    padding: 0 16px;
-    border-radius: 7px;
-    border: 1px solid #fca5a5;
-    background-color: #fef2f2;
-    color: #991b1b !important;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.complaint-btn:hover {
-    background-color: #fee2e2 !important;
-    border-color: #f87171;
-}
-
-/* Owner Booking History Actions */
 .booking-actions {
     display: flex;
     gap: 10px;
     margin-top: 15px;
     margin-bottom: 12px;
-}
-
-.booking-actions form {
-    flex: 1;
 }
 
 .action-btn {
@@ -1135,7 +1119,6 @@ td .no-img {
     background-color: #dc2626 !important;
 }
 
-/* Admin Vehicle Approval Table Actions */
 .action-container {
     display: flex;
     flex-direction: column;
@@ -1212,10 +1195,43 @@ td .no-img {
     background-color: #dc2626 !important;
 }
 
-/* ==========================================================================
-   8. RESPONSIVE BREAKPOINTS
-   ========================================================================== */
+/* Spinner & Loading */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    color: #64748b;
+    gap: 15px;
+}
 
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 24px 20px;
+    color: #64748b;
+    font-size: 13px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 60px;
+    background: #ffffff;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     header, nav.navbar {
         padding: 16px 20px;
@@ -1251,7 +1267,7 @@ td .no-img {
         flex: 1;
     }
 
-    .grid, .history-grid {
+    .grid, .history-grid, .booking-grid {
         grid-template-columns: 1fr;
     }
 }

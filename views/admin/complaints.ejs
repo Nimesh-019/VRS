@@ -334,16 +334,36 @@
 
                     </div>
 
-                    <!-- ================= ADMIN RESPONSE ================= -->
+                    <!-- ================= RESOLUTION STATUS (MONITORING ONLY) ================= -->
 
                     <div class="response-section">
 
-                        <% if (complaint.adminReply) { %>
+                        <% if (complaint.ownerReply) { %>
+
+                            <div class="existing-response" style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px;">
+
+                                <h4 style="color: #166534; font-size: 13px; font-weight: 700; margin-bottom: 4px;">
+                                    Vehicle Owner Response
+                                </h4>
+
+                                <p style="color: #15803d; font-size: 14px; margin: 0;">
+                                    <%= complaint.ownerReply %>
+                                </p>
+
+                                <% if (complaint.resolvedAt) { %>
+                                    <small style="color: #16a34a; display: block; margin-top: 6px; font-size: 12px;">
+                                        Resolved at: <%= new Date(complaint.resolvedAt).toLocaleString() %>
+                                    </small>
+                                <% } %>
+
+                            </div>
+
+                        <% } else if (complaint.adminReply) { %>
 
                             <div class="existing-response">
 
                                 <h4>
-                                    Admin Response
+                                    Response
                                 </h4>
 
                                 <p>
@@ -352,34 +372,11 @@
 
                             </div>
 
-                        <% } %>
+                        <% } else { %>
 
-                        <% if (complaint.status === 'pending') { %>
-
-                            <h3>
-                                Respond to Owner
-                            </h3>
-
-                            <form
-                                action="/admin/complaints/<%= complaint._id %>/respond"
-                                method="POST"
-                            >
-
-                                <textarea
-                                    name="adminReply"
-                                    placeholder="Write a message for the vehicle owner..."
-                                    required
-                                    maxlength="1000"
-                                ></textarea>
-
-                                <button
-                                    type="submit"
-                                    class="respond-btn"
-                                >
-                                    Send Response & Resolve
-                                </button>
-
-                            </form>
+                            <div style="padding: 12px 14px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; color: #b45309; font-size: 13px;">
+                                ⏳ Pending Vehicle Owner Response (Monitoring Only)
+                            </div>
 
                         <% } %>
 

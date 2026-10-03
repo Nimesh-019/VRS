@@ -137,6 +137,17 @@
                         </option>
 
                         <option
+                            value="ongoing"
+                            <%= typeof status !== 'undefined' &&
+                                status === 'ongoing'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Ongoing
+                        </option>
+
+                        <option
                             value="completed"
                             <%= typeof status !== 'undefined' &&
                                 status === 'completed'
@@ -148,6 +159,17 @@
                         </option>
 
                         <option
+                            value="rejected"
+                            <%= typeof status !== 'undefined' &&
+                                status === 'rejected'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Rejected
+                        </option>
+
+                        <option
                             value="cancelled"
                             <%= typeof status !== 'undefined' &&
                                 status === 'cancelled'
@@ -156,6 +178,17 @@
                             %>
                         >
                             Cancelled
+                        </option>
+
+                        <option
+                            value="expired"
+                            <%= typeof status !== 'undefined' &&
+                                status === 'expired'
+                                ? 'selected'
+                                : ''
+                            %>
+                        >
+                            Expired
                         </option>
 
                     </select>
@@ -259,242 +292,100 @@
 
                 <% bookings.forEach(booking => { %>
 
-                    <div class="booking-card">
-
-                        <!-- ================= VEHICLE IMAGE ================= -->
-
-                        <div class="vehicle-image">
-
-                            <% if (
-                                booking.vehicleId &&
-                                booking.vehicleId.image
-                            ) { %>
-
-                                <img
-                                    src="<%= booking.vehicleId.image %>"
-                                    alt="<%= booking.vehicleId.brand || '' %> <%= booking.vehicleId.model || '' %>"
-                                >
-
-                            <% } else { %>
-
-                                <div class="no-image">
-                                    No Image Available
+                    <div class="booking-record-card">
+                        <!-- HEADER -->
+                        <div class="record-header">
+                            <div class="record-title-box">
+                                <div class="record-title">
+                                    <%= booking.vehicleId ? `${booking.vehicleId.brand || ''} ${booking.vehicleId.model || ''}`.trim() : 'Vehicle' %>
+                                    <% if (booking.vehicleId && booking.vehicleId.type) { %>
+                                        <span class="record-type-badge"><%= booking.vehicleId.type %></span>
+                                    <% } %>
                                 </div>
-
-                            <% } %>
-
-                        </div>
-
-                        <!-- ================= VEHICLE HEADER ================= -->
-
-                        <div class="card-header">
-
-                            <div>
-
-                                <div class="vehicle-name">
-
-                                    <%= booking.vehicleId
-                                        ? (booking.vehicleId.brand || '')
-                                        : 'Vehicle' %>
-
-                                    <%= booking.vehicleId
-                                        ? (booking.vehicleId.model || '')
-                                        : '' %>
-
+                                <div class="record-subtitle">
+                                    Reg No: <strong><%= booking.vehicleId ? (booking.vehicleId.vehicleNumber || 'N/A') : 'N/A' %></strong>
                                 </div>
-
-                                <div class="vehicle-number">
-
-                                    Reg No:
-
-                                    <%= booking.vehicleId
-                                        ? (booking.vehicleId.vehicleNumber || 'N/A')
-                                        : 'N/A' %>
-
-                                </div>
-
                             </div>
 
-                            <span class="vehicle-type">
-
-                                <%= booking.vehicleId
-                                    ? (booking.vehicleId.type || 'Vehicle')
-                                    : 'Vehicle' %>
-
-                            </span>
-
-                        </div>
-
-                        <!-- ================= BOOKING BODY ================= -->
-
-                        <div class="card-body">
-
-                            <!-- CUSTOMER -->
-
-                            <div class="info">
-
-                                <strong>
-                                    Customer:
-                                </strong>
-
-                                <%= booking.userId
-                                    ? (booking.userId.name || 'N/A')
-                                    : 'N/A' %>
-
-                            </div>
-
-                            <!-- EMAIL -->
-
-                            <div class="info">
-
-                                <strong>
-                                    Email:
-                                </strong>
-
-                                <%= booking.userId
-                                    ? (booking.userId.email || 'N/A')
-                                    : 'N/A' %>
-
-                            </div>
-
-                            <!-- START DATE -->
-
-                            <div class="info">
-
-                                <strong>
-                                    Start Date:
-                                </strong>
-
-                                <%= booking.startDate
-                                    ? booking.startDate.toLocaleDateString()
-                                    : 'N/A' %>
-
-                            </div>
-
-                            <!-- END DATE -->
-
-                            <div class="info">
-
-                                <strong>
-                                    End Date:
-                                </strong>
-
-                                <%= booking.endDate
-                                    ? booking.endDate.toLocaleDateString()
-                                    : 'N/A' %>
-
-                            </div>
-
-                            <!-- ================= AMOUNT ================= -->
-
-                            <div class="amount">
-
-                                ₹<%= booking.totalAmount || 0 %>
-
-                            </div>
-
-                            <!-- ================= BOOKING STATUS ================= -->
-
-                            <span class="status <%= booking.status || 'pending' %>">
-
-                                <%= booking.status
-                                    ? booking.status.toUpperCase()
-                                    : 'UNKNOWN' %>
-
-                            </span>
-
-                            <!-- ================= ACTIONS ================= -->
-
-                            <% if (booking.status === 'pending') { %>
-
-                                <div class="booking-actions">
-
-                                    <!-- CONFIRM -->
-
-                                    <form
-                                        action="/owner/booking/<%= booking._id %>/confirm"
-                                        method="POST"
-                                    >
-
-                                        <button
-                                            type="submit"
-                                            class="action-btn confirm-btn"
-                                        >
-                                            Confirm
-                                        </button>
-
-                                    </form>
-
-                                    <!-- REJECT -->
-
-                                    <form
-                                        action="/owner/booking/<%= booking._id %>/reject"
-                                        method="POST"
-                                    >
-
-                                        <button
-                                            type="submit"
-                                            class="action-btn reject-btn"
-                                        >
-                                            Reject
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            <% } %>
-
-                            <!-- ================= PAYMENT ================= -->
-
-                            <div class="payment">
-
-                                Payment:
-
-                                <% if (booking.paymentStatus === 'paid') { %>
-
-                                    <strong class="payment-paid">
-                                        PAID
-                                    </strong>
-
+                            <div class="record-badges">
+                                <% if (booking.status === 'pending') { %>
+                                    <span class="status pending">🟡 Pending approval</span>
+                                <% } else if (booking.status === 'confirmed') { %>
+                                    <span class="status confirmed">🔵 Confirmed</span>
+                                <% } else if (booking.status === 'ongoing') { %>
+                                    <span class="status ongoing">🟢 Ongoing</span>
+                                <% } else if (booking.status === 'completed') { %>
+                                    <span class="status completed">⚪ Completed</span>
+                                <% } else if (booking.status === 'rejected') { %>
+                                    <span class="status rejected">🔴 Rejected</span>
+                                <% } else if (booking.status === 'cancelled') { %>
+                                    <span class="status cancelled">⚫ Cancelled</span>
+                                <% } else if (booking.status === 'expired') { %>
+                                    <span class="status expired">🟠 Expired</span>
                                 <% } else { %>
-
-                                    <strong class="payment-pending">
-                                        PENDING
-                                    </strong>
-
+                                    <span class="status pending">🟡 <%= (booking.status || 'pending').toUpperCase() %></span>
                                 <% } %>
 
+                                <% if (booking.paymentStatus === 'paid') { %>
+                                    <span class="status status-approved">PAID</span>
+                                <% } else if (booking.paymentStatus === 'failed') { %>
+                                    <span class="status status-rejected">FAILED</span>
+                                <% } else { %>
+                                    <span class="status status-pending">PENDING</span>
+                                <% } %>
                             </div>
-
-                            <!-- ================= EDGE CASE WARNING ================= -->
-
-                            <% if (
-                                booking.status === 'completed' &&
-                                booking.paymentStatus !== 'paid'
-                            ) { %>
-
-                                <div
-                                    style="
-                                        margin-top: 12px;
-                                        padding: 10px;
-                                        background: #fee2e2;
-                                        color: #991b1b;
-                                        border-radius: 7px;
-                                        font-size: 12px;
-                                        font-weight: 600;
-                                    "
-                                >
-
-                                    ⚠ Invalid booking state:
-                                    Completed booking must have paid payment.
-
-                                </div>
-
-                            <% } %>
-
                         </div>
 
+                        <!-- DETAILS GRID -->
+                        <div class="record-details-grid">
+                            <div class="record-detail-item">
+                                <span class="record-label">Customer</span>
+                                <span class="record-value">👤 <%= booking.userId ? (booking.userId.name || 'Unknown') : 'Unknown' %></span>
+                            </div>
+
+                            <div class="record-detail-item">
+                                <span class="record-label">Amount</span>
+                                <span class="record-value record-amount">₹<%= booking.totalAmount !== undefined ? booking.totalAmount : 0 %></span>
+                            </div>
+
+                            <div class="record-detail-item">
+                                <span class="record-label">Start Date</span>
+                                <span class="record-value">📅 <%= booking.startDate ? new Date(booking.startDate).toLocaleDateString() : 'N/A' %></span>
+                            </div>
+
+                            <div class="record-detail-item">
+                                <span class="record-label">End Date</span>
+                                <span class="record-value">📅 <%= booking.endDate ? new Date(booking.endDate).toLocaleDateString() : 'N/A' %></span>
+                            </div>
+
+                            <% if (booking.userId && (booking.userId.email || booking.userId.phone)) { %>
+                                <div class="record-detail-item full-width">
+                                    <span class="record-label">Customer Contact</span>
+                                    <span class="record-value" style="font-size: 13px; color: #475569;">
+                                        <% if (booking.userId.email) { %>✉️ <%= booking.userId.email %><% } %>
+                                        <% if (booking.userId.email && booking.userId.phone) { %> &nbsp;•&nbsp; <% } %>
+                                        <% if (booking.userId.phone) { %>📞 <%= booking.userId.phone %><% } %>
+                                    </span>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <!-- ACTIONS (PENDING ONLY) -->
+                        <% if (booking.status === 'pending') { %>
+                            <div class="record-actions">
+                                <form action="/owner/booking/<%= booking._id %>/confirm" method="POST" style="flex: 1; display: flex;">
+                                    <button type="submit" class="action-btn confirm-btn record-action-btn" style="width: 100%;">
+                                        Approve
+                                    </button>
+                                </form>
+
+                                <form action="/owner/booking/<%= booking._id %>/reject" method="POST" style="flex: 1; display: flex;">
+                                    <button type="submit" class="action-btn reject-btn record-action-btn" style="width: 100%;">
+                                        Reject
+                                    </button>
+                                </form>
+                            </div>
+                        <% } %>
                     </div>
 
                 <% }) %>

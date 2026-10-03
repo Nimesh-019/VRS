@@ -53,81 +53,12 @@ exports.getAdminComplaints = async (req, res) => {
 
 
 // ======================================================
-// ADMIN RESPONDS TO COMPLAINT
+// ADMIN RESPONDS TO COMPLAINT (DISABLED - OWNER ONLY)
 // ======================================================
 
 exports.respondToComplaint = async (req, res) => {
-    try {
-
-        const complaintId = req.params.id;
-
-        const { adminReply } = req.body;
-
-
-        // ------------------------------------------------
-        // Validate response
-        // ------------------------------------------------
-
-        if (
-            !adminReply ||
-            !adminReply.trim()
-        ) {
-
-            return res.status(400).send(
-                'Admin response is required.'
-            );
-        }
-
-
-        // ------------------------------------------------
-        // Find complaint
-        // ------------------------------------------------
-
-        const complaint =
-            await Complaint.findById(complaintId);
-
-
-        if (!complaint) {
-
-            return res.status(404).send(
-                'Complaint not found'
-            );
-        }
-
-
-        // ------------------------------------------------
-        // Save admin response
-        // ------------------------------------------------
-
-        complaint.adminReply =
-            adminReply.trim();
-
-        complaint.status = 'resolved';
-
-        complaint.resolvedAt = new Date();
-
-
-        await complaint.save();
-
-
-        // ------------------------------------------------
-        // Return to admin complaints
-        // ------------------------------------------------
-
-        res.redirect('/admin/complaints');
-
-
-    } catch (error) {
-
-        console.error(
-            'Error responding to complaint:',
-            error
-        );
-
-        res.status(500).send(
-            'Server Error'
-        );
-    }
+    // Admin has a monitoring/oversight role only; resolving complaints is restricted to the vehicle owner.
+    return res.status(403).send('Access denied. Admin cannot resolve complaints. Only the vehicle owner can resolve complaints.');
 };
 
 // ======================================================
@@ -359,24 +290,25 @@ exports.getOwnerComplaints = async (req, res) => {
 exports.ownerRespondToComplaint = async (req, res) => {
     try {
         const complaintId = req.params.id;
-        const ownerId = req.user._id || req.user.id;
+        const ownerId = (req.user._id || req.user.id).toString();
         const { ownerReply } = req.body;
 
         if (!ownerReply || !ownerReply.trim()) {
             return res.status(400).send('Response message is required.');
         }
 
-        const complaint = await Complaint.findOne({
-            _id: complaintId,
-            ownerId: ownerId
-        });
+        const complaint = await Complaint.findById(complaintId);
 
         if (!complaint) {
             return res.status(404).send('Complaint not found.');
         }
 
+        // Verify that the logged-in owner is the actual owner of this complaint's vehicle
+        if (complaint.ownerId.toString() !== ownerId) {
+            return res.status(403).send('Access denied. You can only resolve complaints for your own vehicles.');
+        }
+
         complaint.ownerReply = ownerReply.trim();
-        complaint.adminReply = ownerReply.trim(); // Sync with adminReply for compatibility
         complaint.status = 'resolved';
         complaint.resolvedAt = new Date();
 

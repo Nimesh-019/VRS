@@ -1,4 +1,5 @@
 const Booking = require('../models/Booking');
+const { getBookingLifecycleStatus, hasEnded } = require('../utils/bookingLifecycle');
 
 const confirmBooking = async (req, res) => {
     try {
@@ -19,7 +20,17 @@ const confirmBooking = async (req, res) => {
             return res.status(400).send('Booking is already processed');
         }
 
-        booking.status = 'confirmed';
+        // Late approval check: If rental period has already passed, reject approval
+        if (hasEnded(booking.endDate)) {
+            booking.status = 'expired';
+            await booking.save();
+            return res.status(400).send('This booking has expired and can no longer be approved.');
+        }
+
+        booking.approvedAt = new Date();
+
+        // Lifecycle transition: If start date is today/past -> ongoing; if future -> confirmed
+        booking.status = getBookingLifecycleStatus({ ...booking.toObject(), status: 'confirmed' });
 
         await booking.save();
 
@@ -50,7 +61,7 @@ const rejectBooking = async (req, res) => {
             return res.status(400).send('Booking is already processed');
         }
 
-        booking.status = 'cancelled';
+        booking.status = 'rejected';
 
         await booking.save();
 

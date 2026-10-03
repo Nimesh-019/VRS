@@ -10,13 +10,42 @@ const adminRouter = require('./routes/adminRouter');
 const complaintRouter = require('./routes/complaintRouter');
 
 const paymentRouter = require('./routes/paymentRouter');
+const apiRouter = require('./routes/apiRouter');
 
 const userRouter=require('./routes/userRouter');
 const vehicleRouter=require('./routes/vehicleRoutes');
 const connectDB=require('./config/db');
+const { syncAllActiveBookings } = require('./utils/bookingLifecycle');
 
 connectDB();
+
+// Initial sync of active bookings on startup
+syncAllActiveBookings().then(count => {
+    if (count > 0) console.log(`[Lifecycle] Initial startup sync updated ${count} bookings.`);
+}).catch(err => console.error('[Lifecycle] Startup sync error:', err));
+
+// Periodic lightweight sync every 2 minutes
+setInterval(() => {
+    syncAllActiveBookings().catch(err => console.error('[Lifecycle] Interval sync error:', err));
+}, 2 * 60 * 1000);
+
 const app = express();
+
+// CORS middleware to allow React frontend requests with credentials
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+    }
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
 app.use(express.static(path.join(rootDir, 'public')));
 app.set('view engine','ejs');
 app.set('views',path.join(rootDir,'views'));
@@ -33,6 +62,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
+// API Routes for React Frontend
+app.use('/api', apiRouter);
 
 // Routes
 app.use('/', userRouter);
