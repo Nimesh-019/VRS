@@ -1,206 +1,157 @@
-# Vehicle Rental System (VRS)
+# 🚗 Vehicle Rental System (VRS)
 
-A web-based **Vehicle Rental System** built using **Node.js, Express.js, EJS, and MongoDB**.
+A full-stack **Vehicle Rental System** built with **Node.js, Express.js, MongoDB, EJS, and Cloudinary**.
 
-The system allows users to browse and book vehicles, while vehicle owners can manage their vehicles and bookings.
+The system provides separate functionality for **Customers, Vehicle Owners, and Administrators**. Customers can browse and book vehicles, owners can manage their vehicles and rental requests, and administrators can manage vehicle approvals and customer complaints.
 
-## Technologies Used
+---
 
-* Node.js
-* Express.js
-* EJS
-* MongoDB
-* Mongoose
-* JavaScript
-* HTML
-* CSS
-* JWT / Session Authentication
+## 📌 Features
 
-## Prerequisites
+### 👤 Customer
 
-Before running this project, make sure you have installed:
+- User registration and login
+- JWT-based authentication
+- Browse available vehicles
+- Filter vehicles by relevant details such as city and vehicle type
+- View vehicle details
+- Book vehicles for a selected date range
+- Prevent overlapping bookings for the same vehicle
+- View personal bookings
+- View booking status
+- Cancel eligible bookings
+- Make online payments
+- Submit complaints regarding vehicles/owners
+- View submitted complaints and their responses
 
-* **Node.js**
-* **npm**
-* **MongoDB**
+### 🚘 Vehicle Owner
 
-You can verify Node.js and npm installation using:
+- Owner registration and login
+- Add vehicles for rental
+- Upload vehicle images
+- Store images using Cloudinary
+- Edit vehicle information
+- Delete vehicles
+- View rental history
+- View customer booking requests
+- Confirm or reject booking requests
+- Manage vehicles listed by the owner
 
-```bash
-node -v
-npm -v
-```
+### 🛡️ Administrator
 
-## Project Setup
+- Dedicated administrator account
+- View registered vehicle owners
+- View vehicles listed by owners
+- Approve vehicles before they become available for customers
+- View customer complaints
+- Respond to complaints
+- Communicate complaint-related information to vehicle owners
 
-### 1. Clone or Download the Project
+> The administrator account is created separately and is not available through normal user registration.
 
-Download or clone this project to your computer.
+---
 
-Then open the project folder in VS Code or another code editor.
+# 🛠️ Technologies Used
 
-### 2. Install Dependencies
+| Technology | Purpose |
+|---|---|
+| **Node.js** | Backend runtime |
+| **Express.js** | Web application framework |
+| **MongoDB** | Database |
+| **Mongoose** | MongoDB ODM |
+| **EJS** | Server-side frontend rendering |
+| **JavaScript** | Application logic |
+| **HTML5** | Page structure |
+| **CSS3** | Styling |
+| **JWT** | Authentication |
+| **Cookie Parser** | Cookie handling |
+| **Cloudinary** | Vehicle image storage |
+| **Multer** | File/image upload handling |
+| **dotenv** | Environment variable management |
+| **Razorpay / Payment Gateway** | Online payment processing |
 
-Open a terminal inside the project directory and run:
+---
 
-```bash
-npm install
-```
+# 🏗️ System Architecture
 
-If Express and EJS have not been installed, install them using:
-
-```bash
-npm install express ejs
-```
-
-If MongoDB/Mongoose and other dependencies are required by the project:
-
-```bash
-npm install mongoose dotenv jsonwebtoken bcrypt cookie-parser express-session
-```
-
-## Environment Variables
-
-Create a `.env` file in the **root directory of the project**, at the same level as folders such as `controllers`, `models`, `routes`, `views`, etc.
-
-Example:
-
-```text
-project-folder/
-│
-├── controllers/
-├── models/
-├── routes/
-├── views/
-├── public/
-├── middleware/
-├── app.js
-├── package.json
-├── package-lock.json
-└── .env
-```
-
-### `.env` File
-
-Add the following content to `.env`:
-
-```env
-MONGO_URI=YOU_MONGO_URI
-SECRET_KEY="YOR_SECRET_KEY"
-```
-
-Replace `YOU_MONGO_URI` with your actual MongoDB connection string.
-
-For example:
-
-```env
-MONGO_URI=mongodb://127.0.0.1:27017/vrs
-SECRET_KEY="MY_SECRET_KEY_123"
-```
-
-If you are using MongoDB Atlas, use your Atlas connection string instead.
-
-**Do not upload or push the `.env` file to GitHub.**
-
-Add this to `.gitignore`:
+The project follows an **MVC-based architecture**.
 
 ```text
-.env
-node_modules/
+                    ┌─────────────────────┐
+                    │       Client        │
+                    │      Browser        │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │      Express.js     │
+                    │       Routes        │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    Controllers      │
+                    │   Business Logic    │
+                    └───────┬─────┬───────┘
+                            │     │
+                 ┌──────────┘     └──────────┐
+                 ▼                           ▼
+        ┌─────────────────┐         ┌─────────────────┐
+        │     MongoDB     │         │    Cloudinary   │
+        │    Database     │         │ Vehicle Images  │
+        └─────────────────┘         └─────────────────┘
 ```
 
-## MongoDB
+---
 
-The project uses MongoDB as its database.
-
-Make sure MongoDB is running before starting the application.
-
-The application reads the MongoDB connection string from:
-
-```env
-MONGO_URI=YOU_MONGO_URI
-```
-
-The database name used by the project can be specified in the MongoDB URI.
-
-Example:
-
-```env
-MONGO_URI=mongodb://127.0.0.1:27017/vrs
-```
-
-Here:
-
-```text
-vrs
-```
-
-is the database name.
-
-## Running the Project
-
-Start the application using:
-
-```bash
-node app.js
-```
-
-If the project uses Nodemon, you can run:
-
-```bash
-npx nodemon app.js
-```
-
-After the server starts, open:
-
-```text
-http://localhost:3000
-```
-
-## Environment Variable Usage
-
-The project loads environment variables using `dotenv`.
-
-Example:
-
-```javascript
-require('dotenv').config();
-```
-
-MongoDB can then be connected using:
-
-```javascript
-mongoose.connect(process.env.MONGO_URI);
-```
-
-The secret key can be accessed using:
-
-```javascript
-process.env.SECRET_KEY
-```
-
-## Main Project Structure
+# 📂 Project Structure
 
 ```text
 VRS/
 │
+├── config/
+│   ├── db.js
+│   └── cloudinary.js
+│
 ├── controllers/
+│   ├── userController.js
+│   ├── vehicleController.js
+│   ├── bookingController.js
+│   ├── complaintController.js
+│   └── adminController.js
 │
 ├── middleware/
+│   ├── auth.js
+│   └── ...
 │
 ├── models/
+│   ├── user.js
+│   ├── vehicle.js
+│   ├── Booking.js
+│   └── Complaint.js
 │
 ├── routes/
+│   ├── userRoutes.js
+│   ├── vehicleRoutes.js
+│   ├── bookingRoutes.js
+│   ├── complaintRoutes.js
+│   └── adminRoutes.js
 │
 ├── views/
+│   ├── admin/
 │   ├── owner/
 │   ├── user/
-│   └── services/
+│   ├── services/
+│   └── ...
 │
 ├── public/
 │   ├── css/
 │   ├── js/
 │   └── images/
+│
+├── scripts/
+│   ├── createAdmin.js
+│   └── ...
 │
 ├── .env
 ├── .gitignore
@@ -209,11 +160,322 @@ VRS/
 └── package-lock.json
 ```
 
-## Important
+---
 
-Make sure the `.env` file is located in the **same root directory as `app.js` and `package.json`**.
+# 🗄️ Database Models
 
-Correct:
+## User
+
+Stores customers, vehicle owners, and administrator information.
+
+```text
+User
+├── name
+├── email
+├── phone
+├── password
+├── city
+└── role
+```
+
+Roles include:
+
+```text
+admin
+owner
+user
+```
+
+---
+
+## Vehicle
+
+Stores vehicles listed by vehicle owners.
+
+```text
+Vehicle
+├── ownerId
+├── vehicleNumber
+├── brand
+├── model
+├── type
+├── city
+├── pricePerDay
+├── description
+├── image
+├── availability
+└── approval/status information
+```
+
+Vehicle images are stored using Cloudinary.
+
+---
+
+## Booking
+
+Stores vehicle rental requests.
+
+```text
+Booking
+├── userId
+├── vehicleId
+├── startDate
+├── endDate
+├── totalAmount
+├── status
+└── paymentStatus
+```
+
+Current booking states are based around:
+
+```text
+Pending
+Confirmed
+Rejected / Cancelled
+```
+
+The system does **not** automatically use a `completed` booking state as part of the current booking flow.
+
+---
+
+## Complaint
+
+Stores complaints submitted by customers.
+
+```text
+Complaint
+├── userId
+├── vehicleId
+├── ownerId
+├── complaint
+├── response
+└── status
+```
+
+The administrator can review complaints and respond to them.
+
+---
+
+# 📅 Booking System
+
+The booking system supports rental periods using:
+
+```text
+Start Date
+     ↓
+End Date
+```
+
+The system checks whether another booking already occupies the requested rental period.
+
+For example:
+
+```text
+Existing Booking
+3 Oct ───────── 5 Oct
+
+New Request
+4 Oct ───────── 6 Oct
+```
+
+The new booking overlaps with the existing booking and therefore cannot be processed for the same vehicle.
+
+The system is designed to prevent conflicting bookings for the same vehicle.
+
+---
+
+# ⏰ Expired Bookings
+
+Bookings are also handled according to their rental dates.
+
+For example:
+
+```text
+Booking:
+3 Oct → 3 Oct
+```
+
+When the rental date has passed, the booking should be displayed as expired when viewed later.
+
+For example, when the owner or customer checks the booking on:
+
+```text
+4 Oct
+```
+
+the 3 Oct rental should appear as expired rather than as an active upcoming rental.
+
+---
+
+# 💳 Payment System
+
+The project includes online payment functionality for vehicle bookings.
+
+The payment flow is approximately:
+
+```text
+Customer
+   │
+   ▼
+Select Vehicle
+   │
+   ▼
+Select Rental Dates
+   │
+   ▼
+Create Booking
+   │
+   ▼
+Payment
+   │
+   ▼
+Payment Gateway
+   │
+   ▼
+Payment Result
+   │
+   ▼
+Booking Payment Status Updated
+```
+
+Payment-related configuration is stored in environment variables and should never be exposed publicly.
+
+---
+
+# ☁️ Cloudinary
+
+Vehicle images are uploaded to **Cloudinary** instead of being permanently stored inside the project.
+
+### Image Flow
+
+```text
+Vehicle Owner
+      │
+      ▼
+Upload Vehicle Image
+      │
+      ▼
+Multer / Express
+      │
+      ▼
+Cloudinary
+      │
+      ▼
+Cloudinary Image URL
+      │
+      ▼
+MongoDB
+      │
+      ▼
+Vehicle Image Displayed
+```
+
+Required Cloudinary environment variables:
+
+```env
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+---
+
+# 🔐 Authentication
+
+Authentication is implemented using JWT and cookies.
+
+General flow:
+
+```text
+Login
+  ↓
+Credentials Verified
+  ↓
+JWT Generated
+  ↓
+JWT Stored in Cookie
+  ↓
+Authentication Middleware
+  ↓
+Protected Route
+```
+
+Protected functionality includes customer, owner, and administrator operations.
+
+---
+
+# ⚙️ Prerequisites
+
+Before running the project, install:
+
+- Node.js
+- npm
+- MongoDB
+
+Check Node.js and npm:
+
+```bash
+node -v
+npm -v
+```
+
+Check MongoDB installation according to your operating system.
+
+---
+
+# 🚀 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone <YOUR_REPOSITORY_URL>
+```
+
+Move into the project directory:
+
+```bash
+cd VRS
+```
+
+---
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+If required dependencies have not been installed:
+
+```bash
+npm install express mongoose ejs dotenv jsonwebtoken bcryptjs cookie-parser multer cloudinary
+```
+
+---
+
+# 🔑 Environment Variables
+
+Create a `.env` file in the **root directory**, alongside `app.js` and `package.json`.
+
+Example:
+
+```env
+MONGO_URI=mongodb://127.0.0.1:27017/vrs
+
+SECRET_KEY=YOUR_SECRET_KEY
+
+CLOUDINARY_CLOUD_NAME=YOUR_CLOUD_NAME
+CLOUDINARY_API_KEY=YOUR_API_KEY
+CLOUDINARY_API_SECRET=YOUR_API_SECRET
+
+# Payment Gateway Configuration
+PAYMENT_KEY=YOUR_PAYMENT_KEY
+PAYMENT_SECRET=YOUR_PAYMENT_SECRET
+```
+
+Use the exact environment variable names required by the current payment implementation in your project.
+
+### Correct location
 
 ```text
 VRS/
@@ -226,182 +488,286 @@ VRS/
 └── views/
 ```
 
-Incorrect:
+Do **not** put `.env` inside `views`, `controllers`, `models`, or any other subdirectory.
 
-```text
-VRS/
-├── controllers/
-├── models/
-├── routes/
-└── views/
-    └── .env
-```
+---
 
-## Security
+# 🗄️ MongoDB Configuration
 
-Never share your real:
+For a local MongoDB installation:
 
 ```env
-MONGO_URI
-SECRET_KEY
+MONGO_URI=mongodb://127.0.0.1:27017/vrs
 ```
 
-publicly.
-
-Do not commit `.env` to Git:
-
-```bash
-git add .
-git commit -m "Initial project"
-```
-
-The `.gitignore` file should contain:
+Here:
 
 ```text
+127.0.0.1 → Local MongoDB server
+27017     → MongoDB default port
+vrs       → Database name
+```
+
+Make sure MongoDB is running before starting the application.
+
+---
+
+# 👑 Creating the Admin Account
+
+The administrator is not created through the normal registration page.
+
+The project contains an administrator creation script.
+
+Run:
+
+```bash
+node scripts/createAdmin.js
+```
+
+The script creates the default administrator account in MongoDB.
+
+Make sure:
+
+1. MongoDB is running.
+2. `.env` is correctly configured.
+3. Required dependencies are installed.
+4. The User model contains the required fields.
+
+---
+
+# ▶️ Running the Application
+
+Start the server:
+
+```bash
+node app.js
+```
+
+If Nodemon is configured:
+
+```bash
+npx nodemon app.js
+```
+
+Then open:
+
+```text
+http://localhost:3000
+```
+
+---
+
+# 🔄 Main User Flow
+
+## Customer
+
+```text
+Register / Login
+       ↓
+Browse Vehicles
+       ↓
+Filter / Select Vehicle
+       ↓
+View Vehicle Details
+       ↓
+Select Rental Dates
+       ↓
+Check Availability
+       ↓
+Book Vehicle
+       ↓
+Payment
+       ↓
+View Booking
+```
+
+---
+
+## Vehicle Owner
+
+```text
+Register / Login
+       ↓
+Add Vehicle
+       ↓
+Upload Image
+       ↓
+Admin Approval
+       ↓
+Vehicle Listed
+       ↓
+Receive Booking Request
+       ↓
+Confirm / Reject
+       ↓
+View Rental History
+```
+
+---
+
+## Administrator
+
+```text
+Admin Login
+     ↓
+Admin Dashboard
+     ├── Manage Vehicle Owners
+     ├── View Vehicles
+     ├── Approve Vehicles
+     └── Manage Complaints
+              ↓
+        Respond to Customer
+              ↓
+        Owner Communication
+```
+
+---
+
+# 🛡️ Vehicle Approval Flow
+
+When an owner adds a vehicle, it does not immediately become available to customers.
+
+```text
+Owner Adds Vehicle
+        ↓
+Vehicle Pending Approval
+        ↓
+Admin Reviews Vehicle
+        ↓
+       ┌───────────────┐
+       │               │
+    Approve         Reject
+       │               │
+       ▼               ▼
+Listed for         Not Listed
+Rental
+```
+
+This allows the administrator to control which vehicles are displayed to customers.
+
+---
+
+# 📋 Booking Information
+
+### Customer's My Bookings
+
+The booking list focuses on relevant booking information rather than displaying unnecessary vehicle images.
+
+Information can include:
+
+```text
+Vehicle Name / Model
+Owner Name
+Payment Information
+Booking Dates
+Booking Status
+Available User Actions
+```
+
+### Owner's Rental History
+
+The owner's rental history similarly focuses on rental/booking information rather than displaying vehicle images repeatedly.
+
+---
+
+# 🔒 Security
+
+Never commit sensitive credentials to GitHub.
+
+Your `.gitignore` should contain:
+
+```gitignore
 .env
 node_modules/
 ```
 
-## Author
+Never expose:
+
+```text
+MongoDB credentials
+JWT secret
+Cloudinary API secret
+Payment gateway secret
+```
+
+Do not upload `.env`:
+
+```bash
+git add .
+```
+
+is safe only when `.env` is properly listed in `.gitignore`.
+
+---
+
+# 🧪 Testing
+
+The project includes testing for important booking scenarios such as concurrent booking attempts.
+
+Example scenario:
+
+```text
+User A ──► Requests Vehicle ──► Booking
+                                │
+User B ──► Requests Same Vehicle
+                                │
+                                ▼
+                     Availability Check
+                                │
+                         Conflict Detected
+                                │
+                                ▼
+                     Booking Rejected
+```
+
+This helps prevent two users from successfully booking the same vehicle for overlapping rental periods.
+
+---
+
+# 📌 Important Notes
+
+- MongoDB must be running before starting the application.
+- `.env` must be located in the project root.
+- Cloudinary credentials are required for vehicle image uploads.
+- Payment credentials must be configured for online payments.
+- Vehicles may require administrator approval before being visible to customers.
+- Rental dates are checked to prevent overlapping bookings.
+- Sensitive credentials must never be committed to GitHub.
+
+---
+
+# 🔮 Future Improvements
+
+Possible future enhancements include:
+
+- Improved admin dashboard
+- Advanced booking calendar
+- Better payment transaction tracking
+- Email/SMS notifications
+- Vehicle ratings and reviews
+- Location/map integration
+- Advanced analytics for owners and administrators
+- Improved responsive UI
+- Automated booking notifications
+- Enhanced payment reconciliation
+
+---
+
+# 👨‍💻 Project
 
 **Vehicle Rental System (VRS)**
 
-Built using Node.js, Express.js, EJS, and MongoDB.
-
-
-## ☁️ Cloudinary Setup
-
-This project uses **Cloudinary** to store and manage vehicle images.
-
-### 1. Create a Cloudinary Account
-
-Go to the official Cloudinary website and create an account:
-
-https://cloudinary.com/
-
-After logging in, open the **Cloudinary Dashboard**.
-
-### 2. Get Cloudinary Credentials
-
-From the Cloudinary Dashboard, get these three values:
-
-* **Cloud Name**
-* **API Key**
-* **API Secret**
-
-### 3. Create a `.env` File
-
-Create a `.env` file in the root directory of the project:
-
-```env
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-```
-
-Replace the values with the credentials from your Cloudinary Dashboard.
-
-Example:
-
-```env
-CLOUDINARY_CLOUD_NAME=abc123
-CLOUDINARY_API_KEY=123456789012345
-CLOUDINARY_API_SECRET=your_api_secret
-```
-
-### 4. Install Cloudinary
-
-If Cloudinary is not already installed:
-
-```bash
-npm install cloudinary
-```
-
-### 5. Configure Cloudinary
-
-Create a configuration file such as:
+A web-based vehicle rental platform developed using:
 
 ```text
-config/
-└── cloudinary.js
-```
-
-Add:
-
-```js
-const cloudinary = require('cloudinary').v2;
-
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
-
-module.exports = cloudinary;
-```
-
-### 6. Load Environment Variables
-
-Make sure your application loads the `.env` file before using Cloudinary:
-
-```js
-require('dotenv').config();
-```
-
-For example, in `app.js` or `server.js`:
-
-```js
-require('dotenv').config();
-
-const express = require('express');
-```
-
-### 7. Start the Application
-
-Install project dependencies:
-
-```bash
-npm install
-```
-
-Then start the application:
-
-```bash
-npm start
-```
-
-Or, if your project uses nodemon:
-
-```bash
-npm run dev
-```
-
-### ⚠️ Security
-
-Never commit your `.env` file to GitHub.
-
-Add this to `.gitignore`:
-
-```gitignore
-.env
-```
-
-Never expose your **Cloudinary API Secret** in frontend code or public repositories.
-
-### 📌 Image Storage Flow
-
-```text
-User uploads vehicle image
-        ↓
-Node.js / Express
-        ↓
+Node.js
+Express.js
+MongoDB
+Mongoose
+EJS
+JavaScript
 Cloudinary
-        ↓
-Cloudinary stores the image
-        ↓
-Cloudinary returns image URL
-        ↓
-Image URL is stored in MongoDB
-        ↓
-URL is used to display the image
+JWT
 ```
+
+The project demonstrates authentication, role-based access, vehicle management, booking management, date-conflict handling, complaints, administrator approval, image management, and online payment integration.
