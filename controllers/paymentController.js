@@ -13,7 +13,7 @@ const PAYU_URL = 'https://test.payu.in/_payment';
 // CORE PAYMENT DATA GENERATOR (REUSED BY EJS & REACT API)
 // =====================================================
 
-const generatePaymentData = async ({ bookingId, userId, source = 'react' }) => {
+const generatePaymentData = async ({ bookingId, userId, source = 'react', req = null }) => {
     // =================================================
     // FIND BOOKING
     // =================================================
@@ -124,6 +124,18 @@ const generatePaymentData = async ({ bookingId, userId, source = 'react' }) => {
     booking.paymentTxnId = txnid;
     await booking.save();
 
+    // Extract client origin if present (e.g. from React frontend origin/referer)
+    let clientOrigin = '';
+    if (req) {
+        const originHeader = req.headers.origin || req.headers.referer || '';
+        if (originHeader) {
+            try {
+                const parsed = new URL(originHeader);
+                clientOrigin = parsed.origin;
+            } catch (e) {}
+        }
+    }
+
     // =================================================
     // CREATE PAYMENT RECORD
     // =================================================
@@ -132,10 +144,31 @@ const generatePaymentData = async ({ bookingId, userId, source = 'react' }) => {
         userId: userId,
         amount: Number(amount),
         transactionId: txnid,
-        status: 'pending'
+        status: 'pending',
+        clientOrigin
     });
 
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
+    let backendUrl = process.env.BACKEND_URL;
+    if (!backendUrl && req) {
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+        let host = req.headers['x-forwarded-host'] || (req.get ? req.get('host') : req.headers.host);
+
+        // If host was masked by a local dev proxy (e.g. Vite proxying to 127.0.0.1:3000), but clientOrigin is a LAN IP or custom domain:
+        if ((!host || host.includes('localhost') || host.includes('127.0.0.1')) && clientOrigin) {
+            try {
+                const parsedOrigin = new URL(clientOrigin);
+                if (parsedOrigin.hostname !== 'localhost' && parsedOrigin.hostname !== '127.0.0.1') {
+                    const backendPort = process.env.PORT || '3000';
+                    host = `${parsedOrigin.hostname}:${backendPort}`;
+                }
+            } catch (e) {}
+        }
+
+        if (host) {
+            backendUrl = `${protocol}://${host}`;
+        }
+    }
+    backendUrl = (backendUrl || 'http://localhost:3000').replace(/\/+$/, '');
     const surl = `${backendUrl}/payment/success`;
     const furl = `${backendUrl}/payment/failure`;
 
@@ -172,7 +205,7 @@ exports.initiatePayment = async (req, res) => {
         const userId = req.user._id || req.user.id;
         const source = req.query.source || '';
 
-        const paymentData = await generatePaymentData({ bookingId, userId, source });
+        const paymentData = await generatePaymentData({ bookingId, userId, source, req });
 
         res.render('payment/payu', paymentData);
     } catch (error) {
@@ -245,19 +278,36 @@ exports.payuSuccess = async (req, res) => {
             return res.status(404).send('Booking for this payment not found');
         }
 
-        const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+        // Payment record update
+        const payment = await Payment.findOne({ transactionId: txnid });
+        if (payment) {
+            payment.status = 'paid';
+            await payment.save();
+        }
+
+        let clientUrl = process.env.CLIENT_URL;
+        if (!clientUrl && payment && payment.clientOrigin) {
+            clientUrl = payment.clientOrigin;
+        }
+        if (!clientUrl) {
+            const hostHeader = (req.get ? req.get('host') : req.headers.host) || '';
+            const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+            const hostname = hostHeader.split(':')[0];
+            if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+                const frontendPort = process.env.FRONTEND_PORT || '5174';
+                clientUrl = `${protocol}://${hostname}:${frontendPort}`;
+            } else {
+                clientUrl = 'http://localhost:5173';
+            }
+        }
+        clientUrl = clientUrl.replace(/\/+$/, '');
+
         const isReactOrigin = response.udf1 === 'react';
 
         // Payment success
         if (status === 'success') {
             booking.paymentStatus = 'paid';
             await booking.save();
-
-            const payment = await Payment.findOne({ transactionId: txnid });
-            if (payment) {
-                payment.status = 'paid';
-                await payment.save();
-            }
 
             console.log('Payment successful for booking:', booking._id);
 
@@ -293,6 +343,7 @@ exports.payuFailure = async (req, res) => {
         console.log('--------------------------------');
 
         const txnid = req.body ? req.body.txnid : null;
+        let payment = null;
 
         if (txnid) {
             const booking = await Booking.findOne({ paymentTxnId: txnid });
@@ -301,14 +352,30 @@ exports.payuFailure = async (req, res) => {
                 await booking.save();
             }
 
-            const payment = await Payment.findOne({ transactionId: txnid });
+            payment = await Payment.findOne({ transactionId: txnid });
             if (payment) {
                 payment.status = 'failed';
                 await payment.save();
             }
         }
 
-        const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+        let clientUrl = process.env.CLIENT_URL;
+        if (!clientUrl && payment && payment.clientOrigin) {
+            clientUrl = payment.clientOrigin;
+        }
+        if (!clientUrl) {
+            const hostHeader = (req.get ? req.get('host') : req.headers.host) || '';
+            const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+            const hostname = hostHeader.split(':')[0];
+            if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+                const frontendPort = process.env.FRONTEND_PORT || '5174';
+                clientUrl = `${protocol}://${hostname}:${frontendPort}`;
+            } else {
+                clientUrl = 'http://localhost:5173';
+            }
+        }
+        clientUrl = clientUrl.replace(/\/+$/, '');
+
         const isReactOrigin = req.body && req.body.udf1 === 'react';
 
         if (isReactOrigin) {

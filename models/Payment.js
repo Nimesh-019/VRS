@@ -24,6 +24,10 @@ const paymentSchema = new mongoose.Schema(
             type: String,
             enum: ['pending', 'paid', 'failed'],
             default: 'pending'
+        },
+        clientOrigin: {
+            type: String,
+            default: ''
         }
     },
     {

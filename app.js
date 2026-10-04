@@ -1,7 +1,7 @@
 require('dotenv').config();
-const express=require('express');
-const rootDir=require('./utils/pathutils');
-const path=require('path');
+const express = require('express');
+const rootDir = require('./utils/pathutils');
+const path = require('path');
 const cookieParser = require('cookie-parser');
 const bookingRouter = require('./routes/bookingRouter');
 const ownerRoutes = require('./routes/ownerRouter');
@@ -12,9 +12,9 @@ const complaintRouter = require('./routes/complaintRouter');
 const paymentRouter = require('./routes/paymentRouter');
 const apiRouter = require('./routes/apiRouter');
 
-const userRouter=require('./routes/userRouter');
-const vehicleRouter=require('./routes/vehicleRoutes');
-const connectDB=require('./config/db');
+const userRouter = require('./routes/userRouter');
+const vehicleRouter = require('./routes/vehicleRoutes');
+const connectDB = require('./config/db');
 const { syncAllActiveBookings } = require('./utils/bookingLifecycle');
 
 connectDB();
@@ -47,8 +47,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(rootDir, 'public')));
-app.set('view engine','ejs');
-app.set('views',path.join(rootDir,'views'));
+app.set('view engine', 'ejs');
+app.set('views', path.join(rootDir, 'views'));
 
 
 // Body parser
@@ -75,10 +75,6 @@ app.use('/admin', adminRouter);
 app.use('/', complaintRouter);
 app.use('/payment', paymentRouter);
 const port = 3000;
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on http://localhost:${port}`);
-});
-const port2 = 5000;
-app.listen(port2, () => {
-    console.log(`Server is running on http://localhost:${port2}`);
 });

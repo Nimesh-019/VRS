@@ -503,7 +503,7 @@ router.get('/payment/pay/:bookingId', isApiLoggedIn, isApiUser, async (req, res)
         const { bookingId } = req.params;
         const userId = req.user._id || req.user.id;
 
-        const paymentData = await generatePaymentData({ bookingId, userId, source: 'react' });
+        const paymentData = await generatePaymentData({ bookingId, userId, source: 'react', req });
 
         return res.json({
             payuUrl: paymentData.payuUrl,

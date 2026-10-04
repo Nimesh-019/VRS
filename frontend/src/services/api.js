@@ -1,5 +1,18 @@
-// Simple and clean API client for Express backend communication
-const API_BASE = '/api';
+const getApiBase = () => {
+    if (typeof window !== 'undefined') {
+        if (import.meta.env.VITE_API_URL) {
+            return import.meta.env.VITE_API_URL.replace(/\/+$/, '');
+        }
+        const hostname = window.location.hostname;
+        // When accessed from a mobile phone via LAN IP or public host, call Express backend on port 3000
+        if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+            return `${window.location.protocol}//${hostname}:3000/api`;
+        }
+    }
+    return '/api';
+};
+
+const API_BASE = getApiBase();
 
 export const api = {
     // GET request
